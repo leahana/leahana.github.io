@@ -1,0 +1,374 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  
+  <title>MCP 模型上下文协议 | MamamiJa Nai</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta name="description" content="MCP 模型上下文协议1. MCP 简介模型上下文协议（MCP）是一种标准化协议，使 AI 模型能够以结构化方式与外部工具和资源交互。它支持多种传输机制，以便在不同环境中提供灵活性。 1.1 MCP 本质 标准化协议实现AI模型与外设的结构化交互 类似Type-C接口的function call统一标准 mcp-全屋智能家电标准，function call-开关&#x2F;遥控器  1.2 架构解">
+<meta property="og:type" content="article">
+<meta property="og:title" content="MCP 模型上下文协议">
+<meta property="og:url" content="http://example.com/2025/05/01/2025-04-24-ai-mcp/index.html">
+<meta property="og:site_name" content="MamamiJa Nai">
+<meta property="og:description" content="MCP 模型上下文协议1. MCP 简介模型上下文协议（MCP）是一种标准化协议，使 AI 模型能够以结构化方式与外部工具和资源交互。它支持多种传输机制，以便在不同环境中提供灵活性。 1.1 MCP 本质 标准化协议实现AI模型与外设的结构化交互 类似Type-C接口的function call统一标准 mcp-全屋智能家电标准，function call-开关&#x2F;遥控器  1.2 架构解">
+<meta property="og:locale">
+<meta property="og:image" content="https://docs.spring.io/spring-ai/reference/1.0/_images/mcp/mcp-stack.svg">
+<meta property="og:image" content="https://docs.spring.io/spring-ai/reference/1.0/_images/mcp/java-mcp-server-architecture.jpg">
+<meta property="og:image" content="https://docs.spring.io/spring-ai/reference/1.0/_images/mcp/java-mcp-server-architecture.jpg">
+<meta property="og:image" content="http://example.com/assets/images/mcp/create-springobj.png">
+<meta property="og:image" content="http://example.com/assets/images/mcp/cursor-create.png">
+<meta property="og:image" content="http://example.com/assets/images/mcp/mcp-example.png">
+<meta property="og:image" content="http://example.com/assets/images/mcp/select-model.png">
+<meta property="og:image" content="http://example.com/assets/images/mcp/tools-list.png">
+<meta property="og:image" content="http://example.com/assets/images/mcp/model-settings.png">
+<meta property="og:image" content="http://example.com/assets/images/mcp/select-model.png">
+<meta property="og:image" content="http://example.com/assets/images/mcp/select-server.png">
+<meta property="og:image" content="http://example.com/assets/images/mcp/test-result1.png">
+<meta property="og:image" content="http://example.com/assets/images/mcp/test-result2.png">
+<meta property="article:published_time" content="2025-04-30T16:53:30.235Z">
+<meta property="article:modified_time" content="2025-04-30T16:57:25.411Z">
+<meta property="article:author" content="Mamimi">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://docs.spring.io/spring-ai/reference/1.0/_images/mcp/mcp-stack.svg">
+  
+    <link rel="alternate" href="/atom.xml" title="MamamiJa Nai" type="application/atom+xml">
+  
+  
+    <link rel="shortcut icon" href="/favicon.png">
+  
+  
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+    
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.min.css">
+
+  
+  
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/fork-awesome@1.2.0/css/fork-awesome.min.css">
+
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">MamamiJa Nai</a>
+      </h1>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"><span class="fa fa-bars"></span></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+        
+          <a class="nav-icon" href="/atom.xml" title="RSS Feed"><span class="fa fa-rss"></span></a>
+        
+        <a class="nav-icon nav-search-btn" title="Suche"><span class="fa fa-search"></span></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Suche"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="http://example.com"></form>
+      </div>
+    </div>
+  </div>
+</header>
+
+      <div class="outer">
+        <section id="main"><article id="default-2025-04-24-ai-mcp" class="h-entry article article-type-default" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2025/05/01/2025-04-24-ai-mcp/" class="article-date">
+  <time class="dt-published" datetime="2025-04-30T16:53:30.235Z" itemprop="datePublished">2025-05-01</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="p-name article-title" itemprop="headline name">
+      MCP 模型上下文协议
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <h1 id="MCP-模型上下文协议"><a href="#MCP-模型上下文协议" class="headerlink" title="MCP 模型上下文协议"></a>MCP 模型上下文协议</h1><h2 id="1-MCP-简介"><a href="#1-MCP-简介" class="headerlink" title="1. MCP 简介"></a>1. MCP 简介</h2><p><a target="_blank" rel="noopener" href="https://modelcontextprotocol.org/docs/concepts/architecture">模型上下文协议</a>（MCP）是一种标准化协议，使 AI 模型能够以结构化方式与外部工具和资源交互。它支持多种传输机制，以便在不同环境中提供灵活性。</p>
+<h3 id="1-1-MCP-本质"><a href="#1-1-MCP-本质" class="headerlink" title="1.1 MCP 本质"></a>1.1 MCP 本质</h3><ul>
+<li>标准化协议实现AI模型与外设的结构化交互</li>
+<li>类似Type-C接口的function call统一标准</li>
+<li>mcp-全屋智能家电标准，function call-开关&#x2F;遥控器</li>
+</ul>
+<h3 id="1-2-架构解析"><a href="#1-2-架构解析" class="headerlink" title="1.2 架构解析"></a>1.2 架构解析</h3><p>MCP 架构符合三层架构设计：</p>
+<div class ="mermaid>
+graph TD
+  %% Host_Cluster（淡黄背景+紫色边框）
+  subgraph Host_Cluster[Host_Cluster]
+    client1[MCP Client]
+    client2[MCP Client]
+  end
+
+<p>  %% Transport Layer（灰色背景）<br>  client1 –&gt; transport1[Transport Layer]<br>  client2 –&gt; transport2[Transport Layer]</p>
+<p>  %% Server Process（淡黄背景+紫色边框）<br>  subgraph Server_Process_1[Server Process_1]<br>    server1[MCP Server]<br>  end<br>  subgraph Server_Process_2[Server Process_2]<br>    server2[MCP Server]<br>  end</p>
+<p>  %% 箭头连接（严格对齐原图流向）<br>  transport1 –&gt; Server_Process_1<br>  transport2 –&gt; Server_Process_2</p>
+</div>
+
+<h2 id="2-MCP-实践"><a href="#2-MCP-实践" class="headerlink" title="2. MCP 实践"></a>2. MCP 实践</h2><h3 id="2-1-Java-MCP-实现"><a href="#2-1-Java-MCP-实现" class="headerlink" title="2.1 Java MCP 实现"></a>2.1 Java MCP 实现</h3><p>Java MCP 实现遵循三层架构：</p>
+<p><img src="https://docs.spring.io/spring-ai/reference/1.0/_images/mcp/mcp-stack.svg" alt="Java MCP 架构"></p>
+<h4 id="2-1-1-架构层次"><a href="#2-1-1-架构层次" class="headerlink" title="2.1.1 架构层次"></a>2.1.1 架构层次</h4><ul>
+<li><strong>客户端&#x2F;服务器层</strong>：McpClient 处理客户端操作，而 McpServer 管理服务器端协议操作。两者都使用 McpSession 进行通信管理。</li>
+<li><strong>会话层（McpSession）</strong>：通过 DefaultMcpSession 实现管理通信模式和状态。</li>
+<li><strong>传输层（McpTransport）</strong>：处理 JSON-RPC 消息序列化和反序列化，并支持多种传输实现。</li>
+</ul>
+<h4 id="2-1-2-MCP-客户端"><a href="#2-1-2-MCP-客户端" class="headerlink" title="2.1.2 MCP 客户端"></a>2.1.2 MCP 客户端</h4><p><img src="https://docs.spring.io/spring-ai/reference/1.0/_images/mcp/java-mcp-server-architecture.jpg" alt="MCP客户端架构|650"></p>
+<p>MCP 客户端是模型上下文协议（MCP）架构中的关键组件，负责建立和管理与 MCP 服务器的连接。它实现协议的客户端，处理：</p>
+<ul>
+<li>协议版本协商，确保与服务器兼容</li>
+<li>用于确定可用功能的功能协商</li>
+<li>消息传输和 JSON-RPC 通信</li>
+<li>工具发现和执行</li>
+<li>资源访问和管理</li>
+<li>提示系统交互</li>
+</ul>
+<h5 id="可选功能"><a href="#可选功能" class="headerlink" title="可选功能"></a>可选功能</h5><ul>
+<li>根管理</li>
+<li>采样支持</li>
+<li>同步和异步操作</li>
+</ul>
+<h5 id="传输方式"><a href="#传输方式" class="headerlink" title="传输方式"></a>传输方式</h5><ul>
+<li>基于 Stdio 的传输，用于基于进程的通信</li>
+<li>基于 Java HttpClient 的 SSE 客户端传输</li>
+<li>用于反应式 HTTP 流的 WebFlux SSE 客户端传输</li>
+</ul>
+<h4 id="2-1-3-MCP-服务器"><a href="#2-1-3-MCP-服务器" class="headerlink" title="2.1.3 MCP 服务器"></a>2.1.3 MCP 服务器</h4><p><img src="https://docs.spring.io/spring-ai/reference/1.0/_images/mcp/java-mcp-server-architecture.jpg" alt="MCP服务器架构|650"></p>
+<p>MCP 服务器是模型上下文协议（MCP）架构中的基础组件，用于为客户提供工具、资源和功能。它实现了协议的服务器端，负责：</p>
+<h5 id="服务器端协议操作实现"><a href="#服务器端协议操作实现" class="headerlink" title="服务器端协议操作实现"></a>服务器端协议操作实现</h5><ul>
+<li>工具曝光和发现</li>
+<li>使用基于 URI 的访问进行资源管理</li>
+<li>及时的模板配置和处理</li>
+<li>与客户的能力协商</li>
+<li>结构化日志记录和通知</li>
+</ul>
+<h5 id="并发管理"><a href="#并发管理" class="headerlink" title="并发管理"></a>并发管理</h5><ul>
+<li>并发客户端连接管理</li>
+<li>同步和异步 API 支持</li>
+</ul>
+<h5 id="传输实现"><a href="#传输实现" class="headerlink" title="传输实现"></a>传输实现</h5><ul>
+<li>基于 Stdio 的传输，用于基于进程的通信</li>
+<li>基于 Servlet 的 SSE 服务器传输</li>
+<li>用于反应式 HTTP 流的 WebFlux SSE 服务器传输</li>
+<li>用于基于 servlet 的 HTTP 流的 WebMVC SSE 服务器传输</li>
+</ul>
+<h3 id="2-2-Spring-AI-MCP-集成"><a href="#2-2-Spring-AI-MCP-集成" class="headerlink" title="2.2 Spring AI MCP 集成"></a>2.2 Spring AI MCP 集成</h3><p>Spring AI 通过以下 Spring Boot Starters 提供 MCP 集成：</p>
+<h4 id="2-2-1-客户端-Starters"><a href="#2-2-1-客户端-Starters" class="headerlink" title="2.2.1 客户端 Starters"></a>2.2.1 客户端 Starters</h4><p><a target="_blank" rel="noopener" href="https://spring-doc.cadn.net.cn/spring-ai/1.0.0-M6/api_mcp_mcp-client-boot-starter-docs.html">客户端 Starters</a></p>
+<ul>
+<li><code>spring-ai-mcp-client-spring-boot-starter</code> - Core starter 提供 STDIO 和基于 HTTP 的 SSE 支持</li>
+<li><code>spring-ai-mcp-client-webflux-spring-boot-starter</code> - 基于 WebFlux 的 SSE 传输实现</li>
+</ul>
+<h4 id="2-2-2-服务器-Starters"><a href="#2-2-2-服务器-Starters" class="headerlink" title="2.2.2 服务器 Starters"></a>2.2.2 服务器 Starters</h4><p><a target="_blank" rel="noopener" href="https://spring-doc.cadn.net.cn/spring-ai/1.0.0-M6/api_mcp_mcp-server-boot-starter-docs.html">服务器 Starters</a></p>
+<ul>
+<li><code>spring-ai-mcp-server-spring-boot-starter</code> - 支持 STDIO 传输的核心服务器</li>
+<li><code>spring-ai-mcp-server-webmvc-spring-boot-starter</code> - 基于 Spring MVC 的 SSE 传输实现</li>
+<li><code>spring-ai-mcp-server-webflux-spring-boot-starter</code> - 基于 WebFlux 的 SSE 传输实现</li>
+</ul>
+<h3 id="2-3-实践：java-mcp-utils"><a href="#2-3-实践：java-mcp-utils" class="headerlink" title="2.3 实践：java-mcp-utils"></a>2.3 实践：java-mcp-utils</h3><h4 id="2-3-1-项目创建"><a href="#2-3-1-项目创建" class="headerlink" title="2.3.1 项目创建"></a>2.3.1 项目创建</h4><ol>
+<li><p>从 <a target="_blank" rel="noopener" href="https://start.spring.io/">start.spring.io</a> 创建 springboot maven 项目：<br><img src="/../../assets/images/mcp/create-springobj.png" alt="新建服务器"></p>
+</li>
+<li><p>使用 Cursor 打开项目：<br><img src="/../../assets/images/mcp/cursor-create.png" alt="工具列表"></p>
+</li>
+</ol>
+<h4 id="2-3-2-添加依赖"><a href="#2-3-2-添加依赖" class="headerlink" title="2.3.2 添加依赖"></a>2.3.2 添加依赖</h4><figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">dependency</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>org.springframework.ai<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>spring-ai-mcp-server-spring-boot-starter<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">version</span>&gt;</span>1.0.0-M6<span class="tag">&lt;/<span class="name">version</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">dependency</span>&gt;</span></span><br></pre></td></tr></table></figure>
+
+<h4 id="2-3-3-代码实现"><a href="#2-3-3-代码实现" class="headerlink" title="2.3.3 代码实现"></a>2.3.3 代码实现</h4><p>根据官网文档案例：</p>
+<p><img src="/../../assets/images/mcp/mcp-example.png" alt="模型设置"></p>
+<h5 id="创建-Service"><a href="#创建-Service" class="headerlink" title="创建 Service"></a>创建 Service</h5><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Service</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">McpService</span> &#123;</span><br><span class="line">    <span class="comment">// 这里可以添加 MCP 相关的业务逻辑</span></span><br><span class="line">    <span class="comment">// MCP related business logic can be added here</span></span><br><span class="line">    <span class="meta">@Tool(name = &quot;getWeather&quot;, description = &quot;获取天气信息&quot;)</span></span><br><span class="line">    <span class="keyword">public</span> String <span class="title function_">getWeather</span><span class="params">(String city)</span> &#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="string">&quot;The weather in &quot;</span> + city + <span class="string">&quot; is sunny.&quot;</span>;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h5 id="注册-ToolCallbackProvider-Bean"><a href="#注册-ToolCallbackProvider-Bean" class="headerlink" title="注册 ToolCallbackProvider Bean"></a>注册 ToolCallbackProvider Bean</h5><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Configuration</span></span><br><span class="line"><span class="keyword">public</span> <span class="keyword">class</span> <span class="title class_">McpConfig</span> &#123;</span><br><span class="line">    <span class="comment">// 这里可以添加自定义的配置</span></span><br><span class="line">    <span class="comment">// Custom configurations can be added here</span></span><br><span class="line">    <span class="meta">@Bean</span></span><br><span class="line">    <span class="keyword">public</span> ToolCallbackProvider <span class="title function_">serverTools</span><span class="params">(McpService mcpService)</span> &#123;</span><br><span class="line">        <span class="keyword">return</span> MethodToolCallbackProvider.builder()</span><br><span class="line">            .toolObjects(mcpService)</span><br><span class="line">            .build();</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h5 id="配置-application-yml"><a href="#配置-application-yml" class="headerlink" title="配置 application.yml"></a>配置 application.yml</h5><figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">spring:</span></span><br><span class="line">  <span class="attr">application:</span></span><br><span class="line">    <span class="attr">name:</span> <span class="string">java-mcp-utils</span></span><br><span class="line">  <span class="attr">ai:</span></span><br><span class="line">    <span class="attr">mcp:</span></span><br><span class="line">      <span class="attr">server:</span></span><br><span class="line">        <span class="attr">enabled:</span> <span class="literal">true</span></span><br><span class="line">        <span class="attr">name:</span> <span class="string">$&#123;spring.application.name&#125;</span></span><br><span class="line">        <span class="attr">type:</span> <span class="string">SYNC</span></span><br><span class="line">        <span class="attr">mode:</span> <span class="string">stdio</span></span><br></pre></td></tr></table></figure>
+
+<h4 id="2-3-4-项目打包"><a href="#2-3-4-项目打包" class="headerlink" title="2.3.4 项目打包"></a>2.3.4 项目打包</h4><figure class="highlight zsh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">mvn clean package </span><br></pre></td></tr></table></figure>
+
+<h4 id="2-3-5-测试验证"><a href="#2-3-5-测试验证" class="headerlink" title="2.3.5 测试验证"></a>2.3.5 测试验证</h4><ol>
+<li><p>在客户端新建 mcp 服务器测试（使用 cherry studio）：<br><img src="/../../assets/images/mcp/select-model.png" alt="选择模型"></p>
+</li>
+<li><p>耐心等待 tools list 刷新：<br><img src="/../../assets/images/mcp/tools-list.png" alt="工具列表"></p>
+</li>
+<li><p>模型设置（使用 deepseek 的 api）：<br><img src="/../../assets/images/mcp/model-settings.png" alt="模型设置"></p>
+</li>
+<li><p>新建话题，选择带小扳手图标的模型：<br><img src="/../../assets/images/mcp/select-model.png" alt="选择模型"></p>
+</li>
+<li><p>选择启动的 mcp 服务：<br><img src="/../../assets/images/mcp/select-server.png" alt="选择服务"></p>
+</li>
+<li><p>测试结果，模型正常调用 getWeather 工具：<br><img src="/../../assets/images/mcp/test-result1.png" alt="测试结果1"><br><img src="/../../assets/images/mcp/test-result2.png" alt="测试结果2"></p>
+</li>
+</ol>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://example.com/2025/05/01/2025-04-24-ai-mcp/" data-id="cma46ujba000ozal19fo64c7t" data-title="MCP 模型上下文协议" class="article-share-link"><span class="fa fa-share">Teilen</span></a>
+      
+      
+      
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2025/05/01/2025-04-24-mindset-5W1H/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Neuer</strong>
+      <div class="article-nav-title">
+        
+          5w1h思维模式
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2025/04/24/2025-04-24-post-%E5%88%A9%E7%94%A8subList%E7%AE%80%E5%8D%95%E5%AE%9E%E7%8E%B0%E5%88%86%E6%89%B9%E5%85%A5%E5%BA%93/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Älter</strong>
+      <div class="article-nav-title">Java分批处理实战：基于subList实现数据分片入库</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+
+</section>
+        
+          <aside id="sidebar">
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Kategorien</h3>
+    <div class="widget">
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/ai/">ai</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/games/">games</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/java/">java</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/java/%E9%9B%86%E5%90%88%E6%A1%86%E6%9E%B6/">集合框架</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/java/%E9%9B%86%E5%90%88%E6%A1%86%E6%9E%B6/%E6%95%B0%E6%8D%AE%E5%A4%84%E7%90%86/">数据处理</a></li></ul></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/mindset/">mindset</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/tech/">tech</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/tools/">tools</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tags</h3>
+    <div class="widget">
+      <ul class="tag-list" itemprop="keywords"><li class="tag-list-item"><a class="tag-list-link" href="/tags/AI%E6%8E%A2%E7%B4%A2/" rel="tag">AI探索</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Java/" rel="tag">Java</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%85%A5%E9%97%A8/" rel="tag">入门</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%88%86%E6%89%B9%E5%A4%84%E7%90%86/" rel="tag">分批处理</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%B7%A5%E5%85%B7/" rel="tag">工具</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%8A%80%E6%9C%AF%E7%AC%94%E8%AE%B0/" rel="tag">技术笔记</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%B8%B8%E6%88%8F%E7%A0%94%E7%A9%B6/" rel="tag">游戏研究</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E9%9B%86%E5%90%88%E6%93%8D%E4%BD%9C/" rel="tag">集合操作</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tag Cloud</h3>
+    <div class="widget tagcloud">
+      <a href="/tags/AI%E6%8E%A2%E7%B4%A2/" style="font-size: 16.67px;">AI探索</a> <a href="/tags/Java/" style="font-size: 10px;">Java</a> <a href="/tags/%E5%85%A5%E9%97%A8/" style="font-size: 20px;">入门</a> <a href="/tags/%E5%88%86%E6%89%B9%E5%A4%84%E7%90%86/" style="font-size: 10px;">分批处理</a> <a href="/tags/%E5%B7%A5%E5%85%B7/" style="font-size: 13.33px;">工具</a> <a href="/tags/%E6%8A%80%E6%9C%AF%E7%AC%94%E8%AE%B0/" style="font-size: 10px;">技术笔记</a> <a href="/tags/%E6%B8%B8%E6%88%8F%E7%A0%94%E7%A9%B6/" style="font-size: 10px;">游戏研究</a> <a href="/tags/%E9%9B%86%E5%90%88%E6%93%8D%E4%BD%9C/" style="font-size: 10px;">集合操作</a>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Archiv</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2025/05/">May 2025</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2025/04/">April 2025</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2024/06/">June 2024</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">letzter Beitrag</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2025/05/01/hello-world/">Hello World</a>
+          </li>
+        
+          <li>
+            <a href="/2025/05/01/design_patterns/tech-05_abstract_factory/">Abstract Factory 模式</a>
+          </li>
+        
+          <li>
+            <a href="/2025/05/01/design_patterns/tech-07_strategy/">Strategy 模式</a>
+          </li>
+        
+          <li>
+            <a href="/2025/05/01/design_patterns/tech-06_bridge/">Bridge 模式</a>
+          </li>
+        
+          <li>
+            <a href="/2025/05/01/design_patterns/tech-08_composite/">Composite 模式</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      
+      &copy; 2025 Mamimi<br>
+      Powered by <a href="https://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+
+
+<script src="/js/jquery-3.6.4.min.js"></script>
+
+
+
+  
+<script src="/fancybox/jquery.fancybox.min.js"></script>
+
+
+
+
+<script src="/js/script.js"></script>
+
+
+
+
+
+  </div>
+</body>
+</html>

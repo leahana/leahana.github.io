@@ -1,0 +1,268 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  
+  <title>Factory Method 模式 | MamamiJa Nai</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta name="description" content="Factory Method 模式▎模式结构123abstract class Factory &#123;    public abstract Product createProduct(String name);&#125;  框架和具体加工用相同的框架创建出其他的“产品”和“工厂”。例如，我们这次要创建表示电视机类的Television和表示电视机工厂的TelevisionFactory">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Factory Method 模式">
+<meta property="og:url" content="http://example.com/2025/05/01/design_patterns/tech-01_factory_method/index.html">
+<meta property="og:site_name" content="MamamiJa Nai">
+<meta property="og:description" content="Factory Method 模式▎模式结构123abstract class Factory &#123;    public abstract Product createProduct(String name);&#125;  框架和具体加工用相同的框架创建出其他的“产品”和“工厂”。例如，我们这次要创建表示电视机类的Television和表示电视机工厂的TelevisionFactory">
+<meta property="og:locale">
+<meta property="article:published_time" content="2025-04-30T16:53:30.236Z">
+<meta property="article:modified_time" content="2025-04-30T16:53:30.236Z">
+<meta property="article:author" content="Mamimi">
+<meta name="twitter:card" content="summary">
+  
+    <link rel="alternate" href="/atom.xml" title="MamamiJa Nai" type="application/atom+xml">
+  
+  
+    <link rel="shortcut icon" href="/favicon.png">
+  
+  
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+    
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.min.css">
+
+  
+  
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/fork-awesome@1.2.0/css/fork-awesome.min.css">
+
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">MamamiJa Nai</a>
+      </h1>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"><span class="fa fa-bars"></span></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+        
+          <a class="nav-icon" href="/atom.xml" title="RSS Feed"><span class="fa fa-rss"></span></a>
+        
+        <a class="nav-icon nav-search-btn" title="Suche"><span class="fa fa-search"></span></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Suche"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="http://example.com"></form>
+      </div>
+    </div>
+  </div>
+</header>
+
+      <div class="outer">
+        <section id="main"><article id="post-design_patterns/tech-01_factory_method" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2025/05/01/design_patterns/tech-01_factory_method/" class="article-date">
+  <time class="dt-published" datetime="2025-04-30T16:53:30.236Z" itemprop="datePublished">2025-05-01</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="p-name article-title" itemprop="headline name">
+      Factory Method 模式
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <h2 id="Factory-Method-模式"><a href="#Factory-Method-模式" class="headerlink" title="Factory Method 模式"></a>Factory Method 模式</h2><h3 id="▎模式结构"><a href="#▎模式结构" class="headerlink" title="▎模式结构"></a>▎模式结构</h3><figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">abstract</span> <span class="keyword">class</span> <span class="title class_">Factory</span> &#123;</span><br><span class="line">    <span class="keyword">public</span> <span class="keyword">abstract</span> Product <span class="title function_">createProduct</span><span class="params">(String name)</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="框架和具体加工"><a href="#框架和具体加工" class="headerlink" title="框架和具体加工"></a>框架和具体加工</h3><p>用相同的框架创建出其他的“产品”和“工厂”。例如，我们这次要创建表示电视机类的Television和表示电视机工厂的TelevisionFactory 。这里我们只需要impor  framework包就可以编写television包。我们这里没有修改， 根本没有必要修改framwork的内容就可以创建出其他的“产品”和“工厂”。framework不依赖于idcard包，television包。</p>
+<h3 id="生成实例—方法的三种实现方式"><a href="#生成实例—方法的三种实现方式" class="headerlink" title="生成实例—方法的三种实现方式"></a>生成实例—方法的三种实现方式</h3><h5 id="指定其为抽象方法"><a href="#指定其为抽象方法" class="headerlink" title="指定其为抽象方法"></a>指定其为抽象方法</h5><p>​	一旦将createProduct指定为抽象方法后， 子类就必须实现该方法。如果子类不实现该方法，编译器将会报告编译错误，也就是示例程序所采用的方式。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">abstract</span> <span class="keyword">class</span> <span class="title class_">Factory</span>&#123;</span><br><span class="line">		<span class="keyword">public</span> <span class="keyword">abstract</span> Product <span class="title function_">createProduct</span><span class="params">(String name)</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h5 id="为其实现默认处理"><a href="#为其实现默认处理" class="headerlink" title="为其实现默认处理"></a>为其实现默认处理</h5><p>​		实现默认处理后，如果子类没有实现该方法，将进行默认处理。这时是使用new 关键字创建出实例的，因此不能将Product 类定义为抽象类。</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">Factory</span>&#123;</span><br><span class="line">    <span class="keyword">public</span> Product <span class="title function_">createProduct</span><span class="params">(String name)</span>&#123;</span><br><span class="line">    		<span class="keyword">return</span> <span class="keyword">new</span> <span class="title class_">Product</span>(name);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h5 id="在其中抛出异常"><a href="#在其中抛出异常" class="headerlink" title="在其中抛出异常"></a>在其中抛出异常</h5><p>​		createProduct方法的默认处理为抛出异常，这样一来，如果未在子类实现中实现该方法，程序运行就会报错（报错，告知开发人员没有实现createProduct 方法）, 不过需要另外编写FactoryMethodRuntimeException</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">class</span> <span class="title class_">Factory</span> &#123;</span><br><span class="line">		<span class="keyword">public</span> Product <span class="title function_">createProduct</span><span class="params">(String name)</span>&#123;</span><br><span class="line">				<span class="keyword">throw</span> <span class="keyword">new</span> <span class="title class_">FactoryMethodRuntimeException</span>();</span><br><span class="line">		&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="相关的设计模式"><a href="#相关的设计模式" class="headerlink" title="相关的设计模式"></a>相关的设计模式</h3><ul>
+<li>Template Method 模式</li>
+<li>Singletion 模式</li>
+<li>ComPosite 模式</li>
+<li>Iterator模式</li>
+</ul>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="http://example.com/2025/05/01/design_patterns/tech-01_factory_method/" data-id="cma46ujbb0010zal102cpeq19" data-title="Factory Method 模式" class="article-share-link"><span class="fa fa-share">Teilen</span></a>
+      
+      
+      
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+    <a href="/2025/05/01/2025-04-29-myblog-rebirth/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Neuer</strong>
+      <div class="article-nav-title">
+        
+          (no title)
+        
+      </div>
+    </a>
+  
+  
+    <a href="/2025/05/01/design_patterns/tech-04_builder/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Älter</strong>
+      <div class="article-nav-title">Builder 模式</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+
+</section>
+        
+          <aside id="sidebar">
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Kategorien</h3>
+    <div class="widget">
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/ai/">ai</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/games/">games</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/java/">java</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/java/%E9%9B%86%E5%90%88%E6%A1%86%E6%9E%B6/">集合框架</a><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/java/%E9%9B%86%E5%90%88%E6%A1%86%E6%9E%B6/%E6%95%B0%E6%8D%AE%E5%A4%84%E7%90%86/">数据处理</a></li></ul></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/mindset/">mindset</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/tech/">tech</a></li><li class="category-list-item"><a class="category-list-link" href="/categories/tools/">tools</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tags</h3>
+    <div class="widget">
+      <ul class="tag-list" itemprop="keywords"><li class="tag-list-item"><a class="tag-list-link" href="/tags/AI%E6%8E%A2%E7%B4%A2/" rel="tag">AI探索</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Java/" rel="tag">Java</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%85%A5%E9%97%A8/" rel="tag">入门</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%88%86%E6%89%B9%E5%A4%84%E7%90%86/" rel="tag">分批处理</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E5%B7%A5%E5%85%B7/" rel="tag">工具</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%8A%80%E6%9C%AF%E7%AC%94%E8%AE%B0/" rel="tag">技术笔记</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E6%B8%B8%E6%88%8F%E7%A0%94%E7%A9%B6/" rel="tag">游戏研究</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/%E9%9B%86%E5%90%88%E6%93%8D%E4%BD%9C/" rel="tag">集合操作</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tag Cloud</h3>
+    <div class="widget tagcloud">
+      <a href="/tags/AI%E6%8E%A2%E7%B4%A2/" style="font-size: 16.67px;">AI探索</a> <a href="/tags/Java/" style="font-size: 10px;">Java</a> <a href="/tags/%E5%85%A5%E9%97%A8/" style="font-size: 20px;">入门</a> <a href="/tags/%E5%88%86%E6%89%B9%E5%A4%84%E7%90%86/" style="font-size: 10px;">分批处理</a> <a href="/tags/%E5%B7%A5%E5%85%B7/" style="font-size: 13.33px;">工具</a> <a href="/tags/%E6%8A%80%E6%9C%AF%E7%AC%94%E8%AE%B0/" style="font-size: 10px;">技术笔记</a> <a href="/tags/%E6%B8%B8%E6%88%8F%E7%A0%94%E7%A9%B6/" style="font-size: 10px;">游戏研究</a> <a href="/tags/%E9%9B%86%E5%90%88%E6%93%8D%E4%BD%9C/" style="font-size: 10px;">集合操作</a>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Archiv</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2025/05/">May 2025</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2025/04/">April 2025</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2024/06/">June 2024</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">letzter Beitrag</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2025/05/01/hello-world/">Hello World</a>
+          </li>
+        
+          <li>
+            <a href="/2025/05/01/design_patterns/tech-05_abstract_factory/">Abstract Factory 模式</a>
+          </li>
+        
+          <li>
+            <a href="/2025/05/01/design_patterns/tech-07_strategy/">Strategy 模式</a>
+          </li>
+        
+          <li>
+            <a href="/2025/05/01/design_patterns/tech-06_bridge/">Bridge 模式</a>
+          </li>
+        
+          <li>
+            <a href="/2025/05/01/design_patterns/tech-08_composite/">Composite 模式</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      
+      &copy; 2025 Mamimi<br>
+      Powered by <a href="https://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+
+
+<script src="/js/jquery-3.6.4.min.js"></script>
+
+
+
+  
+<script src="/fancybox/jquery.fancybox.min.js"></script>
+
+
+
+
+<script src="/js/script.js"></script>
+
+
+
+
+
+  </div>
+</body>
+</html>
