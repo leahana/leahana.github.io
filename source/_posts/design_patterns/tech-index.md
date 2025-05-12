@@ -5,11 +5,12 @@ permalink: "/categories/tech/design_patterns/"
 has_children: true
 ---
 
-# 设计模式笔记
+## 设计模式笔记
 
 [[返回技术笔记]]({{ "/tech/" | relative_url }})
 
 ## 目录
+
 - [Factory Method 模式](01_factory_method.md)
 - [Singleton 模式](02_singleton.md)
 - [Prototype 模式](03_prototype.md)

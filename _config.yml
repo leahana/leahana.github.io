@@ -30,7 +30,6 @@ archive_dir: archives
 category_dir: categories
 code_dir: downloads/code
 i18n_dir: :lang
-skip_render:
 
 # Writing
 new_post_name: :title.md # File name of new posts
@@ -42,7 +41,7 @@ external_link:
   exclude: ''
 filename_case: 0
 render_drafts: false
-post_asset_folder: false
+post_asset_folder: true
 relative_link: false
 future: true
 syntax_highlighter: highlight.js
@@ -100,18 +99,26 @@ exclude:
   - .idea
   - .vscode
   - node_modules
-  - vendor
   - package.json
 ignore:
 
 # Extensions
 ## Plugins: https://hexo.io/plugins/
 ## Themes: https://hexo.io/themes/
-theme: landscape
+# theme: landscape
+# theme: next
+
+
+
+
+
+theme: kratos-rebirth
+# theme: arknights
+theme_config: _config.kratos-rebirth.yml
 
 # Deployment
 ## Docs: https://hexo.io/docs/one-command-deployment
-
+css_compressor: cssnano
 deploy:
   type: git
   repo: https://github.com/leahana/yannyi.github.io # https://bitbucket.org/JohnSmith/johnsmith.bitbucket.io
