@@ -1,10 +1,24 @@
 ---
 title: Factory Method 模式
+date: 2023-01-01
+updated: 2023-06-01
+categories: 
+  - 设计模式
+tags:
+  - 设计模式
+  - 创建型模式
+description: Factory Method模式通过将实例的生成交给子类进行，定义了一个用于创建对象的接口，让子类决定实例化哪一个类。
+toc: true
 ---
 
 ## Factory Method 模式
 
+### ▎模式定义
+
+Factory Method模式是一种创建型设计模式，它定义了一个用于创建对象的接口，但由子类决定要实例化的类是哪一个。Factory Method使一个类的实例化延迟到其子类。
+
 ### ▎模式结构
+
 ```java
 abstract class Factory {
     public abstract Product createProduct(String name);
@@ -13,41 +27,41 @@ abstract class Factory {
 
 ### 框架和具体加工
 
-用相同的框架创建出其他的“产品”和“工厂”。例如，我们这次要创建表示电视机类的Television和表示电视机工厂的TelevisionFactory 。这里我们只需要impor  framework包就可以编写television包。我们这里没有修改， 根本没有必要修改framwork的内容就可以创建出其他的“产品”和“工厂”。framework不依赖于idcard包，television包。
+用相同的框架创建出其他的"产品"和"工厂"。例如，我们这次要创建表示电视机类的Television和表示电视机工厂的TelevisionFactory 。这里我们只需要impor  framework包就可以编写television包。我们这里没有修改， 根本没有必要修改framwork的内容就可以创建出其他的"产品"和"工厂"。framework不依赖于idcard包，television包。
 
 ### 生成实例---方法的三种实现方式
 
-##### 指定其为抽象方法
+#### 指定其为抽象方法
 
-​	一旦将createProduct指定为抽象方法后， 子类就必须实现该方法。如果子类不实现该方法，编译器将会报告编译错误，也就是示例程序所采用的方式。
+​一旦将createProduct指定为抽象方法后， 子类就必须实现该方法。如果子类不实现该方法，编译器将会报告编译错误，也就是示例程序所采用的方式。
 
 ```java
 abstract class Factory{
-		public abstract Product createProduct(String name)
+ public abstract Product createProduct(String name)
 }
 ```
 
 ##### 为其实现默认处理
 
-​		实现默认处理后，如果子类没有实现该方法，将进行默认处理。这时是使用new 关键字创建出实例的，因此不能将Product 类定义为抽象类。
+实现默认处理后，如果子类没有实现该方法，将进行默认处理。这时是使用new 关键字创建出实例的，因此不能将Product 类定义为抽象类。
 
 ```java
 class Factory{
     public Product createProduct(String name){
-    		return new Product(name);
+      return new Product(name);
     }
 }
 ```
 
 ##### 在其中抛出异常
 
-​		createProduct方法的默认处理为抛出异常，这样一来，如果未在子类实现中实现该方法，程序运行就会报错（报错，告知开发人员没有实现createProduct 方法）, 不过需要另外编写FactoryMethodRuntimeException
+​  createProduct方法的默认处理为抛出异常，这样一来，如果未在子类实现中实现该方法，程序运行就会报错（报错，告知开发人员没有实现createProduct 方法）, 不过需要另外编写FactoryMethodRuntimeException
 
 ```java
 class Factory {
-		public Product createProduct(String name){
-				throw new FactoryMethodRuntimeException();
-		}
+  public Product createProduct(String name){
+    throw new FactoryMethodRuntimeException();
+  }
 }
 ```
 
