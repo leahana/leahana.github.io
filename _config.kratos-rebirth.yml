@@ -60,13 +60,13 @@ image:
 nav:
   auto_hide: true
   items:
-    - label: "Home"
+    - label: "首页"
       icon: "fa-home"
       url: "/"
-    - label: "Archives" 
+    - label: "归档" 
       icon: "fa-archive"
       url: "/archives"
-    - label: "Categories"
+    - label: "分类"
       icon: "fa-folder-open"
       url: "/categories"
   # - label: # 这个菜单的标签文字
