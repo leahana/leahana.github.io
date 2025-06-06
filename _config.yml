@@ -124,3 +124,10 @@ deploy:
   repo: https://github.com/leahana/yannyi.github.io # https://bitbucket.org/JohnSmith/johnsmith.bitbucket.io
   branch: gh-pages
   message: '更新'
+
+# Mermaid
+mermaid:
+  enable: true
+  version: 'latest'
+  theme: default
+  cdn: https://cdn.jsdelivr.net/npm/mermaid@latest/dist/

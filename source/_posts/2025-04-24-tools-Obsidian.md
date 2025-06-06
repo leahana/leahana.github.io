@@ -2,6 +2,7 @@
 title: Markdown本地笔记 Obsidian
 categories: tools
 tags: [工具, 入门]
+toc: true
 ---
 
 需求：需要一个笔记存放提示词学习过程中的提示词

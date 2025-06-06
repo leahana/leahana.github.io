@@ -65,7 +65,7 @@ toc: true
 - 批量入库接口
 - 监控与补偿机制
 
-```txt
+<div class ="mermaid">
 flowchart TD
     subgraph 数据处理流程
         A[数据输入]:::blue --> B[批量分片算法]:::yellow
@@ -73,7 +73,7 @@ flowchart TD
         C --> D[监控与补偿机制]:::red
         D -.->|异常/失败| E(重试队列)
     end
-```
+</div>
 
 > 技术隐喻：整个流程如同快递分拣中心，数据输入是包裹入库，分片算法像分拣传送带，批量入库接口是装车发货，监控与补偿机制则是异常包裹的人工复核区。
 
@@ -219,4 +219,3 @@ public void batchInsertWithRetry(List<Data> data) {
 4. [Spring Batch官方文档 - 分片处理](https://docs.spring.io/spring-batch/docs/current/reference/html/index-single.html#partitioning)
 
 [返回顶部](#top)
-

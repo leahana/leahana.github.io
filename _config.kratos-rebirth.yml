@@ -89,7 +89,7 @@ footer:
   #   addition: target="_blank" rel="nofollow" # 可选，用于指定链接的追加模式信息
   components: # 一些有特色的组件 （其他的请在 additional 自行追加）
     uptime:
-      since: "2018/05/06 17:03:12"
+      since: "2025/05/06 17:03:12"
       text: "本站已运行"
     author:
       homepage: "" # 可以导向作者的首页
