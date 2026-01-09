@@ -29,6 +29,12 @@ jobs:
       - name: Install dependencies
         run: pnpm install
 
+      - name: Build theme assets
+        run: |
+          cd themes/kratos-rebirth
+          pnpm install
+          pnpm run build
+
       - name: Generate static site
         run: pnpm run build
 
