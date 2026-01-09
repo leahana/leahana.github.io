@@ -176,11 +176,11 @@ donate:
     - name: "支付宝"
       icon: "fa-alipay"
       color: "#00A0E9"
-      qrcode: "/images/donate-alipay-arknights.png"
+      qrcode: "https://qr.alipay.com/fkx10074h80wdlc7rkhh73b"
     - name: "微信"
       icon: "fa-weixin"
       color: "#07C160"
-      qrcode: "/images/donate-wechat-arknights.png"
+      qrcode: "wxp://f2f0UZPu3nG1PA01tt-I5EDw0wx_G5jA-uDkAw8PuRT9VZtUj-T9s0_Cw7IRYUpTLq7Z"
   # - name: ""
   #   icon: # 使用来自 fontawesome icons 4.7.0 图标库中的唯一标识；或者插入自定义的 HTML ，例如您可在此放置一串 svg 。
   #   color: ""
