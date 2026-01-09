@@ -63,12 +63,27 @@ nav:
     - label: "首页"
       icon: "fa-home"
       url: "/"
-    - label: "归档" 
+    - label: "归档"
       icon: "fa-archive"
       url: "/archives"
     - label: "分类"
       icon: "fa-folder-open"
       url: "/categories"
+    - label: "标签"
+      icon: "fa-tags"
+      url: "/tags"
+    - label: "更多"
+      icon: "fa-th-list"
+      submenu:
+        - label: "关于我"
+          icon: "fa-user"
+          url: "/about"
+        - label: "搜索"
+          icon: "fa-search"
+          url: "/search"
+        - label: "友情链接"
+          icon: "fa-link"
+          url: "/links"
   # - label: # 这个菜单的标签文字
   #   icon: # 这个菜单前的图标，可以不设置。使用来自 fontawesome icons 4.7.0 图标库中的唯一标识；或者插入自定义的 HTML ，例如您可在此放置一串 svg 。
   #   url: # 这个菜单指向的链接（站内或是站外均可）
@@ -220,6 +235,6 @@ visit_count:
 
 ################## 额外的注入代码 ##################
 additional_injections:
-  head: "<style>body.custom-background{background-image:url('/yannyi.github.io/images/theme/background.jpg')!important;background-attachment:fixed!important;background-size:cover!important;background-position:center!important;}#kratos-widget-area .widget-kratos-about .photo-background{background-image:url('/yannyi.github.io/images/theme/avatar-bg.jpg')!important;background-size:cover!important;background-position:35% 35%!important;background-repeat:no-repeat!important;}</style>" # 注入到 head 标签里的内容，例如额外的样式表
+  head: "<style>body.custom-background{background-image:url('/yannyi.github.io/images/theme/background.jpg')!important;background-attachment:fixed!important;background-size:cover!important;background-position:center!important;}#kratos-widget-area .widget-kratos-about .photo-background{background-image:url('/yannyi.github.io/images/theme/avatar-bg.jpg')!important;background-size:cover!important;background-position:35% 35%!important;background-repeat:no-repeat!important;}</style><link rel=\"stylesheet\" href=\"/yannyi.github.io/css/custom.css\">" # 注入到 head 标签里的内容，例如额外的样式表
   footer: "" # 注入到页面主体的内容，例如额外的可见组件
   after_footer: "" # 注入到页面内容之后的内容，例如各种额外的脚本文件
