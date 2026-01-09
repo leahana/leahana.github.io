@@ -16,6 +16,8 @@ timezone: 'Asia/Shanghai'
 # URL配置修正
 url: https://leahana.github.io/yannyi.github.io  # 修复仓库路径配置
 
+root: /yannyi.github.io/
+
 permalink: :year/:month/:day/:title/
 permalink_defaults:
 pretty_urls:

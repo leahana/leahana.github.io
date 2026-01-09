@@ -3,7 +3,7 @@ Thumbs.db
 db.json
 *.log
 node_modules/
-public/*
+# public/*  # 注释掉这一行，确保 public 目录下的静态资源能被推送到 gh-pages 分支
 .deploy*/
 _multiconfig.yml
 npm-debug.log*
