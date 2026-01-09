@@ -13,9 +13,8 @@ timezone: 'Asia/Shanghai'
 
 # URL
 ## Set your site url here. For example, if you use GitHub Page, set url as 'https://username.github.io/project'
-# URL配置修正
-url: https://leahana.github.io/yannyi.github.io  # 修复仓库路径配置
-
+# URL配置
+url: https://leahana.github.io
 root: /yannyi.github.io/
 
 permalink: :year/:month/:day/:title/
