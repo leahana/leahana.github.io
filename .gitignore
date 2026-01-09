@@ -21,5 +21,3 @@ npm-debug.log*
 *.local
 *.cache/
 coverage/
-
-themes/
