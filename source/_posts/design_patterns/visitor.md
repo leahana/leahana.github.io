@@ -1,0 +1,790 @@
+---
+title: Visitor 模式
+date: 2023-01-11
+updated: 2025-01-09
+categories:
+  - 设计模式
+tags:
+  - 设计模式
+  - 行为型模式
+description: Visitor模式表示一个作用于某对象结构中的各元素的操作，它使你可以在不改变各元素的类的前提下定义作用于这些元素的新操作。
+toc: true
+---
+
+## Visitor 模式
+
+### 一、基础介绍
+
+Visitor（访问者）模式是一种行为型设计模式，它允许你在不修改现有对象结构的前提下，定义作用于这些对象的新操作。
+
+Visitor 模式的核心思想是：**将数据结构与作用于结构上的操作分离，使操作集合可以相对自由地演化**。
+
+### 二、生活比喻：医院体检
+
+想象一个人**要去医院体检**：
+
+> **没有访问者**：每个科室（内科、外科、眼科）都要求你重复填写基本信息、排队、缴费。流程混乱，难以管理。
+>
+> **访问者方式**：你作为"被访问者"，按顺序到各个科室。每个医生（访问者）对你进行不同的检查，但你不需要改变自己的行为，只需要配合。
+
+在这个比喻中：
+- **Visitor** = 医生接口（检查方法）
+- **ConcreteVisitor** = 具体医生（内科医生、外科医生）
+- **Element** = 患者接口（接受访问）
+- **ConcreteElement** = 具体患者（你）
+- **ObjectStructure** = 医院科室列表
+
+### 三、应用场景
+
+| 场景 | 说明 | 示例 |
+|------|------|------|
+| **对象结构稳定** | 数据结构很少变化 | 文件系统、组织架构 |
+| **算法经常变化** | 操作需要频繁扩展 | 数据导出、格式转换 |
+| **相关操作分组** | 将相关操作集中管理 | 编译器、代码分析器 |
+| **双分派机制**：需要基于对象和操作双重分发 | 文档处理、报表生成 |
+
+### 四、使用注意事项
+
+#### 优点
+
+| 优点 | 说明 |
+|------|------|
+| **符合单一职责** | 将操作从数据结构中分离 |
+| **优秀的扩展性** | 新增操作无需修改元素类 |
+| **灵活的操作组合** | 可以定义不同访问者组合 |
+| **双分派机制** | 支持基于类型和操作的分派 |
+
+#### 缺点
+
+| 缺点 | 说明 |
+|------|------|
+| **增加元素困难** | 添加元素需修改所有访问者 |
+| **依赖元素内部** | 访问者需要了解元素细节 |
+| **违反依赖倒置** | 元素依赖具体访问者 |
+| **代码复杂性**：双分派增加理解难度 |
+
+#### 使用建议
+
+- 对象结构稳定但操作频繁变化时使用
+- 需要对一个对象结构进行多种不同操作时使用
+- 操作之间无关联需要独立管理时使用
+
+### 五、Java 经典案例
+
+#### 实现 1：文件系统访问
+
+```java
+import java.util.ArrayList;
+import java.util.List;
+
+/**
+ * 访问者接口
+ */
+interface Visitor {
+    void visit(File file);
+    void visit(Directory directory);
+}
+
+/**
+ * 元素接口
+ */
+interface Element {
+    void accept(Visitor visitor);
+}
+
+/**
+ * 具体元素：文件
+ */
+class File implements Element {
+    private String name;
+    private int size;
+
+    public File(String name, int size) {
+        this.name = name;
+        this.size = size;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public int getSize() {
+        return size;
+    }
+
+    @Override
+    public void accept(Visitor visitor) {
+        visitor.visit(this);
+    }
+}
+
+/**
+ * 具体元素：目录
+ */
+class Directory implements Element {
+    private String name;
+    private List<Element> elements = new ArrayList<>();
+
+    public Directory(String name) {
+        this.name = name;
+    }
+
+    public void add(Element element) {
+        elements.add(element);
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public List<Element> getElements() {
+        return elements;
+    }
+
+    @Override
+    public void accept(Visitor visitor) {
+        visitor.visit(this);
+        // 双分派：让访问者处理所有子元素
+        for (Element element : elements) {
+            element.accept(visitor);
+        }
+    }
+}
+
+/**
+ * 具体访问者：大小计算器
+ */
+class SizeCalculator implements Visitor {
+    private int totalSize = 0;
+
+    @Override
+    public void visit(File file) {
+        totalSize += file.getSize();
+        System.out.println("文件: " + file.getName() + " - 大小: " + file.getSize());
+    }
+
+    @Override
+    public void visit(Directory directory) {
+        System.out.println("目录: " + directory.getName());
+    }
+
+    public int getTotalSize() {
+        return totalSize;
+    }
+}
+
+/**
+ * 具体访问者：列表生成器
+ */
+class ListGenerator implements Visitor {
+    private StringBuilder sb = new StringBuilder();
+
+    @Override
+    public void visit(File file) {
+        sb.append("  ").append(file.getName()).append("\n");
+    }
+
+    @Override
+    public void visit(Directory directory) {
+        sb.append(directory.getName()).append("/\n");
+    }
+
+    public String getList() {
+        return sb.toString();
+    }
+}
+
+// 使用
+public class VisitorDemo {
+    public static void main(String[] args) {
+        // 构建文件系统
+        Directory root = new Directory("root");
+        Directory home = new Directory("home");
+        Directory usr = new Directory("usr");
+
+        root.add(home);
+        root.add(usr);
+
+        home.add(new File("readme.txt", 100));
+        home.add(new File("profile.sh", 50));
+
+        usr.add(new File("python.exe", 5000));
+        usr.add(new File("node.exe", 8000));
+
+        // 使用大小计算访问者
+        System.out.println("=== 计算总大小 ===");
+        SizeCalculator calculator = new SizeCalculator();
+        root.accept(calculator);
+        System.out.println("总大小: " + calculator.getTotalSize());
+
+        // 使用列表生成访问者
+        System.out.println("\n=== 生成文件列表 ===");
+        ListGenerator generator = new ListGenerator();
+        root.accept(generator);
+        System.out.println(generator.getList());
+    }
+}
+```
+
+#### 实现 2：购物车商品处理
+
+```java
+import java.util.ArrayList;
+import java.util.List;
+
+/**
+ * 访问者接口
+ */
+interface Visitor {
+    double visit(Book book);
+    double visit(Fruit fruit);
+    double visit(Electronics electronics);
+}
+
+/**
+ * 元素接口
+ */
+interface Visitable {
+    double accept(Visitor visitor);
+}
+
+/**
+ * 具体元素：图书
+ */
+class Book implements Visitable {
+    private String name;
+    private double price;
+    private String isbn;
+
+    public Book(String name, double price, String isbn) {
+        this.name = name;
+        this.price = price;
+        this.isbn = isbn;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public double getPrice() {
+        return price;
+    }
+
+    public String getIsbn() {
+        return isbn;
+    }
+
+    @Override
+    public double accept(Visitor visitor) {
+        return visitor.visit(this);
+    }
+}
+
+/**
+ * 具体元素：水果
+ */
+class Fruit implements Visitable {
+    private String name;
+    private double pricePerKg;
+    private double weight;
+
+    public Fruit(String name, double pricePerKg, double weight) {
+        this.name = name;
+        this.pricePerKg = pricePerKg;
+        this.weight = weight;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public double getPricePerKg() {
+        return pricePerKg;
+    }
+
+    public double getWeight() {
+        return weight;
+    }
+
+    @Override
+    public double accept(Visitor visitor) {
+        return visitor.visit(this);
+    }
+}
+
+/**
+ * 具体元素：电子产品
+ */
+class Electronics implements Visitable {
+    private String name;
+    private double price;
+    private String brand;
+
+    public Electronics(String name, double price, String brand) {
+        this.name = name;
+        this.price = price;
+        this.brand = brand;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public double getPrice() {
+        return price;
+    }
+
+    public String getBrand() {
+        return brand;
+    }
+
+    @Override
+    public double accept(Visitor visitor) {
+        return visitor.visit(this);
+    }
+}
+
+/**
+ * 具体访问者：价格计算器
+ */
+class PriceCalculator implements Visitor {
+    @Override
+    public double visit(Book book) {
+        // 图书9折优惠
+        return book.getPrice() * 0.9;
+    }
+
+    @Override
+    public double visit(Fruit fruit) {
+        // 水果按重量计算
+        return fruit.getPricePerKg() * fruit.getWeight();
+    }
+
+    @Override
+    public double visit(Electronics electronics) {
+        // 电子产品不打折
+        return electronics.getPrice();
+    }
+}
+
+/**
+ * 具体访问者：XML生成器
+ */
+class XMLGenerator implements Visitor {
+    private StringBuilder xml = new StringBuilder();
+
+    @Override
+    public double visit(Book book) {
+        xml.append(String.format(
+            "<book name=\"%s\" price=\"%.2f\" isbn=\"%s\"/>\n",
+            book.getName(), book.getPrice(), book.getIsbn()
+        ));
+        return book.getPrice();
+    }
+
+    @Override
+    public double visit(Fruit fruit) {
+        xml.append(String.format(
+            "<fruit name=\"%s\" price=\"%.2f\" weight=\"%.2f\"/>\n",
+            fruit.getName(), fruit.getPricePerKg(), fruit.getWeight()
+        ));
+        return fruit.getPricePerKg() * fruit.getWeight();
+    }
+
+    @Override
+    public double visit(Electronics electronics) {
+        xml.append(String.format(
+            "<electronics name=\"%s\" price=\"%.2f\" brand=\"%s\"/>\n",
+            electronics.getName(), electronics.getPrice(), electronics.getBrand()
+        ));
+        return electronics.getPrice();
+    }
+
+    public String getXML() {
+        return "<products>\n" + xml + "</products>";
+    }
+}
+
+/**
+ * 对象结构：购物车
+ */
+class ShoppingCart {
+    private List<Visitable> items = new ArrayList<>();
+
+    public void addItem(Visitable item) {
+        items.add(item);
+    }
+
+    public double calculateTotal(Visitor visitor) {
+        double total = 0;
+        for (Visitable item : items) {
+            total += item.accept(visitor);
+        }
+        return total;
+    }
+
+    public void processAll(Visitor visitor) {
+        for (Visitable item : items) {
+            item.accept(visitor);
+        }
+    }
+}
+
+// 使用
+public class ShoppingCartVisitorDemo {
+    public static void main(String[] args) {
+        ShoppingCart cart = new ShoppingCart();
+
+        // 添加商品
+        cart.addItem(new Book("设计模式", 89.0, "978-7-111"));
+        cart.addItem(new Fruit("苹果", 8.5, 2.5));
+        cart.addItem(new Electronics("手机", 3999.0, "Apple"));
+
+        // 计算价格
+        PriceCalculator calculator = new PriceCalculator();
+        double total = cart.calculateTotal(calculator);
+        System.out.printf("总价: %.2f\n", total);
+
+        // 生成XML
+        XMLGenerator xmlGenerator = new XMLGenerator();
+        cart.processAll(xmlGenerator);
+        System.out.println("\nXML输出:");
+        System.out.println(xmlGenerator.getXML());
+    }
+}
+```
+
+### 六、Python 经典案例
+
+#### 实现 1：文档元素处理
+
+```python
+from abc import ABC, abstractmethod
+from typing import Protocol
+
+
+class Visitor(Protocol):
+    """访问者接口"""
+
+    def visit_paragraph(self, paragraph: 'Paragraph') -> str:
+        ...
+
+    def visit_image(self, image: 'Image') -> str:
+        ...
+
+    def visit_table(self, table: 'Table') -> str:
+        ...
+
+
+class Visitable(ABC):
+    """可访问元素接口"""
+
+    @abstractmethod
+    def accept(self, visitor: Visitor) -> str:
+        ...
+
+
+class Paragraph(Visitable):
+    """段落元素"""
+
+    def __init__(self, text: str):
+        self.text = text
+
+    def accept(self, visitor: Visitor) -> str:
+        return visitor.visit_paragraph(self)
+
+
+class Image(Visitable):
+    """图片元素"""
+
+    def __init__(self, url: str, caption: str):
+        self.url = url
+        self.caption = caption
+
+    def accept(self, visitor: Visitor) -> str:
+        return visitor.visit_image(self)
+
+
+class Table(Visitable):
+    """表格元素"""
+
+    def __init__(self, headers: list[str], rows: list[list[str]]):
+        self.headers = headers
+        self.rows = rows
+
+    def accept(self, visitor: Visitor) -> str:
+        return visitor.visit_table(self)
+
+
+class HTMLExporter:
+    """HTML导出访问者"""
+
+    def visit_paragraph(self, paragraph: Paragraph) -> str:
+        return f"<p>{paragraph.text}</p>"
+
+    def visit_image(self, image: Image) -> str:
+        return f'<img src="{image.url}" alt="{image.caption}">'
+
+    def visit_table(self, table: Table) -> str:
+        html = ["<table><thead><tr>"]
+        html.extend(f"<th>{h}</th>" for h in table.headers)
+        html.append("</tr></thead><tbody>")
+        for row in table.rows:
+            html.append("<tr>")
+            html.extend(f"<td>{cell}</td>" for cell in row)
+            html.append("</tr>")
+        html.append("</tbody></table>")
+        return "".join(html)
+
+
+class MarkdownExporter:
+    """Markdown导出访问者"""
+
+    def visit_paragraph(self, paragraph: Paragraph) -> str:
+        return paragraph.text + "\n"
+
+    def visit_image(self, image: Image) -> str:
+        return f"![{image.caption}]({image.url})\n"
+
+    def visit_table(self, table: Table) -> str:
+        md = ["| " + " | ".join(table.headers) + " |"]
+        md.append("| " + " | ".join(["---"] * len(table.headers)) + " |")
+        for row in table.rows:
+            md.append("| " + " | ".join(row) + " |")
+        return "\n".join(md) + "\n"
+
+
+class TextExtractor:
+    """纯文本提取访问者"""
+
+    def visit_paragraph(self, paragraph: Paragraph) -> str:
+        return paragraph.text
+
+    def visit_image(self, image: Image) -> str:
+        return f"[图片: {image.caption}]"
+
+    def visit_table(self, table: Table) -> str:
+        return f"[表格: {len(table.rows)}行]"
+
+
+class Document:
+    """文档对象结构"""
+
+    def __init__(self):
+        self.elements: list[Visitable] = []
+
+    def add_element(self, element: Visitable) -> None:
+        self.elements.append(element)
+
+    def export(self, visitor: Visitor) -> str:
+        return "\n".join(elem.accept(visitor) for elem in self.elements)
+
+
+# 使用
+def main():
+    # 创建文档
+    doc = Document()
+    doc.add_element(Paragraph("这是第一段文字"))
+    doc.add_element(Image("photo.jpg", "风景照片"))
+    doc.add_element(Table(["姓名", "年龄"], [["张三", "25"], ["李四", "30"]]))
+
+    # 导出为HTML
+    print("=== HTML ===")
+    html_exporter = HTMLExporter()
+    print(doc.export(html_exporter))
+
+    # 导出为Markdown
+    print("=== Markdown ===")
+    md_exporter = MarkdownExporter()
+    print(doc.export(md_exporter))
+
+    # 提取纯文本
+    print("=== 纯文本 ===")
+    text_extractor = TextExtractor()
+    print(doc.export(text_extractor))
+
+
+if __name__ == "__main__":
+    main()
+```
+
+#### 实现 2：员工薪资系统
+
+```python
+from abc import ABC, abstractmethod
+from typing import Protocol
+
+
+class Visitor(Protocol):
+    """访问者接口"""
+
+    def visit_developer(self, developer: 'Developer') -> float:
+        ...
+
+    def visit_manager(self, manager: 'Manager') -> float:
+        ...
+
+    def visit_intern(self, intern: 'Intern') -> float:
+        ...
+
+
+class Employee(ABC):
+    """员工接口"""
+
+    def __init__(self, name: str):
+        self.name = name
+
+    @abstractmethod
+    def accept(self, visitor: Visitor) -> float:
+        ...
+
+
+class Developer(Employee):
+    """开发人员"""
+
+    def __init__(self, name: str, salary: float, overtime_hours: float):
+        super().__init__(name)
+        self.salary = salary
+        self.overtime_hours = overtime_hours
+
+    def accept(self, visitor: Visitor) -> float:
+        return visitor.visit_developer(self)
+
+
+class Manager(Employee):
+    """经理"""
+
+    def __init__(self, name: str, salary: float, bonus: float):
+        super().__init__(name)
+        self.salary = salary
+        self.bonus = bonus
+
+    def accept(self, visitor: Visitor) -> float:
+        return visitor.visit_manager(self)
+
+
+class Intern(Employee):
+    """实习生"""
+
+    def __init__(self, name: str, hourly_rate: float, hours_worked: float):
+        super().__init__(name)
+        self.hourly_rate = hourly_rate
+        self.hours_worked = hours_worked
+
+    def accept(self, visitor: Visitor) -> float:
+        return visitor.visit_intern(self)
+
+
+class SalaryCalculator:
+    """薪资计算访问者"""
+
+    def visit_developer(self, developer: Developer) -> float:
+        base = developer.salary
+        overtime_pay = developer.overtime_hours * 100
+        return base + overtime_pay
+
+    def visit_manager(self, manager: Manager) -> float:
+        return manager.salary + manager.bonus
+
+    def visit_intern(self, intern: Intern) -> float:
+        return intern.hourly_rate * intern.hours_worked
+
+
+class BonusCalculator:
+    """奖金计算访问者"""
+
+    def visit_developer(self, developer: Developer) -> float:
+        # 开发人员奖金：基础薪水的10% + 加班奖金
+        base_bonus = developer.salary * 0.1
+        overtime_bonus = developer.overtime_hours * 50
+        return base_bonus + overtime_bonus
+
+    def visit_manager(self, manager: Manager) -> float:
+        # 经理奖金：基础薪水的20%
+        return manager.salary * 0.2
+
+    def visit_intern(self, intern: Intern) -> float:
+        # 实习生没有奖金
+        return 0.0
+
+
+class ReportGenerator:
+    """报表生成访问者"""
+
+    def visit_developer(self, developer: Developer) -> float:
+        print(f"开发人员: {developer.name}, 基础工资: {developer.salary}, 加班时长: {developer.overtime_hours}")
+        return 0.0
+
+    def visit_manager(self, manager: Manager) -> float:
+        print(f"经理: {manager.name}, 基础工资: {manager.salary}, 奖金: {manager.bonus}")
+        return 0.0
+
+    def visit_intern(self, intern: Intern) -> float:
+        print(f"实习生: {intern.name}, 时薪: {intern.hourly_rate}, 工作时长: {intern.hours_worked}")
+        return 0.0
+
+
+class EmployeeList:
+    """员工列表对象结构"""
+
+    def __init__(self):
+        self.employees: list[Employee] = []
+
+    def add_employee(self, employee: Employee) -> None:
+        self.employees.append(employee)
+
+    def process(self, visitor: Visitor) -> float:
+        total = 0.0
+        for emp in self.employees:
+            total += emp.accept(visitor)
+        return total
+
+
+# 使用
+def main():
+    # 创建员工列表
+    employees = EmployeeList()
+    employees.add_employee(Developer("张三", 15000, 10))
+    employees.add_employee(Manager("李四", 25000, 5000))
+    employees.add_employee(Intern("王五", 50, 160))
+
+    # 计算总薪资
+    salary_calc = SalaryCalculator()
+    total_salary = employees.process(salary_calc)
+    print(f"\n总薪资支出: {total_salary:.2f}")
+
+    # 计算总奖金
+    bonus_calc = BonusCalculator()
+    total_bonus = employees.process(bonus_calc)
+    print(f"\n总奖金支出: {total_bonus:.2f}")
+
+    # 生成报表
+    print("\n=== 员工报表 ===")
+    report_gen = ReportGenerator()
+    employees.process(report_gen)
+
+
+if __name__ == "__main__":
+    main()
+```
+
+### 七、参考资料与延伸阅读
+
+#### 经典书籍
+- 《设计模式：可复用面向对象软件的基础》- GoF
+- 《面向对象的设计模式》- Visitor模式章节
+
+#### 在线资源
+- [Refactoring.Guru - Visitor](https://refactoring.guru/design-patterns/visitor)
+- [Java设计模式：访问者模式](https://java-design-patterns.com/patterns/visitor/)
+
+#### 相关设计模式
+- **Composite（组合）**：Visitor常用于遍历Composite结构
+- **Interpreter（解释器）**：可用于解释语法树
+- **Iterator（迭代器）**：配合遍历元素集合
+
+#### 最佳实践建议
+1. 访问者保持无状态
+2. 充分利用双分派机制
+3. 处理循环引用问题
+4. 提供默认访问行为
