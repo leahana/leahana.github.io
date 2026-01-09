@@ -122,7 +122,7 @@ theme_config: _config.kratos-rebirth.yml
 css_compressor: cssnano
 # deploy:
 #   type: git
-#   repo: https://github.com/leahana/anshengyo.github.io
+#   repo: https://github.com/leahana/leahana.github.io
 #   branch: gh-pages
 #   message: '更新'
 # Note: 使用 GitHub Actions 自动部署，不再需要手动 hexo deploy
