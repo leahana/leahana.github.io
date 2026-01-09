@@ -172,7 +172,15 @@ donate:
   title: "打赏" # 弹出窗口的标题
   message: "打赏提示信息" # 弹出窗口显示的文字
   qrcode_placeholder: "" # 对应平台的二维码出现前的占位图片
-  platforms: [] # 可以用于打赏的平台
+  platforms: # 可以用于打赏的平台
+    - name: "支付宝"
+      icon: "fa-alipay"
+      color: "#00A0E9"
+      qrcode: "/images/donate-alipay-arknights.png"
+    - name: "微信"
+      icon: "fa-weixin"
+      color: "#07C160"
+      qrcode: "/images/donate-wechat-arknights.png"
   # - name: ""
   #   icon: # 使用来自 fontawesome icons 4.7.0 图标库中的唯一标识；或者插入自定义的 HTML ，例如您可在此放置一串 svg 。
   #   color: ""
