@@ -6,9 +6,7 @@ tags:
   - AOP
   - Java
   - 后端开发
-categories:
-  - 后端开发
-  - Spring框架
+categories: [tech, backend]
 ---
 
 ## Spring AOP 注解使用案例与场景设计

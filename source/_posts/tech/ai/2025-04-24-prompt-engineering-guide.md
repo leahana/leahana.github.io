@@ -1,8 +1,7 @@
 ---
 title: AI Prompt 设计方法论
 date: 2024-06-01 15:00:00 +0800
-categories:
-  - ai
+categories: [tech, ai]
 tags: [AI探索, 入门]
 toc: ture
 ---

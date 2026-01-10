@@ -2,10 +2,7 @@
 layout: post
 title: Java分批处理实战：基于subList实现数据分片入库
 date: 2025-04-24 14:30:00 +0800
-categories:
-  - java
-  - 集合框架
-  - 数据处理
+categories: [tech, backend]
 tags:
   - Java
   - 集合操作

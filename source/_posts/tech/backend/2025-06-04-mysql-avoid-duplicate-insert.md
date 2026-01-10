@@ -5,9 +5,7 @@ tags:
   - MySQL
   - 数据库
   - 性能优化
-categories:
-  - 数据库
-  - SQL优化
+categories: [tech, backend]
 ---
 
 ## 避免MySQL重复插入的几种方式

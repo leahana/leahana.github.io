@@ -2,7 +2,7 @@
 title: 不同关系型数据库实现ROW_NUM函数的区别
 date: 2025-06-05 10:12:57
 tags: [数据库, SQL, 分页, 性能优化]
-categories: [数据库, SQL优化]
+categories: [tech, backend]
 ---
 
 ## 不同关系型数据库实现ROW_NUM函数的区别

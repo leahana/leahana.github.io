@@ -6,8 +6,7 @@ tags:
   - 数据库
   - 时区
   - MyBatis
-categories:
-  - 后端开发
+categories: [tech, backend]
 ---
 
 # 对话存档：MySQL 时间字段最佳实践

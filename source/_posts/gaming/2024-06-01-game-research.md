@@ -1,7 +1,7 @@
 ---
 title: "开始使用：游戏研究"
 
-categories: games
+categories: gaming
 tags: [游戏研究, 入门]
 ---
 
