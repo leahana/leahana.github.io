@@ -31,7 +31,7 @@ PATTERNS=(
     "ghs_[a-zA-Z0-9]{36,}"  # GitHub server token
     "ghr_[a-zA-Z0-9]{36,}"  # GitHub refresh token
     "AKIA[0-9A-Z]{16}"      # AWS access key
-    "[0-9A-Za-z+/]{32,}={0,4}"  # Potential base64 encoded key (long strings)
+    "[0-9A-Za-z+/]{32,}={0,4}"  # Potential base64 encoded key (exclude lines starting with #)
     "mysql://.+:.+@"        # MySQL connection string with password
     "mongodb://.+:.+@"      # MongoDB connection string with password
     "postgresql://.+:.+@"   # PostgreSQL connection string with password
@@ -59,7 +59,7 @@ EXCLUDES=(
     "*.woff2"
     "*.ttf"
     "*.eot"
-    "scripts/check-secrets.sh"
+    "bin/check-secrets.sh"
 )
 
 # 构建排除参数
@@ -82,6 +82,11 @@ else
     FILES=$(git ls-files | grep -viE "\.($BINARY_EXTS|min\.js|min\.css)$" | grep -v "node_modules/" | grep -v "pnpm-lock.yaml" | grep -v "_config\." || true)
 fi
 
+# 应用排除列表
+for exclude in "${EXCLUDES[@]}"; do
+    FILES=$(echo "$FILES" | grep -v "$exclude" || true)
+done
+
 if [ -z "$FILES" ]; then
     echo -e "${GREEN}✅ 没有需要检查的文件${NC}"
     exit 0
@@ -94,10 +99,19 @@ for file in $FILES; do
     fi
 
     for pattern in "${PATTERNS[@]}"; do
-        if grep -qiE "$pattern" "$file" 2>/dev/null; then
+        # Skip lines starting with # (comments) when checking base64-like patterns
+        if [[ "$pattern" == *"[0-9A-Za-z+/]{32,}={0,4}"* ]] || \
+           [[ "$pattern" == *"://.+:.+@"* ]]; then
+            # Filter out comment lines (lines starting with #) for these patterns
+            MATCHES=$(grep -vE '^\s*#' "$file" | grep -iE "$pattern" || true)
+        else
+            MATCHES=$(grep -iE "$pattern" "$file" 2>/dev/null || true)
+        fi
+
+        if [ -n "$MATCHES" ]; then
             echo -e "${RED}⚠️  发现潜在敏感信息: $file${NC}"
             echo -e "${RED}   匹配模式: $pattern${NC}"
-            grep -iE --color=always "$pattern" "$file" | head -3
+            echo "$MATCHES" | head -3 | grep -iE --color=always "$pattern"
             echo ""
             FOUND=1
         fi
