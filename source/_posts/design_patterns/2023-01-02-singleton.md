@@ -1,7 +1,7 @@
 ---
 title: Singleton 模式
 date: 2023-01-02 00:00:00 +0800
-updated: 2025-01-09
+updated: 2026-01-09
 categories: [设计模式]
 tags: [设计模式, 创建型模式]
 description: Singleton模式确保一个类只有一个实例，并提供一个全局访问点来访问该实例，常用于需要严格控制资源共享的场景。

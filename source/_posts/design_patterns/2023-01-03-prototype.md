@@ -1,7 +1,7 @@
 ---
 title: Prototype 模式
 date: 2023-01-03 00:00:00 +0800
-updated: 2025-01-09
+updated: 2026-01-09
 categories: [设计模式]
 tags: [设计模式, 创建型模式]
 description: Prototype模式通过复制现有实例来创建新对象，避免了创建对象时的复杂初始化过程，适用于对象创建成本较高的场景。

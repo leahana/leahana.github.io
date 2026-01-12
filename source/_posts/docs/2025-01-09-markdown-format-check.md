@@ -1,7 +1,7 @@
 ---
 layout: 
 title: Markdown 格式检查指南：确保文档符合 Hexo 规范
-date: 2025-01-09 00:00:00 +0800
+date: 2026-01-09 00:00:00 +0800
 categories: [docs]
 tags: [Markdown, 格式检查, Hexo, 规范]
 description: 本文档定义了本博客 Markdown 文档的格式检查标准，包括 Front Matter、代码格式、Markdown 语法等规范，并提供自动化检查工具。
@@ -47,7 +47,7 @@ toc: true
 |------|------|------|------|------|
 | `layout` | string | 是 | 布局类型 | `post` |
 | `title` | string | 是 | 文章标题 | `Java 并发编程实战` |
-| `date` | string | 是 | 发布日期 | `2025-01-09 14:30:00 +0800` |
+| `date` | string | 是 | 发布日期 | `2026-01-09 14:30:00 +0800` |
 | `categories` | array | 是 | 分类（数组格式） | `[tech, backend]` |
 | `tags` | array | 是 | 标签（数组格式） | `[Java, 并发, 多线程]` |
 | `description` | string | 否 | 文章描述 | `深入理解 Java 并发编程` |
@@ -58,7 +58,7 @@ toc: true
 **日期格式**：必须为 `YYYY-MM-DD HH:mm:ss +0800`
 
 ```yaml
-date: 2025-01-09 14:30:00 +0800
+date: 2026-01-09 14:30:00 +0800
 ```
 
 **Categories 和 Tags**：必须使用数组格式
@@ -260,13 +260,13 @@ tags: [设计模式, 创建型模式]
 **错误**：
 
 ```yaml
-date: 2025-01-09
+date: 2026-01-09
 ```
 
 **正确**：
 
 ```yaml
-date: 2025-01-09 00:00:00 +0800
+date: 2026-01-09 00:00:00 +0800
 ```
 
 ### 错误 3：代码块缺少语言标识
@@ -413,14 +413,14 @@ grep -L "layout: post" source/_posts/**/*.md
 
 ## 相关文档
 
-- [Markdown 文章模板集合](./2025-01-12-markdown-templates.md) - 快速创建新文章的模板
-- [Markdown 文档优化指南](./2025-01-09-markdown-optimization-guide.md) - 内容优化标准
+- [Markdown 文章模板集合](./2026-01-12-markdown-templates.md) - 快速创建新文章的模板
+- [Markdown 文档优化指南](./2026-01-09-markdown-optimization-guide.md) - 内容优化标准
 
 ---
 
 ## 更新记录
 
-- 2025-01-09：初始版本
-- 2025-01-09：补充 Markdownlint 规范、Front Matter 非标准字段检查、内容组织结构要求
-- 2025-01-12：精简版本，删除详细示例和脚本代码，为模块化拆分做准备
-- 2025-01-12：添加新模板文档的交叉引用
+- 2026-01-09：初始版本
+- 2026-01-09：补充 Markdownlint 规范、Front Matter 非标准字段检查、内容组织结构要求
+- 2026-01-12：精简版本，删除详细示例和脚本代码，为模块化拆分做准备
+- 2026-01-12：添加新模板文档的交叉引用

@@ -1,7 +1,7 @@
 ---
 title: Composite 模式
 date: 2023-01-08 00:00:00 +0800
-updated: 2025-01-09
+updated: 2026-01-09
 categories: [设计模式]
 tags: [设计模式, 结构型模式]
 description: Composite模式将对象组合成树形结构以表示"部分-整体"的层次结构，使用户对单个对象和组合对象的使用具有一致性。

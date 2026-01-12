@@ -1,7 +1,7 @@
 ---
 title: Decorator 模式
 date: 2023-01-09 00:00:00 +0800
-updated: 2025-01-09
+updated: 2026-01-09
 categories: [设计模式]
 tags: [设计模式, 结构型模式]
 description: Decorator模式动态地给一个对象添加一些额外的职责，就增加功能来说，Decorator模式相比生成子类更为灵活。
