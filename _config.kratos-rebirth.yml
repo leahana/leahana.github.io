@@ -45,16 +45,16 @@ search:
 # 图片配置
 image:
   favicon: "" # 站点图标
-  avatar: "/yannyi.github.io/images/theme/Mamimi.JPG" # 个人信息挂件上的头像
+  avatar: "/images/theme/Mamimi.JPG" # 个人信息挂件上的头像
   banner: # 站点横幅
     light: "" # 亮色模式
     dark: "" # 暗色模式
   background: # 站点背景
-    light: "/yannyi.github.io/images/theme/background.jpg" # 亮色模式
-    dark: "/yannyi.github.io/images/theme/background.jpg" # 暗色模式
+    light: "/images/theme/background.jpg" # 亮色模式
+    dark: "/images/theme/background.jpg" # 暗色模式
   about: # 介绍卡片
-    light: "/yannyi.github.io/images/theme/avatar-bg.jpg" # 亮色模式
-    dark: "/yannyi.github.io/images/theme/avatar-bg.jpg" # 暗色模式
+    light: "/images/theme/avatar-bg.jpg" # 亮色模式
+    dark: "/images/theme/avatar-bg.jpg" # 暗色模式
 
 # 导航栏配置
 nav:
@@ -112,7 +112,7 @@ footer:
 
 # Post 文章配置
 posts:
-  default_cover: "/yannyi.github.io/images/default.webp" # 没有头图的文章使用的默认图片
+  default_cover: "/images/default.webp" # 没有头图的文章使用的默认图片
   donate: true # 默认是否启用打赏功能
   share: true # 默认是否启用分享功能
   word_count: # 字数统计功能
@@ -243,6 +243,6 @@ visit_count:
 
 ################## 额外的注入代码 ##################
 additional_injections:
-  head: "<style>body.custom-background{background-image:url('/yannyi.github.io/images/theme/background.jpg')!important;background-attachment:fixed!important;background-size:cover!important;background-position:center!important;}#kratos-widget-area .widget-kratos-about .photo-background{background-image:url('/yannyi.github.io/images/theme/avatar-bg.jpg')!important;background-size:cover!important;background-position:35% 35%!important;background-repeat:no-repeat!important;}</style><link rel=\"stylesheet\" href=\"/yannyi.github.io/css/custom.css\">" # 注入到 head 标签里的内容，例如额外的样式表
+  head: "<style>body.custom-background{background-image:url('/images/theme/background.jpg')!important;background-attachment:fixed!important;background-size:cover!important;background-position:center!important;}#kratos-widget-area .widget-kratos-about .photo-background{background-image:url('/images/theme/avatar-bg.jpg')!important;background-size:cover!important;background-position:35% 35%!important;background-repeat:no-repeat!important;}</style><link rel=\"stylesheet\" href=\"/css/custom.css\">" # 注入到 head 标签里的内容，例如额外的样式表
   footer: "" # 注入到页面主体的内容，例如额外的可见组件
   after_footer: "" # 注入到页面内容之后的内容，例如各种额外的脚本文件
