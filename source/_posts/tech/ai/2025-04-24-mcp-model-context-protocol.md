@@ -3,11 +3,7 @@ layout: post
 title: MCP 模型上下文协议：AI 应用互操作的 Type-C 时代
 date: 2025-04-24 16:00:00 +0800
 categories: [tech, ai]
-tags:
-  - MCP
-  - Spring AI
-  - AI架构
-  - 互操作协议
+tags: [MCP, Spring AI, AI架构, 互操作协议]
 toc: true
 ---
 

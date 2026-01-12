@@ -1,11 +1,7 @@
 ---
 title: MySQL 时间字段最佳实践
-date: 2026-01-06
-tags:
-  - MySQL
-  - 数据库
-  - 时区
-  - MyBatis
+date: 2026-01-06 00:00:00 +0800
+tags: [MySQL, 数据库, 时区, MyBatis]
 categories: [tech, backend]
 ---
 

@@ -3,12 +3,7 @@ layout: post
 title: 5W1H思维模式：系统化AI知识库构建方法论
 date: 2025-04-24 15:30:00 +0800
 categories: mindset
-tags:
-  - 5W1H
-  - 思维框架
-  - AI知识库
-  - 方法论
-  - 认知工程
+tags: [5W1H, 思维框架, AI知识库, 方法论, 认知工程]
 toc: true
 ---
 

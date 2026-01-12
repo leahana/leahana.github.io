@@ -1,10 +1,7 @@
 ---
 title: 避免MySQL重复插入的几种方式
 date: 2025-06-05 10:05:39
-tags:
-  - MySQL
-  - 数据库
-  - 性能优化
+tags: [MySQL, 数据库, 性能优化]
 categories: [tech, backend]
 ---
 

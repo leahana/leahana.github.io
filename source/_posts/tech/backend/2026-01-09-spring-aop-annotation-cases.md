@@ -1,11 +1,7 @@
 ---
 title: Spring AOP 注解使用案例与场景设计
-date: 2026-01-09
-tags:
-  - Spring
-  - AOP
-  - Java
-  - 后端开发
+date: 2026-01-09 00:00:00 +0800
+tags: [Spring, AOP, Java, 后端开发]
 categories: [tech, backend]
 ---
 

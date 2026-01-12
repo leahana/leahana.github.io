@@ -8,13 +8,16 @@ description: 本文档定义了本博客 Markdown 文档的格式检查标准，
 toc: true
 ---
 
-# Markdown 格式检查指南
+## Markdown 格式检查指南
 
 > 本文档定义了本博客 Markdown 文档的格式检查标准，专注于确保文档符合 Hexo 规范和 Markdown 语法要求。
+>
+> 💡 **提示**：本文档为精简版，详细错误示例和检查脚本可参考相关文档或独立文件。
 
 ## 📋 目录
 
 - [Front Matter 规范](#front-matter-规范)
+- [Markdownlint 规范](#markdownlint-规范)
 - [代码规范](#代码规范)
 - [格式检查清单](#格式检查清单)
 - [常见格式错误](#常见格式错误)
@@ -50,37 +53,85 @@ toc: true
 | `description` | string | 否 | 文章描述 | `深入理解 Java 并发编程` |
 | `toc` | boolean | 否 | 是否显示目录 | `true` |
 
-### 日期格式
+### 关键要求
 
-**标准格式**：`YYYY-MM-DD HH:mm:ss +0800`
+**日期格式**：必须为 `YYYY-MM-DD HH:mm:ss +0800`
 
 ```yaml
 date: 2025-01-09 14:30:00 +0800
 ```
 
-**错误格式**：
-
-- ❌ `date: 2025-01-09` （缺少时间部分）
-- ❌ `date: 2025-01-09 14:30:00` （缺少时区）
-- ❌ `date: 2025/01/09` （错误的分隔符）
-
-### Categories 和 Tags 格式
-
-**标准格式（数组）**：
+**Categories 和 Tags**：必须使用数组格式
 
 ```yaml
 categories: [设计模式]
 tags: [设计模式, 创建型模式]
 ```
 
-**错误格式（列表）**：
+❌ **禁止使用列表格式**：
 
 ```yaml
 categories:
   - 设计模式
-tags:
-  - 设计模式
-  - 创建型模式
+```
+
+**非标准字段**：禁止使用 `updated`、`modified` 等非 Hexo 标准字段。
+
+---
+
+## Markdownlint 规范
+
+### 核心规则
+
+| 规则 ID | 规则名称 | 说明 |
+|---------|---------|------|
+| MD001 | 标题层级递增 | 标题层级必须递增，不能跳跃 |
+| MD009 | 行尾空格 | 行尾不能有多余空格 |
+| MD010 | 硬制表符 | 不能使用硬制表符（Tab），应使用空格 |
+| MD012 | 多个连续空行 | 不能有多个连续空行（最多一个） |
+| MD013 | 行长度 | 行长度不应过长（建议不超过 120 字符） |
+| MD022 | 标题前后空行 | 标题前后必须有空行 |
+| MD024 | 禁止重复标题 | 同一文档中不能有相同级别的重复标题 |
+| MD025 | 单一标题 | 文档只能有一个一级标题（`#`），Hexo 博客内容应从 H2 开始 |
+| MD030 | 列表标记空格 | 列表标记后必须有空格 |
+| MD031/MD032 | 列表前后空行 | 列表前后必须有空行 |
+| MD040 | 围栏代码块语言 | 围栏代码块必须指定语言 |
+
+### 关键规则说明
+
+#### MD025 - 单一标题
+
+在 Hexo 博客中，标题已在 Front Matter 中定义，内容部分不应使用 H1 标题，应从 H2（`##`）开始。
+
+#### MD031/MD032 - 列表前后空行
+
+列表前后必须有空行分隔。
+
+#### 中英文空格规范
+
+中文和英文、数字之间必须有空格：
+
+- ✅ `Factory Method 模式`
+- ✅ `Java 代码`
+- ✅ `Python 3.8`
+- ❌ `Factory Method模式`
+- ❌ `Java代码`
+
+### Markdownlint 配置
+
+建议在项目根目录创建 `.markdownlint.json`：
+
+```json
+{
+  "default": true,
+  "MD013": {
+    "line_length": 120,
+    "code_blocks": false,
+    "tables": false
+  },
+  "MD033": false,
+  "MD041": false
+}
 ```
 
 ---
@@ -89,7 +140,7 @@ tags:
 
 ### 代码块格式
 
-**标准格式**：
+所有代码块必须包含语言标识：
 
 ````markdown
 ```语言
@@ -97,7 +148,7 @@ tags:
 ```
 ````
 
-### 必须包含的语言标识
+### 常用语言标识
 
 | 类型 | 语言标识 |
 |------|---------|
@@ -106,43 +157,9 @@ tags:
 | Bash | `bash` |
 | YAML | `yaml` |
 | JSON | `json` |
-| Text/模板 | `text` |
+| Text/模板/ASCII 图表 | `text` |
 | Markdown | `markdown` |
 | SQL | `sql` |
-
-### 代码注释规范
-
-**Java 代码注释**：
-
-```java
-/**
- * 方法说明
- *
- * @param param 参数说明
- * @return 返回值说明
- */
-public String method(String param) {
-    // 实现逻辑
-    return result;
-}
-```
-
-**Python 代码注释**：
-
-```python
-def method(param: str) -> str:
-    """
-    方法说明
-    
-    Args:
-        param: 参数说明
-        
-    Returns:
-        返回值说明
-    """
-    # 实现逻辑
-    return result
-```
 
 ### 代码规范要求
 
@@ -150,7 +167,6 @@ def method(param: str) -> str:
 - ✅ 代码必须完整可运行
 - ✅ 包含注释说明关键逻辑
 - ✅ 提供预期输出或运行结果
-- ✅ 避免外部依赖，或明确说明依赖
 
 ---
 
@@ -158,13 +174,14 @@ def method(param: str) -> str:
 
 ### Front Matter 检查
 
-- [ ] `layout: post` 存在且正确
-- [ ] `title` 存在且不为空
-- [ ] `date` 格式为 `YYYY-MM-DD HH:mm:ss +0800`
-- [ ] `categories` 使用数组格式 `[分类]`
-- [ ] `tags` 使用数组格式 `[tag1, tag2]`
+- [ ] `layout: post` 存在且正确（必填）
+- [ ] `title` 存在且不为空（必填）
+- [ ] `date` 格式为 `YYYY-MM-DD HH:mm:ss +0800`（必填）
+- [ ] `categories` 使用数组格式 `[分类]`（必填）
+- [ ] `tags` 使用数组格式 `[tag1, tag2]`（必填）
 - [ ] `description` 存在（推荐）
 - [ ] Front Matter 以 `---` 开始和结束
+- [ ] 没有非标准字段（如 `updated`、`modified` 等）
 
 ### Markdown 语法检查
 
@@ -175,6 +192,18 @@ def method(param: str) -> str:
 - [ ] 图片格式正确 `![alt](URL)`
 - [ ] 表格对齐正确
 - [ ] 分隔线使用 `---`（三个减号）
+
+### Markdownlint 检查
+
+- [ ] 列表前后有空行（MD031/MD032）
+- [ ] 没有重复标题（MD024）
+- [ ] 文档只有一个 H1 标题或没有 H1（MD025，Hexo 博客内容应从 H2 开始）
+- [ ] 中英文之间有空格
+- [ ] 标题前后有空行（MD022）
+- [ ] 没有多个连续空行（MD012）
+- [ ] 行尾没有多余空格（MD009）
+- [ ] 没有使用硬制表符（MD010）
+- [ ] 标题层级递增，无跳跃（MD001）
 
 ### 文件命名检查
 
@@ -191,6 +220,9 @@ def method(param: str) -> str:
 - [ ] 表格对齐正确
 - [ ] 代码块缩进正确
 - [ ] 列表项格式统一
+- [ ] 内容组织结构清晰，相关代码放在对应章节
+- [ ] 使用交叉引用建立关联，避免重复内容
+- [ ] 标题命名明确区分，避免歧义
 
 ---
 
@@ -251,40 +283,101 @@ public class Test {
 ```
 ````
 
-### 错误 4：文件名与日期不一致
-
-**错误**：
-
-- 文件名：`2025-01-09-article.md`
-- Front Matter：`date: 2024-12-25 00:00:00 +0800`
-
-**正确**：
-
-- 文件名：`2025-01-09-article.md`
-- Front Matter：`date: 2025-01-09 00:00:00 +0800`
-
-### 错误 5：标题层级跳跃
+### 错误 4：列表前后缺少空行（MD031/MD032）
 
 **错误**：
 
 ```markdown
-## 一级标题
-#### 三级标题（跳过了 ###）
+## 标题
+- 列表项 1
+- 列表项 2
+## 下一个标题
 ```
 
 **正确**：
 
 ```markdown
-## 一级标题
-### 二级标题
-#### 三级标题
+## 标题
+
+- 列表项 1
+- 列表项 2
+
+## 下一个标题
 ```
+
+### 错误 5：文档中使用 H1 标题（MD025）
+
+**错误**：
+
+```markdown
+---
+title: 文章标题
+---
+
+# 文章标题  ❌ 重复使用 H1
+```
+
+**正确**：
+
+```markdown
+---
+title: 文章标题
+---
+
+## 文章标题  ✅ 使用 H2
+```
+
+### 错误 6：中英文之间缺少空格
+
+**错误**：
+
+```markdown
+Factory Method模式是一种创建型设计模式。
+使用Java代码实现。
+```
+
+**正确**：
+
+```markdown
+Factory Method 模式是一种创建型设计模式。
+使用 Java 代码实现。
+```
+
+> 💡 **提示**：更多错误示例和详细说明可参考独立文档（待模块化拆分）。
 
 ---
 
 ## 自动化检查
 
+### 使用 Markdownlint 工具检查
+
+**安装**：
+
+```bash
+npm install -g markdownlint-cli
+```
+
+**检查所有文件**：
+
+```bash
+markdownlint source/_posts/**/*.md
+```
+
+**自动修复（部分规则）**：
+
+```bash
+markdownlint --fix source/_posts/**/*.md
+```
+
+**检查特定文件**：
+
+```bash
+markdownlint source/_posts/design_patterns/*.md
+```
+
 ### 使用脚本检查格式
+
+**快速检查命令**：
 
 ```bash
 # 检查 Front Matter 格式
@@ -295,146 +388,16 @@ grep -r "date:" source/_posts/ | grep -v "date: [0-9]\{4\}-[0-9]\{2\}-[0-9]\{2\}
 
 # 检查代码块语言标识
 grep -r "^```$" source/_posts/
+
+# 检查非标准字段
+grep -r "updated:" source/_posts/
+grep -r "modified:" source/_posts/
+
+# 检查缺少 layout 字段
+grep -L "layout: post" source/_posts/**/*.md
 ```
 
-### Python 检查脚本
-
-```python
-#!/usr/bin/env python3
-# -*- coding: utf-8 -*-
-"""
-Markdown 格式检查脚本
-"""
-
-import os
-import re
-from pathlib import Path
-
-def check_front_matter(content, filepath):
-    """检查 Front Matter 格式"""
-    errors = []
-    
-    # 检查 Front Matter 是否存在
-    if not content.startswith('---'):
-        errors.append(f"{filepath}: 缺少 Front Matter")
-        return errors
-    
-    # 提取 Front Matter
-    fm_match = re.match(r'^---\n(.*?)\n---\n', content, re.DOTALL)
-    if not fm_match:
-        errors.append(f"{filepath}: Front Matter 格式错误")
-        return errors
-    
-    fm_content = fm_match.group(1)
-    
-    # 检查必需字段
-    required_fields = ['title', 'date', 'categories']
-    for field in required_fields:
-        if field not in fm_content:
-            errors.append(f"{filepath}: 缺少必需字段 {field}")
-    
-    # 检查 date 格式
-    date_match = re.search(r'date:\s*(\d{4}-\d{2}-\d{2}[\s\d:+-]*)', fm_content)
-    if date_match:
-        date_value = date_match.group(1).strip()
-        if not re.match(r'\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2} \+0800', date_value):
-            errors.append(f"{filepath}: date 格式错误，应为 YYYY-MM-DD HH:mm:ss +0800")
-    
-    # 检查 categories 格式（应为数组）
-    if 'categories:' in fm_content:
-        if re.search(r'categories:\s*\n\s*-', fm_content):
-            errors.append(f"{filepath}: categories 应使用数组格式 [分类]")
-    
-    # 检查 tags 格式（应为数组）
-    if 'tags:' in fm_content:
-        if re.search(r'tags:\s*\n\s*-', fm_content):
-            errors.append(f"{filepath}: tags 应使用数组格式 [tag1, tag2]")
-    
-    return errors
-
-def check_code_blocks(content, filepath):
-    """检查代码块格式"""
-    errors = []
-    
-    # 查找所有代码块
-    code_block_pattern = r'```(\w+)?\n'
-    matches = re.finditer(code_block_pattern, content)
-    
-    for match in matches:
-        lang = match.group(1)
-        if not lang:
-            line_num = content[:match.start()].count('\n') + 1
-            errors.append(f"{filepath}: 第 {line_num} 行代码块缺少语言标识")
-    
-    return errors
-
-def check_file_naming(filepath):
-    """检查文件名格式"""
-    errors = []
-    filename = Path(filepath).name
-    
-    # 检查文件名格式
-    if not re.match(r'\d{4}-\d{2}-\d{2}-[a-z0-9-]+\.md', filename):
-        errors.append(f"{filepath}: 文件名格式错误，应为 YYYY-MM-DD-kebab-title.md")
-    
-    return errors
-
-def check_all_files(directory):
-    """检查目录下所有 Markdown 文件"""
-    all_errors = []
-    
-    for md_file in Path(directory).rglob("*.md"):
-        if md_file.name == "README.md":
-            continue
-        
-        print(f"检查: {md_file}")
-        
-        with open(md_file, 'r', encoding='utf-8') as f:
-            content = f.read()
-        
-        # 检查各项
-        all_errors.extend(check_file_naming(str(md_file)))
-        all_errors.extend(check_front_matter(content, str(md_file)))
-        all_errors.extend(check_code_blocks(content, str(md_file)))
-    
-    return all_errors
-
-if __name__ == "__main__":
-    base_dir = "/Users/anshengyo/WorkSpace/leahana.github.io/source/_posts"
-    print(f"开始检查目录: {base_dir}\n")
-    
-    errors = check_all_files(base_dir)
-    
-    if errors:
-        print("\n❌ 发现以下格式错误：")
-        for error in errors:
-            print(f"  - {error}")
-        exit(1)
-    else:
-        print("\n✅ 所有文件格式检查通过！")
-        exit(0)
-```
-
----
-
-## 快速修复命令
-
-### 批量修复 Front Matter 格式
-
-使用之前创建的 `fix-front-matter.py` 脚本：
-
-```bash
-python3 fix-front-matter.py
-```
-
-### 手动修复示例
-
-**修复 categories 和 tags**：
-
-```bash
-# 使用 sed 批量替换（谨慎使用）
-find source/_posts -name "*.md" -exec sed -i '' 's/categories:\n  -/categories: [/g' {} \;
-```
+> 💡 **提示**：完整的 Python 检查脚本可参考独立文件（待模块化拆分）。
 
 ---
 
@@ -446,4 +409,6 @@ find source/_posts -name "*.md" -exec sed -i '' 's/categories:\n  -/categories: 
 
 ## 更新记录
 
-最后更新：2025-01-09
+- 2025-01-09：初始版本
+- 2025-01-09：补充 Markdownlint 规范、Front Matter 非标准字段检查、内容组织结构要求
+- 2025-01-12：精简版本，删除详细示例和脚本代码，为模块化拆分做准备
