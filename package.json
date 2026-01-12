@@ -6,7 +6,9 @@
     "build": "hexo generate",
     "clean": "hexo clean",
     "dev": "hexo server",
-    "preview": "hexo clean && hexo generate && hexo server --drafts"
+    "preview": "hexo clean && hexo generate && hexo server --drafts",
+    "check:secrets": "bash scripts/check-secrets.sh",
+    "hooks:install": "bash scripts/install-hooks.sh"
   },
   "hexo": {
     "version": "8.1.1"

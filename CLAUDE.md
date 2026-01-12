@@ -15,6 +15,11 @@ This is a Hexo-based static blog site titled "MamimiJa Nai" (oiiai.top) with Chi
 - `pnpm clean` - Clean the `public/` folder
 - `pnpm preview` - Clean, generate, and serve with drafts included
 
+### Security Checks
+
+- `pnpm check:secrets` - Manually check for sensitive information in files
+- `pnpm hooks:install` - Install Git hooks for automatic secret checking
+
 ### Creating Content
 
 - `hexo new post <title>` - Create a new blog post
@@ -37,6 +42,7 @@ themes/              # Git submodules for themes
 └── [other themes]   # Inactive themes
 
 scaffolds/           # Post/page templates (post.md, page.md, draft.md)
+scripts/             # Utility scripts (secret checking, hooks installation)
 _config.yml          # Main Hexo configuration
 _config.kratos-rebirth.yml  # Active theme configuration
 ```
@@ -67,6 +73,34 @@ This is handled automatically by the GitHub Actions workflow.
    - Deploys `public/` to GitHub Pages
 
 **Note**: The `hexo deploy` command is NOT used. Deployment is handled entirely by GitHub Actions.
+
+### Security Checks
+
+**CRITICAL**: Before committing or pushing, always check for sensitive information:
+
+**Automatic Checks** (Git Hooks):
+
+- `pre-commit`: Runs automatically before each commit
+- `pre-push`: Runs automatically before each push
+
+**Manual Check**:
+
+```bash
+pnpm check:secrets
+```
+
+**Detection Patterns**:
+
+- Passwords/API keys: `password:`, `apikey:`, `secret:`
+- Tokens: `access_token`, `auth_token`, `bearer`
+- Service keys: Stripe (`sk-`), GitHub (`ghp_`, `gho_`, `ghu_`), AWS (`AKIA`)
+- Database URLs: `mysql://`, `mongodb://`, `postgresql://`, `redis://`
+
+**If Hooks Are Missing**:
+
+```bash
+pnpm hooks:install
+```
 
 ## Content Management
 
