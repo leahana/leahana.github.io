@@ -7,8 +7,8 @@
     "clean": "hexo clean",
     "dev": "hexo server",
     "preview": "hexo clean && hexo generate && hexo server --drafts",
-    "check:secrets": "bash scripts/check-secrets.sh",
-    "hooks:install": "bash scripts/install-hooks.sh"
+    "check:secrets": "bash bin/check-secrets.sh",
+    "hooks:install": "bash bin/install-hooks.sh"
   },
   "hexo": {
     "version": "8.1.1"
@@ -21,7 +21,6 @@
     "hexo-generator-category": "^2.0.0",
     "hexo-generator-index": "^4.0.0",
     "hexo-generator-tag": "^2.0.0",
-    "hexo-mermaid": "^1.0.0",
     "hexo-renderer-ejs": "^2.0.0",
     "hexo-renderer-marked": "^7.0.0",
     "hexo-renderer-stylus": "^3.0.1",
