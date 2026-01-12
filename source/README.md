@@ -75,8 +75,8 @@ Java、Spring、数据库相关技术
 ### 📚 [内部文档](./docs/)
 博客写作和维护指南
 
-- [Markdown 文档优化指南](./docs/2025-01-09-markdown-optimization-guide.md) - 内容优化标准和最佳实践
-- [Markdown 格式检查指南](./docs/2025-01-09-markdown-format-check.md) - 格式检查标准和规范
+- [Markdown 文档优化指南](../docs/2025-01-09-markdown-optimization-guide.md) - 内容优化标准和最佳实践
+- [Markdown 格式检查指南](../docs/2025-01-09-markdown-format-check.md) - 格式检查标准和规范
 
 ---
 

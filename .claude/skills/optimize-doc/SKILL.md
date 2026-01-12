@@ -8,8 +8,8 @@ description: 优化 Markdown 文档，提升可读性和实用性
 
 ## 参考文档
 
-- **格式检查**: `source/_posts/docs/2025-01-09-markdown-format-check.md`
-- **优化指南**: `source/_posts/docs/2025-01-09-markdown-optimization-guide.md`
+- **格式检查**: `source/docs/2025-01-09-markdown-format-check.md`
+- **优化指南**: `source/docs/2025-01-09-markdown-optimization-guide.md`
 
 ## 核心原则
 

@@ -29,7 +29,7 @@ description: 保存当前对话为 Markdown 文件进行存档
 
 ## 保存位置
 
-- 默认保存到 `source/_posts/docs/` 目录
+- 默认保存到 `source/docs/` 目录
 - 文件名格式：`YYYY-MM-DD-{topic}.md`
 
 ## 使用场景

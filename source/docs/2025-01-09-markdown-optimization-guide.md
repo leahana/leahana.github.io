@@ -468,7 +468,7 @@ graph TD
 ## 优化检查清单
 
 <details>
-<summary><strong>📋 文档优化检查清单</strong></summary>
+<summary>**📋 文档优化检查清单**</summary>
 
 ### 结构检查
 
@@ -562,6 +562,7 @@ graph TD
 
 ### 🔗 相关文档
 
+- [Markdown 文章模板集合](./2025-01-12-markdown-templates.md) - 快速创建新文章的模板
 - [Markdown 格式检查指南](./2025-01-09-markdown-format-check.md) - 格式检查标准
 - [5W1H 思维模式](../mindset/2025-04-24-5w1h-ai-knowledge-base-methodology.md) - 方法论示例
 - [MCP 模型上下文协议](../tech/ai/2025-04-24-mcp-model-context-protocol.md) - 技术文章示例
@@ -700,3 +701,4 @@ public class Example {
 
 - 2025-01-09：初始版本
 - 2025-01-12：优化版本，保留核心内容和示例，优化结构以便模块化拆分
+- 2025-01-12：添加新模板文档的交叉引用

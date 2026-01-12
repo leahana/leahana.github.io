@@ -155,6 +155,31 @@ This practice ensures:
 
 Draft posts are not rendered by default. Use `--drafts` flag with `hexo server` or `hexo generate` to include them.
 
+### Article Templates
+
+**Ready-to-use templates** are available in `source/docs/2025-01-12-markdown-templates.md`:
+
+| Template | Use Case | Time Investment |
+|----------|----------|----------------:|
+| **普通笔记（轻量级）** | Quick notes, ideas, temporary records | 5-15 minutes |
+| **问题-方法型技术实战（完整级）** | Solving technical problems with complete solutions | 1-3 hours |
+
+**Documentation Structure**:
+
+```
+source/docs/
+├── 2025-01-09-markdown-format-check.md      # Format standards
+├── 2025-01-09-markdown-optimization-guide.md # Content optimization
+└── 2025-01-12-markdown-templates.md         # Article templates ⭐
+```
+
+**When to use each**:
+
+- **Quick notes** → Use template 1 (普通笔记)
+- **Technical solutions** → Use template 2 (问题-方法型实战)
+- **Deep optimization** → Refer to `markdown-optimization-guide.md`
+- **Format checking** → Refer to `markdown-format-check.md`
+
 ## Special Features
 
 - **Mermaid Diagrams**: Enable with `mermaid` code blocks in posts
@@ -180,7 +205,7 @@ This project includes custom Claude Code skills in `.claude/skills/`:
 
 | Skill | Description | Reference |
 |-------|-------------|-----------|
-| `optimize-doc` | 优化 Markdown 文档，提升可读性和实用性 | `source/_posts/docs/2025-01-09-markdown-optimization-guide.md` |
+| `optimize-doc` | 优化 Markdown 文档，提升可读性和实用性 | `source/docs/2025-01-09-markdown-optimization-guide.md` |
 | `save` | 保存当前对话为 Markdown 文件进行存档 | - |
 
 ### Usage
@@ -196,5 +221,5 @@ This project includes custom Claude Code skills in `.claude/skills/`:
 ### Skills vs Global Skills
 
 - Project skills in `.claude/skills/` take precedence over global skills
-- This project's skills reference local documentation in `source/_posts/docs/`
+- This project's skills reference local documentation in `source/docs/`
 - Keep global skills minimal, use project-specific skills for blog-related tasks
