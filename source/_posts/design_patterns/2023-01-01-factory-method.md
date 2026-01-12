@@ -1,13 +1,10 @@
 ---
+layout: post
 title: Factory Method 模式
-date: 2023-01-01
-updated: 2025-01-09
-categories:
-  - 设计模式
-tags:
-  - 设计模式
-  - 创建型模式
-description: Factory Method模式通过将实例的生成交给子类进行，定义了一个用于创建对象的接口，让子类决定实例化哪一个类。
+date: 2023-01-01 00:00:00 +0800
+categories: [设计模式]
+tags: [设计模式, 创建型模式]
+description: Factory Method 模式通过将实例的生成交给子类进行，定义了一个用于创建对象的接口，让子类决定实例化哪一个类。
 toc: true
 ---
 
@@ -28,6 +25,7 @@ Factory Method（工厂方法）模式是一种创建型设计模式，它定义
 > **工厂方法方式**：客户向工厂提交订单，工厂根据订单类型分配给不同的车间（椅子车间、桌子车间）。客户只需要知道"我要什么"，而不需要知道"怎么做"。
 
 在这个比喻中：
+
 - **Factory** = 工厂订单接收处
 - **ConcreteFactory** = 具体车间（椅子车间、桌子车间）
 - **Product** = 家具接口
@@ -35,7 +33,7 @@ Factory Method（工厂方法）模式是一种创建型设计模式，它定义
 
 ### 三、模式结构与角色
 
-```
+```text
 ┌─────────────────────────────────────────────────────────────┐
 │                        Product                               │
 │                    (产品接口/抽象类)                          │
@@ -210,7 +208,9 @@ Connection conn = DriverManager.getConnection(url, user, password);
 // PostgreSQL: org.postgresql.jdbc.PgConnection
 ```
 
-#### 案例3：完整代码示例
+#### 案例3：完整代码示例（Java）
+
+> 💡 **提示**：本案例展示了完整的 Logger 工厂实现。Python 实现请参见 [Python 经典案例 - 案例3：完整代码示例（Python）](#案例3完整代码示例python)。
 
 ```java
 // ============ 产品接口 ============
@@ -323,7 +323,9 @@ logger = logging.getLogger(__name__)
 # 可以是 FileHandler, StreamHandler, RotatingFileHandler 等
 ```
 
-#### 案例3：完整代码示例
+#### 案例3：完整代码示例（Python）
+
+> 💡 **提示**：本案例展示了完整的 Logger 工厂实现。Java 实现请参见 [Java 经典案例 - 案例3：完整代码示例（Java）](#案例3完整代码示例java)。
 
 ```python
 from abc import ABC, abstractmethod
@@ -439,16 +441,19 @@ logger.log("Hello, World!")
 ### 九、参考资料与延伸阅读
 
 #### 经典书籍
+
 - 《设计模式：可复用面向对象软件的基础》- GoF 23种设计模式
 - 《Head First 设计模式》- 第4章：工厂模式
 - 《Python设计模式》- Pythons设计模式实践
 
 #### 在线资源
+
 - [Refactoring.Guru - Factory Method](https://refactoring.guru/design-patterns/factory-method)
 - [Java设计模式：工厂方法模式](https://java-design-patterns.com/patterns/factory-method/)
 - [Python设计模式：工厂方法](https://refactoring.guru/design-patterns/factory-method/python/example)
 
 #### 相关设计模式
+
 - **Abstract Factory（抽象工厂）**：创建**产品族**，而工厂方法创建**单一产品**
 - **Template Method（模板方法）**：工厂方法常与模板方法配合使用
 - **Singleton（单例）**：工厂方法可以返回单例对象

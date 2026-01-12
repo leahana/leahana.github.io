@@ -1,10 +1,8 @@
 ---
+layout: page
 title: 设计模式
-date: 2023-01-01
-categories:
-  - 设计模式
-tags:
-  - 设计模式
+date: 2023-01-01 00:00:00 +0800
+comments: false
 ---
 
 ## 设计模式笔记
@@ -45,3 +43,9 @@ tags:
 | [Strategy 模式](/2023/01/07/strategy/) | 定义一系列算法，把它们封装起来，并使它们可以互换 |
 | [Visitor 模式](/2023/01/11/visitor/) | 表示一个作用于某对象结构中的各元素的操作 |
 | [Chain of Responsibility 模式](/2023/01/10/chain-of-responsibility/) | 为解除请求的发送者和接收者之间耦合，使多个对象都有机会处理这个请求 |
+
+---
+
+## 更新记录
+
+- 2023-01-01：初始版本，创建设计模式索引页

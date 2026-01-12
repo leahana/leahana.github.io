@@ -1,12 +1,9 @@
 ---
 title: Chain of Responsibility 模式
-date: 2023-01-10
+date: 2023-01-10 00:00:00 +0800
 updated: 2025-01-09
-categories:
-  - 设计模式
-tags:
-  - 设计模式
-  - 行为型模式
+categories: [设计模式]
+tags: [设计模式, 行为型模式]
 description: Chain of Responsibility模式为请求创建一个接收者对象链，使多个对象都有机会处理请求，从而避免请求的发送者和接收者之间的耦合关系。
 toc: true
 ---

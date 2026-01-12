@@ -1,12 +1,9 @@
 ---
 title: Abstract Factory 模式
-date: 2023-01-05
+date: 2023-01-05 00:00:00 +0800
 updated: 2025-01-09
-categories:
-  - 设计模式
-tags:
-  - 设计模式
-  - 创建型模式
+categories: [设计模式]
+tags: [设计模式, 创建型模式]
 description: Abstract Factory模式提供一个创建一系列相关或相互依赖对象的接口，而无需指定它们具体的类，适用于需要创建产品族的场景。
 toc: true
 ---
