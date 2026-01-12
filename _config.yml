@@ -52,6 +52,8 @@ highlight:
   tab_replace: ''
   wrap: true
   hljs: false
+  exclude_languages:
+    - mermaid
 prismjs:
   preprocess: true
   line_number: true
@@ -101,7 +103,10 @@ exclude:
   - .vscode
   - node_modules
   - package.json
-ignore:
+
+# Skip render (不渲染为文章的路径)
+skip_render:
+  - docs/**
 
 # Extensions
 ## Plugins: https://hexo.io/plugins/

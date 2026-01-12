@@ -245,4 +245,6 @@ visit_count:
 additional_injections:
   head: "<style>body.custom-background{background-image:url('/images/theme/background.jpg')!important;background-attachment:fixed!important;background-size:cover!important;background-position:center!important;}#kratos-widget-area .widget-kratos-about .photo-background{background-image:url('/images/theme/avatar-bg.jpg')!important;background-size:cover!important;background-position:35% 35%!important;background-repeat:no-repeat!important;}</style><link rel=\"stylesheet\" href=\"/css/custom.css\">" # 注入到 head 标签里的内容，例如额外的样式表
   footer: "" # 注入到页面主体的内容，例如额外的可见组件
-  after_footer: "" # 注入到页面内容之后的内容，例如各种额外的脚本文件
+  after_footer: | # 注入到页面内容之后的内容，例如各种额外的脚本文件
+    <script src='https://unpkg.com/mermaid/dist/mermaid.min.js'></script>
+    <script src="/others/mermaid.js"></script>
