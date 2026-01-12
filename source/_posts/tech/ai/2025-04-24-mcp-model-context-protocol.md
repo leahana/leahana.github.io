@@ -34,9 +34,10 @@ graph LR
 ```
 
 <details>
-<summary><strong>📊 点击展开更多内容</strong></summary>
+<summary>**📊 点击展开更多内容**</summary>
 
 **通俗类比**：
+
 - 🔌 **MCP** = USB Type-C（统一接口标准）
 - 🛠️ **AI Tools** = 外设（鼠标、键盘、硬盘）
 - 🤖 **LLM Apps** = 电脑（即插即用）
@@ -431,7 +432,7 @@ java -jar target/mcp-demo-0.0.1-SNAPSHOT.jar
 **Cherry Studio** 是一款开源的 AI 客户端，支持 MCP 协议，界面友好。
 
 <details>
-<summary><strong>📋 Cherry Studio 配置步骤</strong></summary>
+<summary>**📋 Cherry Studio 配置步骤**</summary>
 
 ##### 1. 安装 Cherry Studio
 
@@ -458,14 +459,17 @@ java -jar target/mcp-demo-0.0.1-SNAPSHOT.jar
 1. 新建对话
 2. 选择支持 MCP 的模型（带🔧扳手图标）
 3. 输入测试提示词：
-   ```
+
+   ```text
    帮我查一下北京的天气
    ```
+
 4. 观察模型是否调用 `get_weather` 工具
 
 ##### 5. 验证结果
 
 成功的输出示例：
+
 ```text
 🌍 北京的天气：晴天，温度 22°C，湿度 45%
 ```
@@ -633,6 +637,7 @@ spring:
 ```
 
 **监控指标**：
+
 - `mcp.tool.invocation.count` - 工具调用次数
 - `mcp.tool.execution.time` - 工具执行时间
 - `mcp.error.count` - 错误次数
@@ -810,29 +815,34 @@ graph TD
 ### ✅ MCP 检查清单
 
 <details>
-<summary><strong>📋 开发前检查清单</strong></summary>
+<summary>**📋 开发前检查清单**</summary>
 
 #### 需求确认
+
 - [ ] 确认需要跨应用复用工具
 - [ ] 确认工具可以标准化描述
 - [ ] 评估 MCP 学习成本可接受
 
 #### 技术选型
+
 - [ ] 选择传输模式（stdio / SSE）
 - [ ] 选择 AI 框架（Spring AI / LangChain）
 - [ ] 确认客户端支持（Claude / 自研）
 
 #### 开发准备
+
 - [ ] 搭建 Spring Boot 项目
 - [ ] 添加 Spring AI MCP 依赖
 - [ ] 配置 IDE 运行环境
 
 #### 测试验证
+
 - [ ] 编写工具单元测试
 - [ ] 使用客户端连接测试
 - [ ] 验证工具调用流程
 
 #### 部署上线
+
 - [ ] 配置生产环境参数
 - [ ] 设置监控告警
 - [ ] 准备回滚方案
@@ -845,11 +855,11 @@ graph TD
 
 | 类型 | 名称 | 链接 |
 |------|------|------|
-| 📖 官方文档 | MCP 官方规范 | https://modelcontextprotocol.io |
-| 📖 官方文档 | Spring AI 文档 | https://docs.spring.io/spring-ai |
-| 🛠️ 工具 | Cherry Studio | https://github.com/CherryHQ/cherry-studio |
-| 🛠️ 工具 | Claude Desktop | https://claude.ai/download |
-| 💬 社区 | MCP Discord | https://discord.gg/mcp |
+| 📖 官方文档 | MCP 官方规范 | <https://modelcontextprotocol.io> |
+| 📖 官方文档 | Spring AI 文档 | <https://docs.spring.io/spring-ai> |
+| 🛠️ 工具 | Cherry Studio | <https://github.com/CherryHQ/cherry-studio> |
+| 🛠️ 工具 | Claude Desktop | <https://claude.ai/download> |
+| 💬 社区 | MCP Discord | <https://discord.gg/mcp> |
 | 📺 视频 | MCP 入门教程 | YouTube 搜索 "MCP tutorial" |
 
 ---
@@ -979,6 +989,12 @@ MCP (SSE)：        ~20-50ms
 
 ---
 
-*💻 用 MCP 连接 AI 世界，🔌 让工具像 USB 一样即插即用*
+## 💪 总结
 
-*📅 最后更新：2025-04-24 | 👤 作者：MamimiJa Nai | 🏷️ 技术栈：Spring AI 1.0.0-M6*
+💻 用 MCP 连接 AI 世界，🔌 让工具像 USB 一样即插即用
+
+---
+
+### 📝 文档信息
+
+📅 最后更新：2025-04-24 | 👤 作者：MamimiJa Nai | 🏷️ 技术栈：Spring AI 1.0.0-M6
