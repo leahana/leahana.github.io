@@ -29,9 +29,6 @@ importers:
       hexo-generator-tag:
         specifier: ^2.0.0
         version: 2.0.0
-      hexo-mermaid:
-        specifier: ^1.0.0
-        version: 1.0.0
       hexo-renderer-ejs:
         specifier: ^2.0.0
         version: 2.0.0
@@ -777,9 +774,6 @@ packages:
   hexo-log@4.1.0:
     resolution: {integrity: sha512-i2Sgxk8Cgx5viSjq5qW5N/rBFfwoCKQcH8qnnW1fawCapcdEAhIsq+Y3vbrs9bssyDlyU6Vqm4oQmosREaNI7Q==}
     engines: {node: '>=14'}
-
-  hexo-mermaid@1.0.0:
-    resolution: {integrity: sha512-eg68qmFuzMH2wktd478BQojgIGZlOgRiNfIJr+oAdWqS2Z3wJd3nM8G3ri28CeZyaL+jWGyuTb9Kfo4fpfKTuA==}
 
   hexo-pagination@3.0.0:
     resolution: {integrity: sha512-8oo1iozloZo7TojPVYg4IxL3SJKCBdSJ908fTlIxIK7TWJIKdYnQlW31+12DBJ0NhVZA/lZisPObGF08wT8fKw==}
@@ -2511,10 +2505,6 @@ snapshots:
   hexo-log@4.1.0:
     dependencies:
       picocolors: 1.1.1
-
-  hexo-mermaid@1.0.0:
-    dependencies:
-      deep-assign: 2.0.0
 
   hexo-pagination@3.0.0: {}
 
