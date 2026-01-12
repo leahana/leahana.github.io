@@ -8,15 +8,12 @@ toc: true
 ---
 
 > 🎯 **一句话定位**：让 AI 应用像 USB 设备一样即插即用的**通用协议标准**
-
+>
 > 💡 **核心价值**：解决 AI 工具生态的"巴别塔"问题——每个 AI 应用都说不同的语言，MCP 让它们统一说"普通话"。
 
 ---
 
 ## 📖 3分钟速览版
-
-<details>
-<summary><strong>📊 点击展开 MCP 核心概念</strong></summary>
 
 ### 🔌 MCP 是什么？
 
@@ -35,6 +32,9 @@ graph LR
     style E fill:#c8e6c9
     style F fill:#c8e6c9
 ```
+
+<details>
+<summary><strong>📊 点击展开更多内容</strong></summary>
 
 **通俗类比**：
 - 🔌 **MCP** = USB Type-C（统一接口标准）
@@ -426,31 +426,65 @@ java -jar target/mcp-demo-0.0.1-SNAPSHOT.jar
 
 ### 🎮 3.3 客户端连接测试
 
-#### 使用 Cherry Studio
+#### 方法一：Cherry Studio（推荐）
 
+**Cherry Studio** 是一款开源的 AI 客户端，支持 MCP 协议，界面友好。
+
+<details>
+<summary><strong>📋 Cherry Studio 配置步骤</strong></summary>
+
+##### 1. 安装 Cherry Studio
+
+访问 [GitHub Releases](https://github.com/CherryHQ/cherry-studio/releases) 下载对应系统版本。
+
+##### 2. 配置 MCP 服务器
+
+- 打开 Cherry Studio
+- 进入 **设置** → **MCP 服务器**
+- 点击 **添加本地服务器**
+
+##### 3. 配置参数
+
+| 参数 | 值 | 说明 |
+|------|-----|------|
+| 名称 | `weather-mcp-server` | 服务器标识 |
+| 命令 | `java -jar /absolute/path/to/mcp-demo.jar` | 完整绝对路径 |
+| 类型 | `stdio` | 标准输入输出模式 |
+
+> ⚠️ **注意**：JAR 包路径必须使用**绝对路径**，相对路径可能导致启动失败。
+
+##### 4. 测试工具调用
+
+1. 新建对话
+2. 选择支持 MCP 的模型（带🔧扳手图标）
+3. 输入测试提示词：
+   ```
+   帮我查一下北京的天气
+   ```
+4. 观察模型是否调用 `get_weather` 工具
+
+##### 5. 验证结果
+
+成功的输出示例：
 ```text
-1️⃣ 安装 Cherry Studio
-   下载：https://github.com/CherryHQ/cherry-studio/releases
-
-2️⃣ 配置 MCP 服务器
-   设置 → MCP 服务器 → 添加本地服务器
-
-3️⃣ 配置参数
-   ├─ 名称：weather-mcp-server
-   ├─ 命令：java -jar /path/to/mcp-demo.jar
-   └─ 类型：stdio
-
-4️⃣ 测试工具
-   新建对话 → 选择带扳手图标的模型 → 输入：
-   "帮我查一下北京的天气"
-
-5️⃣ 查看结果
-   模型应该会调用 get_weather 工具并返回结果
+🌍 北京的天气：晴天，温度 22°C，湿度 45%
 ```
 
-#### 使用 Claude Desktop
+</details>
 
-创建配置文件 `~/Library/Application Support/Claude/claude_desktop_config.json`：
+#### 方法二：Claude Desktop
+
+**Claude Desktop** 是 Anthropic 官方桌面客户端，原生支持 MCP。
+
+##### 配置文件位置
+
+| 操作系统 | 配置文件路径 |
+|---------|-------------|
+| macOS | `~/Library/Application Support/Claude/claude_desktop_config.json` |
+| Windows | `%APPDATA%\Claude\claude_desktop_config.json` |
+| Linux | `~/.config/Claude/claude_desktop_config.json` |
+
+##### 配置内容
 
 ```json
 {
@@ -459,11 +493,52 @@ java -jar target/mcp-demo-0.0.1-SNAPSHOT.jar
       "command": "java",
       "args": [
         "-jar",
-        "/path/to/mcp-demo-0.0.1-SNAPSHOT.jar"
+        "/absolute/path/to/mcp-demo-0.0.1-SNAPSHOT.jar"
       ]
     }
   }
 }
+```
+
+##### 验证步骤
+
+1. 保存配置文件
+2. 重启 Claude Desktop
+3. 在对话中输入：`查询上海的天气`
+4. 查看是否正确调用工具
+
+#### 方法三：命令行调试
+
+使用 `stdio` 模式直接调试：
+
+```bash
+# 启动 MCP 服务器
+java -jar target/mcp-demo-0.0.1-SNAPSHOT.jar
+
+# 发送初始化请求（JSON-RPC 格式）
+echo '{"jsonrpc":"2.0","id":1,"method":"initialize","params":{"capabilities":{},"clientInfo":{"name":"test","version":"1.0"}}}' | java -jar target/mcp-demo-0.0.1-SNAPSHOT.jar
+```
+
+#### 测试检查清单
+
+```text
+✅ 测试验证清单：
+
+基础功能
+├─ [ ] MCP 服务器正常启动
+├─ [ ] 工具列表正确返回（tools/list）
+├─ [ ] 单个工具调用成功（tools/call）
+└─ [ ] 错误处理正常工作
+
+客户端集成
+├─ [ ] Cherry Studio 连接成功
+├─ [ ] Claude Desktop 连接成功
+└─ [ ] 工具调用链路完整
+
+异常场景
+├─ [ ] 无效参数返回明确错误
+├─ [ ] 服务重启后自动重连
+└─ [ ] 日志输出可追踪问题
 ```
 
 ---
