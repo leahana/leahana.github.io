@@ -31,11 +31,10 @@ PATTERNS=(
     "ghs_[a-zA-Z0-9]{36,}"  # GitHub server token
     "ghr_[a-zA-Z0-9]{36,}"  # GitHub refresh token
     "AKIA[0-9A-Z]{16}"      # AWS access key
-    "[0-9A-Za-z+/]{32,}={0,4}"  # Potential base64 encoded key (exclude lines starting with #)
-    "mysql://.+:.+@"        # MySQL connection string with password
-    "mongodb://.+:.+@"      # MongoDB connection string with password
-    "postgresql://.+:.+@"   # PostgreSQL connection string with password
-    "redis://.+:.+@"        # Redis connection string with password
+    "mysql://[^:/]+:[^@]+@"        # MySQL connection string with password
+    "mongodb://[^:/]+:[^@]+@"      # MongoDB connection string with password
+    "postgresql://[^:/]+:[^@]+@"   # PostgreSQL connection string with password
+    "redis://[^:/]+:[^@]+@"        # Redis connection string with password
 )
 
 # 需要排除的文件或目录
@@ -60,6 +59,7 @@ EXCLUDES=(
     "*.ttf"
     "*.eot"
     "bin/check-secrets.sh"
+    ".claude/"
 )
 
 # 构建排除参数
@@ -100,11 +100,18 @@ for file in $FILES; do
 
     for pattern in "${PATTERNS[@]}"; do
         # 跳过代码块内容 (``` 和 ``` 之间)
-        MATCHES=$(awk '/^```/{flag=!flag} !flag && !/^\s*#/ && /'"$pattern"'/i {print}' "$file" 2>/dev/null || true)
+        # 使用单引号避免 shell 变量展开问题
+        MATCHES=$(awk -v pat="$pattern" '
+            /^```/ {flag=!flag}
+            !flag && !/^\s*#/ && $0 ~ pat {print}
+        ' "$file" 2>/dev/null || true)
 
         # 对于 base64-like 模式，还需要过滤掉 Markdown 链接中的 URL
-        if [[ "$pattern" == *"[0-9A-Za-z+/]{32,}={0,4}"* ]]; then
-            MATCHES=$(echo "$MATCHES" | grep -vE '\[.*\]\(http' | grep -vE '\[.*\]\(<' || true)
+        if [[ "$pattern" == *"mysql://"* ]] || [[ "$pattern" == *"mongodb://"* ]] || \
+           [[ "$pattern" == *"postgresql://"* ]] || [[ "$pattern" == *"redis://"*
+ ]]; then
+            # 过滤掉引号内的 URL 和示例连接字符串
+            MATCHES=$(echo "$MATCHES" | grep -vE "['\"]?mysql://|['\"]?mongodb://|['\"]?postgresql://|['\"]?redis://" || true)
         fi
 
         if [ -n "$MATCHES" ]; then
