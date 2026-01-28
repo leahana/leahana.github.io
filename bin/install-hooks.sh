@@ -15,7 +15,7 @@ cat > "$HOOKS_DIR/pre-commit" << 'EOF'
 #!/bin/bash
 # Pre-commit hook: 检查敏感信息
 
-bash scripts/check-secrets.sh --staged
+bash bin/check-secrets.sh --staged
 EOF
 
 chmod +x "$HOOKS_DIR/pre-commit"
@@ -26,7 +26,7 @@ cat > "$HOOKS_DIR/pre-push" << 'EOF'
 # Pre-push hook: 推送前再次检查敏感信息
 
 echo "🔄 推送前检查..."
-bash scripts/check-secrets.sh
+bash bin/check-secrets.sh
 EOF
 
 chmod +x "$HOOKS_DIR/pre-push"
