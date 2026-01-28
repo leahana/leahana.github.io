@@ -99,13 +99,12 @@ for file in $FILES; do
     fi
 
     for pattern in "${PATTERNS[@]}"; do
-        # Skip lines starting with # (comments) when checking base64-like patterns
-        if [[ "$pattern" == *"[0-9A-Za-z+/]{32,}={0,4}"* ]] || \
-           [[ "$pattern" == *"://.+:.+@"* ]]; then
-            # Filter out comment lines (lines starting with #) for these patterns
-            MATCHES=$(grep -vE '^\s*#' "$file" | grep -iE "$pattern" || true)
-        else
-            MATCHES=$(grep -iE "$pattern" "$file" 2>/dev/null || true)
+        # 跳过代码块内容 (``` 和 ``` 之间)
+        MATCHES=$(awk '/^```/{flag=!flag} !flag && !/^\s*#/ && /'"$pattern"'/i {print}' "$file" 2>/dev/null || true)
+
+        # 对于 base64-like 模式，还需要过滤掉 Markdown 链接中的 URL
+        if [[ "$pattern" == *"[0-9A-Za-z+/]{32,}={0,4}"* ]]; then
+            MATCHES=$(echo "$MATCHES" | grep -vE '\[.*\]\(http' | grep -vE '\[.*\]\(<' || true)
         fi
 
         if [ -n "$MATCHES" ]; then
