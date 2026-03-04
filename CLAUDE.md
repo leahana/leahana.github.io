@@ -151,6 +151,45 @@ This practice ensures:
 - `post_asset_folder: true` is enabled, allowing post-specific asset folders
 - Assets can be placed alongside posts in `source/_posts/<post-name>/`
 
+### Image Management (博客图片管理)
+
+All blog images are hosted in a **separate GitHub repository**: [`leahana/blog-images`](https://github.com/leahana/blog-images) and served via jsDelivr CDN.
+
+**Folder Structure** (in blog-images repo):
+```
+blog-images/
+├── AGENTS.md              ← Image management guidelines
+├── tech/
+│   ├── ai/
+│   │   └── 2026-03-04-ai-api-key-management/
+│   │       ├── overview.png
+│   │       ├── problem.png
+│   │       └── solution.png
+│   └── backend/
+├── design/
+└── common/
+```
+
+**Naming Convention**:
+- Folder name matches markdown filename (without `.md`)
+- Image names: `overview.png`, `problem.png`, `solution.png`, `step-N.png`
+- CDN URL format: `https://cdn.jsdelivr.net/gh/leahana/blog-images@dev/{path}`
+
+**Image Reference in Posts**:
+```markdown
+![image description](https://cdn.jsdelivr.net/gh/leahana/blog-images@dev/tech/ai/2026-03-04-ai-api-key-management/overview.png)
+```
+
+**Branch Strategy**:
+- `dev` branch: daily image uploads (use `@dev` in CDN URLs)
+- `main` branch: archive only — merge via PR + tag periodically (e.g., `v2026.03`)
+
+**Pre-push Image Verification**:
+- Before pushing to hexo repo, `bin/check-images.sh` automatically verifies all CDN image URLs
+- 404 errors: **blocks push** (image not yet uploaded to blog-images)
+- Network timeouts: **warning only** (may be connectivity issue)
+- Install/reinstall hooks with: `pnpm hooks:install`
+
 ### Drafts
 
 Draft posts are not rendered by default. Use `--drafts` flag with `hexo server` or `hexo generate` to include them.

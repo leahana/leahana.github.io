@@ -23,10 +23,11 @@ chmod +x "$HOOKS_DIR/pre-commit"
 # 创建 pre-push hook
 cat > "$HOOKS_DIR/pre-push" << 'EOF'
 #!/bin/bash
-# Pre-push hook: 推送前再次检查敏感信息
+# Pre-push hook: 推送前检查敏感信息和图片URL
 
 echo "🔄 推送前检查..."
 bash bin/check-secrets.sh
+bash bin/check-images.sh
 EOF
 
 chmod +x "$HOOKS_DIR/pre-push"

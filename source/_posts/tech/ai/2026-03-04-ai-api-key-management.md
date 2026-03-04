@@ -20,6 +20,8 @@ toc: true
 
 > **核心理念**：密钥是基础设施，不是代码——一切 secret 只应存在于一个地方，一切消费者只应通过环境变量读取。
 
+![API密钥管理：从混乱到集中管理的对比](https://cdn.jsdelivr.net/gh/leahana/blog-images@dev/tech/ai/2026-03-04-ai-api-key-management/before-after.png)
+
 ---
 
 ## 3分钟速览版
