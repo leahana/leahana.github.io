@@ -149,19 +149,17 @@ graph LR
 ### 2.2 加载机制
 
 ```mermaid
-sequenceDiagram
-    participant User as 用户
-    participant Zsh as ~/.zshrc
-    participant Env as ~/.config/opencode/.env
-    participant Tool as AI工具
+graph TD
+    A["用户打开终端"] --> B["执行 source zshrc"]
+    B --> C["set -a 开启自动export"]
+    C --> D["source .env文件"]
+    D --> E["set +a 恢复"]
+    E --> F["环境变量加载到环境"]
+    F --> G["工具启动时继承变量"]
+    G --> H["工具读取变量使用"]
 
-    User->>Zsh: 打开终端/source ~/.zshrc
-    Zsh->>Env: set -a; source .env; set +a
-    Env-->>Zsh: 导出所有变量到环境
-    Zsh-->>Tool: 工具启动时继承环境变量
-    Tool->>Tool: 读取变量
-
-    Note over Zsh,Env: set -a 确保自动 export
+    style A fill:#e1f5ff
+    style H fill:#c8e6c9
 ```
 
 关键代码（`~/.zshrc` 中）：
