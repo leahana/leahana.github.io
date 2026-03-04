@@ -153,15 +153,15 @@ sequenceDiagram
     participant User as 用户
     participant Zsh as ~/.zshrc
     participant Env as ~/.config/opencode/.env
-    participant Tool as AI 工具
+    participant Tool as AI工具
 
-    User->>Zsh: 打开终端 / source ~/.zshrc
+    User->>Zsh: 打开终端/source ~/.zshrc
     Zsh->>Env: set -a; source .env; set +a
     Env-->>Zsh: 导出所有变量到环境
     Zsh-->>Tool: 工具启动时继承环境变量
-    Tool->>Tool: 读取 $ZHIPU_API_KEY 等
+    Tool->>Tool: 读取变量
 
-    note over Zsh,Env: set -a 确保所有变量自动 export
+    Note over Zsh,Env: set -a 确保自动 export
 ```
 
 关键代码（`~/.zshrc` 中）：
