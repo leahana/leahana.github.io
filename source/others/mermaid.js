@@ -1,26 +1,28 @@
 (() => {
-  // 初始化函数（兼容 Mermaid 11.x）
+  // 初始化函数（Mermaid 10.6.1）
   const init = () => {
     if (typeof mermaid === "undefined") {
       // 重试
       setTimeout(init, 200);
     } else {
-      // 配置 Mermaid 11.x
+      // 配置 Mermaid 10.x
       mermaid.initialize({
         startOnLoad: true,
         theme: "default",
         securityLevel: "loose",
       });
-      // 首次渲染
-      mermaid.run?.();
+      // 首次渲染 - 使用 contentLoaded() 或 contentLoaded
+      if (mermaid.contentLoaded) {
+        mermaid.contentLoaded();
+      }
     }
   };
 
   // 页面更新时的重载函数（PJAX 后）
-  const reload = async () => {
-    // Mermaid 11.x: 使用 run() 而不是 init()
-    if (mermaid.run) {
-      await mermaid.run();
+  const reload = () => {
+    // Mermaid 10.x: 使用 contentLoaded()
+    if (mermaid.contentLoaded) {
+      mermaid.contentLoaded();
     }
   };
 
