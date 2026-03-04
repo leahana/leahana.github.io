@@ -58,6 +58,8 @@ EXCLUDES=(
     "*.woff2"
     "*.ttf"
     "*.eot"
+    "source/_posts/"  # Markdown documents may contain example code
+    "source/docs/"    # Documentation files with code examples
     "bin/check-secrets.sh"
     ".claude/"
 )
