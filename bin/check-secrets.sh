@@ -58,8 +58,6 @@ EXCLUDES=(
     "*.woff2"
     "*.ttf"
     "*.eot"
-    "source/_posts/"  # Markdown documents may contain example code
-    "source/docs/"    # Documentation files with code examples
     "bin/check-secrets.sh"
     ".claude/"
 )
@@ -115,6 +113,10 @@ for file in $FILES; do
             # 过滤掉引号内的 URL 和示例连接字符串
             MATCHES=$(echo "$MATCHES" | grep -vE "['\"]?mysql://|['\"]?mongodb://|['\"]?postgresql://|['\"]?redis://" || true)
         fi
+
+        # 过滤掉文档中的占位符示例
+        # 示例: <your-xxx-key>, -key>, xxx, your-api-key, your-xxx, <xxx>, etc.
+        MATCHES=$(echo "$MATCHES" | grep -vE "<your-|^\s*sk-xxx|-key>|=\s*xxx|=\s*your-|=\s*<" || true)
 
         if [ -n "$MATCHES" ]; then
             echo -e "${RED}⚠️  发现潜在敏感信息: $file${NC}"
