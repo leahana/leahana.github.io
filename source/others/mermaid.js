@@ -5,10 +5,18 @@
       // 重试
       setTimeout(init, 200);
     } else {
-      // 配置 Mermaid 10.x
+      // 配置 Mermaid 10.x - 优化外观以适配 Kratos-Rebirth 主题
       mermaid.initialize({
         startOnLoad: true,
-        theme: "default",
+        theme: "neutral",
+        themeVariables: {
+          primaryColor: "#f0f4ff",
+          primaryTextColor: "#333",
+          primaryBorderColor: "#ccc",
+          lineColor: "#888",
+          fontSize: "14px",
+          fontFamily: "-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif",
+        },
         securityLevel: "loose",
       });
       // 首次渲染 - 使用 contentLoaded() 或 contentLoaded

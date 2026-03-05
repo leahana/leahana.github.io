@@ -79,3 +79,25 @@ pre
 
 .widget-kratos-about .about-photo
   border-radius: 50%  // 确保头像图片本身是圆形
+
+// ==================
+// Mermaid 图表样式优化
+// ==================
+
+.mermaid
+  background: #f8f9fa
+  border-radius: 8px
+  padding: 16px
+  margin: 16px 0
+  overflow-x: auto
+  text-align: center
+  transition: box-shadow 0.3s ease
+
+  // 悬停效果
+  &:hover
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08)
+
+  // 暗色模式下的背景色
+  @media (prefers-color-scheme: dark)
+    background: #2a2a2a
+    border: 1px solid #444
