@@ -1,4 +1,17 @@
 (() => {
+  // 移除 Mermaid 图表背景 - 使其透明
+  const removeMermaidBg = () => {
+    document.querySelectorAll(".mermaid svg").forEach((svg) => {
+      // 移除背景矩形
+      const bgRect = svg.querySelector("rect[fill]");
+      if (bgRect) {
+        bgRect.remove();
+      }
+      // 设置 SVG 背景为透明
+      svg.style.backgroundColor = "transparent";
+    });
+  };
+
   // 初始化函数（Mermaid 10.6.1）
   const init = () => {
     if (typeof mermaid === "undefined") {
@@ -23,6 +36,8 @@
       if (mermaid.contentLoaded) {
         mermaid.contentLoaded();
       }
+      // 初始化后移除背景
+      setTimeout(removeMermaidBg, 300);
     }
   };
 
@@ -32,6 +47,8 @@
     if (mermaid.contentLoaded) {
       mermaid.contentLoaded();
     }
+    // 重载后移除背景
+    setTimeout(removeMermaidBg, 300);
   };
 
   // 加载时初始化一次
