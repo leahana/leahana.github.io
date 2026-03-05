@@ -150,6 +150,8 @@ graph LR
 
 ### 2.2 加载机制
 
+<div align="center">
+
 ```mermaid
 graph TD
     A["用户打开终端"] --> B["执行 source zshrc"]
@@ -163,6 +165,8 @@ graph TD
     style A fill:#e1f5ff
     style H fill:#c8e6c9
 ```
+
+</div>
 
 关键代码（`~/.zshrc` 中）：
 
