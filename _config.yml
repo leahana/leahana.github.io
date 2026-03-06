@@ -107,6 +107,7 @@ exclude:
 # Skip render (不渲染为文章的路径)
 skip_render:
   - docs/**
+  - README.md
 
 # Extensions
 ## Plugins: https://hexo.io/plugins/

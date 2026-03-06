@@ -1,11 +1,4 @@
----
-layout: page
-title: 博客导航
-date: 2024-01-01 00:00:00 +0800
-comments: false
----
-
-# 🎮 MamimiJa Nai's Blog
+# MamimiJa Nai's Blog
 
 > 梦里不觉秋已深，余情岂是为他人。
 
