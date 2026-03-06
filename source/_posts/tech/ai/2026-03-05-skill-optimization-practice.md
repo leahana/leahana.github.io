@@ -2,7 +2,7 @@
 layout: post
 title: Claude Code Skill 设计与优化实践：用多模型协作迭代 optimize-doc
 date: 2026-03-05 20:00:00 +0800
-categories: [tech, ai-tools]
+categories: [tech, ai]
 tags:
   - claude-code
   - skill

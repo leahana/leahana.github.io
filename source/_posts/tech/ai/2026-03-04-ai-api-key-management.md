@@ -2,17 +2,8 @@
 layout: post
 title: AI 工具 API Key 统一管理：从 .env 到企业级密钥治理
 date: 2026-03-04 12:00:00 +0800
-categories:
-  - tech
-  - devops
-tags:
-  - api-key
-  - env
-  - secret-management
-  - claude-code
-  - mcp
-  - docker
-  - security
+categories: [tech, ai]
+tags: [api-key, secret-management, claude-code, mcp, docker, security]
 toc: true
 ---
 
