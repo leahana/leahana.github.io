@@ -1,0 +1,5 @@
+# Keep GitHub language stats focused on blog content.
+source/css/custom.styl linguist-detectable=false
+
+# Include Markdown in language statistics for this content-first repo.
+*.md linguist-documentation=false

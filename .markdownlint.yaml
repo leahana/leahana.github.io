@@ -1,0 +1,28 @@
+# Markdownlint 配置
+# 规则参考: https://github.com/DavidAnson/markdownlint/blob/main/doc/Rules.md
+
+default: true
+
+# MD013: 行长度限制
+# 允许普通文本行最多 80 字符，代码块和表格不受限制
+MD013:
+  line_length: 80
+  code_blocks: false
+  tables: false
+
+# MD033: 允许的 HTML 元素
+# 默认禁止 HTML，但允许使用 details/summary（折叠区块）和 br（换行）
+MD033:
+  allowed_elements: ["details", "summary", "br"]
+
+# MD024: 不允许相邻标题重复
+# 设为 false 允许在不同章节使用相同级别的标题（如多个 ## 示例）
+MD024: false
+
+# MD051: 自动链接格式
+# 设为 false 允许使用 <url> 格式的自动链接
+MD051: false
+
+# MD060: 混合使用列表标记
+# 设为 false 允许在同一个列表中混用 * - + 等列表标记
+MD060: false
