@@ -1,0 +1,965 @@
+<!DOCTYPE html>
+<html lang="zh">
+    <head>
+  <!-- 元数据 -->
+  <meta charset="utf-8">
+  
+  
+  <title>Markdown 格式检查指南：确保文档符合 Hexo 规范 | MamimiJa Nai</title>
+  <link rel="canonical" href="https://leahana.github.io/2026/01/08/docs/2025-01-09-markdown-format-check/">
+  <meta name="author" content="Mamimi" />
+  <meta http-equiv="Cache-Control" content="no-transform" />
+  <meta http-equiv="Cache-Control" content="no-siteapp" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="robots" content="index,follow" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
+  <meta name="format-detection" content="telphone=no, email=no" />
+  
+    <meta name="keywords" content="Hexo, Markdown, 格式检查, 规范" />
+  
+  <meta name="description" content="本文档定义了本博客 Markdown 文档的格式检查标准，包括 Front Matter、代码格式、Markdown 语法等规范，并提供自动化检查工具。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Markdown 格式检查指南：确保文档符合 Hexo 规范">
+<meta property="og:url" content="https://leahana.github.io/2026/01/08/docs/2025-01-09-markdown-format-check/index.html">
+<meta property="og:site_name" content="MamimiJa Nai">
+<meta property="og:description" content="本文档定义了本博客 Markdown 文档的格式检查标准，包括 Front Matter、代码格式、Markdown 语法等规范，并提供自动化检查工具。">
+<meta property="og:locale">
+<meta property="article:published_time" content="2026-01-08T08:00:00.000Z">
+<meta property="article:modified_time" content="2026-03-06T09:30:46.395Z">
+<meta property="article:author" content="Mamimi">
+<meta property="article:tag" content="Hexo">
+<meta property="article:tag" content="Markdown">
+<meta property="article:tag" content="格式检查">
+<meta property="article:tag" content="规范">
+<meta name="twitter:card" content="summary">
+  
+  <!-- JSON-LD 结构化数据 -->
+  
+  
+    <script type="application/ld+json">
+    {"@context":"https://schema.org","@type":"BlogPosting","headline":"Markdown 格式检查指南：确保文档符合 Hexo 规范","description":"本文档定义了本博客 Markdown 文档的格式检查标准，包括 Front Matter、代码格式、Markdown 语法等规范，并提供自动化检查工具。","image":"https://leahana.github.io/images/theme/Mamimi.JPG","author":{"@type":"Person","name":"Mamimi"},"publisher":{"@type":"Organization","name":"MamimiJa Nai","logo":{"@type":"ImageObject","url":"https://leahana.github.io/images/theme/Mamimi.JPG"}},"datePublished":"2026-01-08T08:00:00.000Z","dateModified":"2026-03-06T09:30:46.395Z","mainEntityOfPage":{"@type":"WebPage","@id":"https://leahana.github.io/2026/01/08/docs/2025-01-09-markdown-format-check/"}}
+    </script>
+  
+  <!-- 关键 CSS 预加载 -->
+  <link rel="preload" href="/css/kr-core.min.css" as="style" crossorigin>
+  <link rel="preload" href="/css/kr-theme/light.min.css" as="style" crossorigin>
+  <link rel="preload" href="/css/kr-theme/dark.min.css" as="style" crossorigin>
+  <!-- 样式表文件 -->
+  <link rel="stylesheet" id="kratos-css" href="/css/kr-core.min.css" media="all">
+  <link rel="stylesheet" id="theme-light-css" href="/css/kr-theme/light.min.css" media="all">
+  <link rel="stylesheet" id="theme-dark-css" href="/css/kr-theme/dark.min.css" media="(prefers-color-scheme: dark)">
+  
+    <link rel="stylesheet"  id="highlight-css" href="/css/highlight/highlight.js/night-eighties.min.css" media="print" onload="this.media='all'" onerror="this.media='all'"><noscript><link rel="stylesheet" href="/css/highlight/highlight.js/night-eighties.min.css"></noscript>
+  
+  <script src="/js/kr-theme.min.js"></script>
+  <!-- Mermaid 图表库 + 初始化 -->
+  <script src="/vendors/mermaid@latest/dist/mermaid.min.js"></script>
+  <script src="/others/mermaid.js"></script>
+  <link rel="stylesheet"  id="fontawe-css" href="/vendors/font-awesome@4.7.0/css/font-awesome.min.css" media="print" onload="this.media='all'" onerror="this.media='all'"><noscript><link rel="stylesheet" href="/vendors/font-awesome@4.7.0/css/font-awesome.min.css"></noscript>
+  
+    <link rel="stylesheet"  id="nprogress-css" href="/vendors/nprogress@0.2.0/nprogress.css" media="print" onload="this.media='all'" onerror="this.media='all'"><noscript><link rel="stylesheet" href="/vendors/nprogress@0.2.0/nprogress.css"></noscript>
+  
+  
+    <link rel="stylesheet"  href="/vendors/viewerjs@1.11.6/dist/viewer.min.css" media="print" onload="this.media='all'" onerror="this.media='all'"><noscript><link rel="stylesheet" href="/vendors/viewerjs@1.11.6/dist/viewer.min.css"></noscript>
+  
+  <!-- 预先加载的JS文件 -->
+  
+    <script src="/vendors/qr-code-styling@1.6.0-rc.1/lib/qr-code-styling.js"></script>
+  
+  <!-- 自定义站点横幅和背景 -->
+  <style>
+    
+      .kratos-cover.kratos-cover-2 {
+        background-image: url('');
+      }
+      html[data-theme="dark"] .kratos-cover.kratos-cover-2 {
+        background-image: url('');
+      }
+    
+    
+      @media(min-width:768px) {
+        body.custom-background {
+          background-image: url('/images/theme/background.jpg');
+        }
+        html[data-theme="dark"] body.custom-background {
+          background-image: url('/images/theme/background.jpg');
+        }
+      }
+    
+    
+      .widget-kratos-about .photo-background {
+        background-image: url('/images/theme/avatar-bg.jpg');
+      }
+      html[data-theme="dark"] .widget-kratos-about .photo-background {
+        background-image: url('/images/theme/avatar-bg.jpg');
+      }
+    
+  </style>
+
+  <!-- 额外的追加注入项 -->
+  
+    <style>body.custom-background{background-image:url('/images/theme/background.jpg')!important;background-attachment:fixed!important;background-size:cover!important;background-position:center!important;}#kratos-widget-area .widget-kratos-about .photo-background{background-image:url('/images/theme/avatar-bg.jpg')!important;background-size:cover!important;background-position:35% 35%!important;background-repeat:no-repeat!important;}</style><link rel="stylesheet" href="/css/custom.css">
+  
+<meta name="generator" content="Hexo 8.1.1"></head>
+
+    <body class="custom-background">
+        <div id="kratos-wrapper">
+    <div id="kratos-page">
+        <div id="kratos-header">
+            <header id="kratos-desktop-topnav" class="kratos-topnav">
+                <div class="container">
+                    <div class="nav-header">
+                        <nav id="kratos-menu-wrap">
+                            <ul id="kratos-primary-menu" class="sf-menu">
+                                
+                                    <li>
+                                        
+                                            <a href="/">
+                                        
+                                            
+                                                <i class="fa fa-fa-home"></i>
+                                            
+                                            首页
+                                        </a>
+                                        
+                                    </li>
+                                
+                                    <li>
+                                        
+                                            <a href="/archives">
+                                        
+                                            
+                                                <i class="fa fa-fa-archive"></i>
+                                            
+                                            归档
+                                        </a>
+                                        
+                                    </li>
+                                
+                                    <li>
+                                        
+                                            <a href="/categories">
+                                        
+                                            
+                                                <i class="fa fa-fa-folder-open"></i>
+                                            
+                                            分类
+                                        </a>
+                                        
+                                    </li>
+                                
+                                    <li>
+                                        
+                                            <a href="/tags">
+                                        
+                                            
+                                                <i class="fa fa-fa-tags"></i>
+                                            
+                                            标签
+                                        </a>
+                                        
+                                    </li>
+                                
+                                    <li>
+                                        
+                                            <a href="/search">
+                                        
+                                            
+                                                <i class="fa fa-fa-search"></i>
+                                            
+                                            搜索
+                                        </a>
+                                        
+                                    </li>
+                                
+                                    <li>
+                                        
+                                            <a>
+                                        
+                                            
+                                                <i class="fa fa-fa-th-list"></i>
+                                            
+                                            更多
+                                        </a>
+                                        
+                                            <ul class="sub-menu">
+                                                
+                                                    <li>
+                                                        <a href="/about">
+                                                            
+                                                                <i class="fa fa-fa-user"></i>
+                                                            
+                                                            关于我
+                                                        </a>
+                                                    </li>
+                                                
+                                                    <li>
+                                                        <a href="/links">
+                                                            
+                                                                <i class="fa fa-fa-link"></i>
+                                                            
+                                                            友情链接
+                                                        </a>
+                                                    </li>
+                                                
+                                            </ul>
+                                        
+                                    </li>
+                                
+                            </ul>
+                        </nav>
+                    </div>
+                </div>
+            </header>
+            <header id="kratos-mobile-topnav" class="kratos-topnav">
+                <div class="container">
+                    <div class="color-logo"><a href="/">MamimiJa Nai</a></div>
+                    <div id="kratos-nav-toggle-wrapper" class="nav-toggle">
+                        <a id="kratos-nav-toggle" class="kratos-nav-toggle">
+                            <i></i>
+                        </a>
+                    </div>
+                </div>
+            </header>
+        </div>
+        <div class="kratos-start kratos-hero-2">
+            <!-- <div class="kratos-overlay"></div> -->
+            <div class="kratos-cover kratos-cover-2 text-center">
+                <div class="desc desc2 animate-box">
+                    <a href="/">
+                        <h2>MamimiJa Nai</h2> <br />
+                        <span></span>
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <div id="kratos-blog-post">
+            <div class="container">
+                <div id="main" class="row">
+
+
+        
+
+            
+
+            <section class="kr-main-col col-md-8">
+
+        
+
+            <article itemscope itemtype="https://schema.org/Article">
+    <link itemprop="mainEntityOfPage" href="https://leahana.github.io/2026/01/08/docs/2025-01-09-markdown-format-check/">
+    <div class="kratos-hentry kratos-page-inner clearfix">
+        <header class="kratos-page-header">
+            
+                <h1 class="kratos-page-title text-center" itemprop="name headline">Markdown 格式检查指南：确保文档符合 Hexo 规范</h1>
+            
+            <ul class="kratos-page-meta text-center">
+                <li><time datetime="2026-01-08T08:00:00.000Z" itemprop="datePublished"><i class="fa fa-calendar"></i> 2026-01-08</time></li>
+                <li itemprop="author" itemscope itemtype="https://schema.org/Person">
+                    <i class="fa fa-user"></i> 作者 <span itemprop="name">Mamimi</span>
+                </li>
+                
+                    <li>
+                        <i class="fa fa-edit"></i> 
+                        
+                        
+                            ~4.70K
+                        
+                        字
+                    </li>
+                
+                
+                
+            </ul>
+        </header>
+        <div class="kratos-page-content kr-post">
+            
+            
+            
+                <div class="kratos-post-inner-toc toc-div-class" >
+                    <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link"><span class="toc-number">1.</span> <span class="toc-text">Markdown 格式检查指南</span></a></li><li class="toc-item toc-level-2"><a class="toc-link"><span class="toc-number">2.</span> <span class="toc-text">📋 目录</span></a></li><li class="toc-item toc-level-2"><a class="toc-link"><span class="toc-number">3.</span> <span class="toc-text">Front Matter 规范</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link"><span class="toc-number">3.1.</span> <span class="toc-text">标准格式</span></a></li><li class="toc-item toc-level-3"><a class="toc-link"><span class="toc-number">3.2.</span> <span class="toc-text">字段说明</span></a></li><li class="toc-item toc-level-3"><a class="toc-link"><span class="toc-number">3.3.</span> <span class="toc-text">关键要求</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link"><span class="toc-number">4.</span> <span class="toc-text">Markdownlint 规范</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link"><span class="toc-number">4.1.</span> <span class="toc-text">核心规则</span></a></li><li class="toc-item toc-level-3"><a class="toc-link"><span class="toc-number">4.2.</span> <span class="toc-text">关键规则说明</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link"><span class="toc-number">4.2.1.</span> <span class="toc-text">MD025 - 单一标题</span></a></li><li class="toc-item toc-level-4"><a class="toc-link"><span class="toc-number">4.2.2.</span> <span class="toc-text">MD031&#x2F;MD032 - 列表前后空行</span></a></li><li class="toc-item toc-level-4"><a class="toc-link"><span class="toc-number">4.2.3.</span> <span class="toc-text">MD013 - 行长度</span></a></li><li class="toc-item toc-level-4"><a class="toc-link"><span class="toc-number">4.2.4.</span> <span class="toc-text">中英文空格规范</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link"><span class="toc-number">4.3.</span> <span class="toc-text">Markdownlint 配置</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link"><span class="toc-number">5.</span> <span class="toc-text">代码规范</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link"><span class="toc-number">5.1.</span> <span class="toc-text">代码块格式</span></a></li><li class="toc-item toc-level-3"><a class="toc-link"><span class="toc-number">5.2.</span> <span class="toc-text">常用语言标识</span></a></li><li class="toc-item toc-level-3"><a class="toc-link"><span class="toc-number">5.3.</span> <span class="toc-text">代码规范要求</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link"><span class="toc-number">6.</span> <span class="toc-text">格式检查清单</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link"><span class="toc-number">6.1.</span> <span class="toc-text">Front Matter 检查</span></a></li><li class="toc-item toc-level-3"><a class="toc-link"><span class="toc-number">6.2.</span> <span class="toc-text">Markdown 语法检查</span></a></li><li class="toc-item toc-level-3"><a class="toc-link"><span class="toc-number">6.3.</span> <span class="toc-text">Markdownlint 检查</span></a></li><li class="toc-item toc-level-3"><a class="toc-link"><span class="toc-number">6.4.</span> <span class="toc-text">文件命名检查</span></a></li><li class="toc-item toc-level-3"><a class="toc-link"><span class="toc-number">6.5.</span> <span class="toc-text">内容格式检查</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link"><span class="toc-number">7.</span> <span class="toc-text">常见格式错误</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link"><span class="toc-number">7.1.</span> <span class="toc-text">错误 1：Front Matter 格式错误</span></a></li><li class="toc-item toc-level-3"><a class="toc-link"><span class="toc-number">7.2.</span> <span class="toc-text">错误 2：日期格式不完整</span></a></li><li class="toc-item toc-level-3"><a class="toc-link"><span class="toc-number">7.3.</span> <span class="toc-text">错误 3：代码块缺少语言标识</span></a></li><li class="toc-item toc-level-3"><a class="toc-link"><span class="toc-number">7.4.</span> <span class="toc-text">错误 4：列表前后缺少空行（MD031&#x2F;MD032）</span></a></li><li class="toc-item toc-level-3"><a class="toc-link"><span class="toc-number">7.5.</span> <span class="toc-text">错误 5：文档中使用 H1 标题（MD025）</span></a></li><li class="toc-item toc-level-3"><a class="toc-link"><span class="toc-number">7.6.</span> <span class="toc-text">错误 6：中英文之间缺少空格</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link"><span class="toc-number">8.</span> <span class="toc-text">自动化检查</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link"><span class="toc-number">8.1.</span> <span class="toc-text">使用 Markdownlint 工具检查</span></a></li><li class="toc-item toc-level-3"><a class="toc-link"><span class="toc-number">8.2.</span> <span class="toc-text">使用脚本检查格式</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link"><span class="toc-number">9.</span> <span class="toc-text">相关文档</span></a></li><li class="toc-item toc-level-2"><a class="toc-link"><span class="toc-number">10.</span> <span class="toc-text">更新记录</span></a></li></ol>
+                </div>
+            
+            <hr />
+            <div itemprop="articleBody"><h2><span id="markdown-格式检查指南">Markdown 格式检查指南</span></h2><blockquote>
+<p>本文档定义了本博客 Markdown 文档的格式检查标准，专注于确保文档符合 Hexo 规范和 Markdown 语法要求。</p>
+<p>💡 <strong>提示</strong>：本文档为精简版，详细错误示例和检查脚本可参考相关文档或独立文件。</p>
+</blockquote>
+<h2><span id="目录">📋 目录</span></h2><ul>
+<li><a href="#front-matter-%E8%A7%84%E8%8C%83">Front Matter 规范</a></li>
+<li><a href="#markdownlint-%E8%A7%84%E8%8C%83">Markdownlint 规范</a></li>
+<li><a href="#%E4%BB%A3%E7%A0%81%E8%A7%84%E8%8C%83">代码规范</a></li>
+<li><a href="#%E6%A0%BC%E5%BC%8F%E6%A3%80%E6%9F%A5%E6%B8%85%E5%8D%95">格式检查清单</a></li>
+<li><a href="#%E5%B8%B8%E8%A7%81%E6%A0%BC%E5%BC%8F%E9%94%99%E8%AF%AF">常见格式错误</a></li>
+<li><a href="#%E8%87%AA%E5%8A%A8%E5%8C%96%E6%A3%80%E6%9F%A5">自动化检查</a></li>
+</ul>
+<hr>
+<h2><span id="front-matter-规范">Front Matter 规范</span></h2><h3><span id="标准格式">标准格式</span></h3><figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">---</span></span><br><span class="line"><span class="attr">layout:</span> <span class="string">post</span></span><br><span class="line"><span class="attr">title:</span> <span class="string">文章标题：吸引人的副标题</span></span><br><span class="line"><span class="attr">date:</span> <span class="string">YYYY-MM-DD</span> <span class="string">HH:mm:ss</span> <span class="string">+0800</span></span><br><span class="line"><span class="attr">categories:</span> [<span class="string">主分类</span>, <span class="string">子分类</span>]</span><br><span class="line"><span class="attr">tags:</span> [<span class="string">tag1</span>, <span class="string">tag2</span>, <span class="string">tag3</span>]</span><br><span class="line"><span class="attr">description:</span> <span class="string">文章描述（可选，但推荐）</span></span><br><span class="line"><span class="attr">toc:</span> <span class="literal">true</span></span><br><span class="line"><span class="meta">---</span></span><br></pre></td></tr></table></figure>
+
+<h3><span id="字段说明">字段说明</span></h3><table>
+<thead>
+<tr>
+<th>字段</th>
+<th>类型</th>
+<th>必填</th>
+<th>说明</th>
+<th>示例</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>layout</code></td>
+<td>string</td>
+<td>是</td>
+<td>布局类型</td>
+<td><code>post</code></td>
+</tr>
+<tr>
+<td><code>title</code></td>
+<td>string</td>
+<td>是</td>
+<td>文章标题</td>
+<td><code>Java 并发编程实战</code></td>
+</tr>
+<tr>
+<td><code>date</code></td>
+<td>string</td>
+<td>是</td>
+<td>发布日期</td>
+<td><code>2026-01-09 14:30:00 +0800</code></td>
+</tr>
+<tr>
+<td><code>categories</code></td>
+<td>array</td>
+<td>是</td>
+<td>分类（数组格式）</td>
+<td><code>[tech, backend]</code></td>
+</tr>
+<tr>
+<td><code>tags</code></td>
+<td>array</td>
+<td>是</td>
+<td>标签（数组格式）</td>
+<td><code>[Java, 并发, 多线程]</code></td>
+</tr>
+<tr>
+<td><code>description</code></td>
+<td>string</td>
+<td>否</td>
+<td>文章描述</td>
+<td><code>深入理解 Java 并发编程</code></td>
+</tr>
+<tr>
+<td><code>toc</code></td>
+<td>boolean</td>
+<td>否</td>
+<td>是否显示目录</td>
+<td><code>true</code></td>
+</tr>
+</tbody></table>
+<h3><span id="关键要求">关键要求</span></h3><p><strong>日期格式</strong>：必须为 <code>YYYY-MM-DD HH:mm:ss +0800</code></p>
+<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">date:</span> <span class="number">2026-01-09 14:30:00</span> <span class="string">+0800</span></span><br></pre></td></tr></table></figure>
+
+<p><strong>Categories 和 Tags</strong>：必须使用数组格式</p>
+<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">categories:</span> [<span class="string">设计模式</span>]</span><br><span class="line"><span class="attr">tags:</span> [<span class="string">设计模式</span>, <span class="string">创建型模式</span>]</span><br></pre></td></tr></table></figure>
+
+<p>❌ <strong>禁止使用列表格式</strong>：</p>
+<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">categories:</span></span><br><span class="line">  <span class="bullet">-</span> <span class="string">设计模式</span></span><br></pre></td></tr></table></figure>
+
+<p><strong>非标准字段</strong>：禁止使用 <code>updated</code>、<code>modified</code> 等非 Hexo 标准字段。</p>
+<hr>
+<h2><span id="markdownlint-规范">Markdownlint 规范</span></h2><h3><span id="核心规则">核心规则</span></h3><table>
+<thead>
+<tr>
+<th>规则 ID</th>
+<th>规则名称</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>MD001</td>
+<td>标题层级递增</td>
+<td>标题层级必须递增，不能跳跃</td>
+</tr>
+<tr>
+<td>MD009</td>
+<td>行尾空格</td>
+<td>行尾不能有多余空格</td>
+</tr>
+<tr>
+<td>MD010</td>
+<td>硬制表符</td>
+<td>不能使用硬制表符（Tab），应使用空格</td>
+</tr>
+<tr>
+<td>MD012</td>
+<td>多个连续空行</td>
+<td>不能有多个连续空行（最多一个）</td>
+</tr>
+<tr>
+<td>MD013</td>
+<td>行长度</td>
+<td>行长度不应过长（默认要求不超过 80 字符）</td>
+</tr>
+<tr>
+<td>MD022</td>
+<td>标题前后空行</td>
+<td>标题前后必须有空行</td>
+</tr>
+<tr>
+<td>MD024</td>
+<td>禁止重复标题</td>
+<td>同一文档中不能有相同级别的重复标题</td>
+</tr>
+<tr>
+<td>MD025</td>
+<td>单一标题</td>
+<td>文档只能有一个一级标题（<code>#</code>），Hexo 博客内容应从 H2 开始</td>
+</tr>
+<tr>
+<td>MD030</td>
+<td>列表标记空格</td>
+<td>列表标记后必须有空格</td>
+</tr>
+<tr>
+<td>MD031&#x2F;MD032</td>
+<td>列表前后空行</td>
+<td>列表前后必须有空行</td>
+</tr>
+<tr>
+<td>MD040</td>
+<td>围栏代码块语言</td>
+<td>围栏代码块必须指定语言</td>
+</tr>
+</tbody></table>
+<h3><span id="关键规则说明">关键规则说明</span></h3><h4><span id="md025-单一标题">MD025 - 单一标题</span></h4><p>在 Hexo 博客中，标题已在 Front Matter 中定义，内容部分不应使用 H1 标题，应从 H2（<code>##</code>）开始。</p>
+<h4><span id="md031x2fmd032-列表前后空行">MD031&#x2F;MD032 - 列表前后空行</span></h4><p>列表前后必须有空行分隔。</p>
+<h4><span id="md013-行长度">MD013 - 行长度</span></h4><p>MD013 规则要求每行不超过 80 个字符。如果行过长，可以使用以下方法处理：</p>
+<ul>
+<li>对于代码块中的长命令，使用反斜杠 <code>\</code> 进行换行</li>
+<li>对于普通文本，可以在合适的位置换行</li>
+<li>可以通过配置文件调整限制（如设置为 120 字符）</li>
+</ul>
+<h4><span id="中英文空格规范">中英文空格规范</span></h4><p>中文和英文、数字之间必须有空格：</p>
+<ul>
+<li>✅ <code>Factory Method 模式</code></li>
+<li>✅ <code>Java 代码</code></li>
+<li>✅ <code>Python 3.8</code></li>
+<li>❌ <code>Factory Method模式</code></li>
+<li>❌ <code>Java代码</code></li>
+</ul>
+<h3><span id="markdownlint-配置">Markdownlint 配置</span></h3><p>建议在项目根目录创建 <code>.markdownlint.json</code>：</p>
+<figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="punctuation">&#123;</span></span><br><span class="line">  <span class="attr">&quot;default&quot;</span><span class="punctuation">:</span> <span class="literal"><span class="keyword">true</span></span><span class="punctuation">,</span></span><br><span class="line">  <span class="attr">&quot;MD013&quot;</span><span class="punctuation">:</span> <span class="punctuation">&#123;</span></span><br><span class="line">    <span class="attr">&quot;line_length&quot;</span><span class="punctuation">:</span> <span class="number">120</span><span class="punctuation">,</span></span><br><span class="line">    <span class="attr">&quot;code_blocks&quot;</span><span class="punctuation">:</span> <span class="literal"><span class="keyword">false</span></span><span class="punctuation">,</span></span><br><span class="line">    <span class="attr">&quot;tables&quot;</span><span class="punctuation">:</span> <span class="literal"><span class="keyword">false</span></span></span><br><span class="line">  <span class="punctuation">&#125;</span><span class="punctuation">,</span></span><br><span class="line">  <span class="attr">&quot;MD033&quot;</span><span class="punctuation">:</span> <span class="literal"><span class="keyword">false</span></span><span class="punctuation">,</span></span><br><span class="line">  <span class="attr">&quot;MD041&quot;</span><span class="punctuation">:</span> <span class="literal"><span class="keyword">false</span></span></span><br><span class="line"><span class="punctuation">&#125;</span></span><br></pre></td></tr></table></figure>
+
+<hr>
+<h2><span id="代码规范">代码规范</span></h2><h3><span id="代码块格式">代码块格式</span></h3><p>所有代码块必须包含语言标识：</p>
+<figure class="highlight markdown"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="code">```语言</span></span><br><span class="line"><span class="code">代码内容</span></span><br><span class="line"><span class="code">```</span></span><br></pre></td></tr></table></figure>
+
+<h3><span id="常用语言标识">常用语言标识</span></h3><table>
+<thead>
+<tr>
+<th>类型</th>
+<th>语言标识</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Java</td>
+<td><code>java</code></td>
+</tr>
+<tr>
+<td>Python</td>
+<td><code>python</code></td>
+</tr>
+<tr>
+<td>Bash</td>
+<td><code>bash</code></td>
+</tr>
+<tr>
+<td>YAML</td>
+<td><code>yaml</code></td>
+</tr>
+<tr>
+<td>JSON</td>
+<td><code>json</code></td>
+</tr>
+<tr>
+<td>Text&#x2F;模板&#x2F;ASCII 图表</td>
+<td><code>text</code></td>
+</tr>
+<tr>
+<td>Markdown</td>
+<td><code>markdown</code></td>
+</tr>
+<tr>
+<td>SQL</td>
+<td><code>sql</code></td>
+</tr>
+</tbody></table>
+<h3><span id="代码规范要求">代码规范要求</span></h3><ul>
+<li>✅ 代码块必须有语言标识</li>
+<li>✅ 代码必须完整可运行</li>
+<li>✅ 包含注释说明关键逻辑</li>
+<li>✅ 提供预期输出或运行结果</li>
+</ul>
+<hr>
+<h2><span id="格式检查清单">格式检查清单</span></h2><h3><span id="front-matter-检查">Front Matter 检查</span></h3><ul>
+<li><input disabled type="checkbox"> <code>layout: post</code> 存在且正确（必填）</li>
+<li><input disabled type="checkbox"> <code>title</code> 存在且不为空（必填）</li>
+<li><input disabled type="checkbox"> <code>date</code> 格式为 <code>YYYY-MM-DD HH:mm:ss +0800</code>（必填）</li>
+<li><input disabled type="checkbox"> <code>categories</code> 使用数组格式 <code>[分类]</code>（必填）</li>
+<li><input disabled type="checkbox"> <code>tags</code> 使用数组格式 <code>[tag1, tag2]</code>（必填）</li>
+<li><input disabled type="checkbox"> <code>description</code> 存在（推荐）</li>
+<li><input disabled type="checkbox"> Front Matter 以 <code>---</code> 开始和结束</li>
+<li><input disabled type="checkbox"> 没有非标准字段（如 <code>updated</code>、<code>modified</code> 等）</li>
+</ul>
+<h3><span id="markdown-语法检查">Markdown 语法检查</span></h3><ul>
+<li><input disabled type="checkbox"> 标题层级正确（## → ### → ####）</li>
+<li><input disabled type="checkbox"> 列表格式正确（<code>-</code> 或 <code>*</code> 后跟空格）</li>
+<li><input disabled type="checkbox"> 代码块有语言标识</li>
+<li><input disabled type="checkbox"> 链接格式正确 <code>[文本](URL)</code></li>
+<li><input disabled type="checkbox"> 图片格式正确 <code>![alt](URL)</code></li>
+<li><input disabled type="checkbox"> 表格对齐正确</li>
+<li><input disabled type="checkbox"> 分隔线使用 <code>---</code>（三个减号）</li>
+</ul>
+<h3><span id="markdownlint-检查">Markdownlint 检查</span></h3><ul>
+<li><input disabled type="checkbox"> 列表前后有空行（MD031&#x2F;MD032）</li>
+<li><input disabled type="checkbox"> 没有重复标题（MD024）</li>
+<li><input disabled type="checkbox"> 文档只有一个 H1 标题或没有 H1（MD025，Hexo 博客内容应从 H2 开始）</li>
+<li><input disabled type="checkbox"> 中英文之间有空格</li>
+<li><input disabled type="checkbox"> 标题前后有空行（MD022）</li>
+<li><input disabled type="checkbox"> 没有多个连续空行（MD012）</li>
+<li><input disabled type="checkbox"> 行尾没有多余空格（MD009）</li>
+<li><input disabled type="checkbox"> 没有使用硬制表符（MD010）</li>
+<li><input disabled type="checkbox"> 标题层级递增，无跳跃（MD001）</li>
+</ul>
+<h3><span id="文件命名检查">文件命名检查</span></h3><ul>
+<li><input disabled type="checkbox"> 文件名格式为 <code>YYYY-MM-DD-{kebab-title}.md</code></li>
+<li><input disabled type="checkbox"> 日期部分正确（YYYY-MM-DD）</li>
+<li><input disabled type="checkbox"> 标题部分使用 kebab-case（小写字母和连字符）</li>
+<li><input disabled type="checkbox"> 文件名与 Front Matter 中的 date 一致</li>
+</ul>
+<h3><span id="内容格式检查">内容格式检查</span></h3><ul>
+<li><input disabled type="checkbox"> 中文和英文之间有空格</li>
+<li><input disabled type="checkbox"> 标点符号使用正确（中文使用中文标点）</li>
+<li><input disabled type="checkbox"> emoji 使用合理，不过度</li>
+<li><input disabled type="checkbox"> 表格对齐正确</li>
+<li><input disabled type="checkbox"> 代码块缩进正确</li>
+<li><input disabled type="checkbox"> 列表项格式统一</li>
+<li><input disabled type="checkbox"> 内容组织结构清晰，相关代码放在对应章节</li>
+<li><input disabled type="checkbox"> 使用交叉引用建立关联，避免重复内容</li>
+<li><input disabled type="checkbox"> 标题命名明确区分，避免歧义</li>
+</ul>
+<hr>
+<h2><span id="常见格式错误">常见格式错误</span></h2><h3><span id="错误-1front-matter-格式错误">错误 1：Front Matter 格式错误</span></h3><p><strong>错误</strong>：</p>
+<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">categories:</span></span><br><span class="line">  <span class="bullet">-</span> <span class="string">设计模式</span></span><br><span class="line"><span class="attr">tags:</span></span><br><span class="line">  <span class="bullet">-</span> <span class="string">设计模式</span></span><br><span class="line">  <span class="bullet">-</span> <span class="string">创建型模式</span></span><br></pre></td></tr></table></figure>
+
+<p><strong>正确</strong>：</p>
+<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">categories:</span> [<span class="string">设计模式</span>]</span><br><span class="line"><span class="attr">tags:</span> [<span class="string">设计模式</span>, <span class="string">创建型模式</span>]</span><br></pre></td></tr></table></figure>
+
+<h3><span id="错误-2日期格式不完整">错误 2：日期格式不完整</span></h3><p><strong>错误</strong>：</p>
+<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">date:</span> <span class="number">2026-01-09</span></span><br></pre></td></tr></table></figure>
+
+<p><strong>正确</strong>：</p>
+<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">date:</span> <span class="number">2026-01-09 00:00:00</span> <span class="string">+0800</span></span><br></pre></td></tr></table></figure>
+
+<h3><span id="错误-3代码块缺少语言标识">错误 3：代码块缺少语言标识</span></h3><p><strong>错误</strong>：</p>
+<figure class="highlight markdown"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="code">```</span></span><br><span class="line"><span class="code">public class Test &#123;</span></span><br><span class="line"><span class="code">    // 代码</span></span><br><span class="line"><span class="code">&#125;</span></span><br><span class="line"><span class="code">```</span></span><br></pre></td></tr></table></figure>
+
+<p><strong>正确</strong>：</p>
+<figure class="highlight markdown"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="code">```java</span></span><br><span class="line"><span class="code">public class Test &#123;</span></span><br><span class="line"><span class="code">    // 代码</span></span><br><span class="line"><span class="code">&#125;</span></span><br><span class="line"><span class="code">```</span></span><br></pre></td></tr></table></figure>
+
+<h3><span id="错误-4列表前后缺少空行md031x2fmd032">错误 4：列表前后缺少空行（MD031&#x2F;MD032）</span></h3><p><strong>错误</strong>：</p>
+<figure class="highlight markdown"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="section">## 标题</span></span><br><span class="line"><span class="bullet">-</span> 列表项 1</span><br><span class="line"><span class="bullet">-</span> 列表项 2</span><br><span class="line"><span class="section">## 下一个标题</span></span><br></pre></td></tr></table></figure>
+
+<p><strong>正确</strong>：</p>
+<figure class="highlight markdown"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="section">## 标题</span></span><br><span class="line"></span><br><span class="line"><span class="bullet">-</span> 列表项 1</span><br><span class="line"><span class="bullet">-</span> 列表项 2</span><br><span class="line"></span><br><span class="line"><span class="section">## 下一个标题</span></span><br></pre></td></tr></table></figure>
+
+<h3><span id="错误-5文档中使用-h1-标题md025">错误 5：文档中使用 H1 标题（MD025）</span></h3><p><strong>错误</strong>：</p>
+<figure class="highlight markdown"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">---</span><br><span class="line"><span class="section">title: 文章标题</span></span><br><span class="line"><span class="section">---</span></span><br><span class="line"></span><br><span class="line"><span class="section"># 文章标题  ❌ 重复使用 H1</span></span><br></pre></td></tr></table></figure>
+
+<p><strong>正确</strong>：</p>
+<figure class="highlight markdown"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">---</span><br><span class="line"><span class="section">title: 文章标题</span></span><br><span class="line"><span class="section">---</span></span><br><span class="line"></span><br><span class="line"><span class="section">## 文章标题  ✅ 使用 H2</span></span><br></pre></td></tr></table></figure>
+
+<h3><span id="错误-6中英文之间缺少空格">错误 6：中英文之间缺少空格</span></h3><p><strong>错误</strong>：</p>
+<figure class="highlight markdown"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">Factory Method模式是一种创建型设计模式。</span><br><span class="line">使用Java代码实现。</span><br></pre></td></tr></table></figure>
+
+<p><strong>正确</strong>：</p>
+<figure class="highlight markdown"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">Factory Method 模式是一种创建型设计模式。</span><br><span class="line">使用 Java 代码实现。</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>💡 <strong>提示</strong>：更多错误示例和详细说明可参考独立文档（待模块化拆分）。</p>
+</blockquote>
+<hr>
+<h2><span id="自动化检查">自动化检查</span></h2><h3><span id="使用-markdownlint-工具检查">使用 Markdownlint 工具检查</span></h3><p><strong>安装</strong>：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">npm install -g markdownlint-cli</span><br></pre></td></tr></table></figure>
+
+<p><strong>检查所有文件</strong>：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">markdownlint <span class="built_in">source</span>/_posts/**/*.md</span><br></pre></td></tr></table></figure>
+
+<p><strong>自动修复（部分规则）</strong>：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">markdownlint --fix <span class="built_in">source</span>/_posts/**/*.md</span><br></pre></td></tr></table></figure>
+
+<p><strong>检查特定文件</strong>：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">markdownlint <span class="built_in">source</span>/_posts/design_patterns/*.md</span><br></pre></td></tr></table></figure>
+
+<h3><span id="使用脚本检查格式">使用脚本检查格式</span></h3><p><strong>快速检查命令</strong>：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 检查 Front Matter 格式</span></span><br><span class="line">grep -r <span class="string">&quot;categories:&quot;</span> <span class="built_in">source</span>/_posts/ | grep -v <span class="string">&quot;categories: \[&quot;</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 检查日期格式</span></span><br><span class="line">grep -r <span class="string">&quot;date:&quot;</span> <span class="built_in">source</span>/_posts/ | \</span><br><span class="line">  grep -v <span class="string">&quot;date: [0-9]\&#123;4\&#125;-[0-9]\&#123;2\&#125;-[0-9]\&#123;2\&#125; \</span></span><br><span class="line"><span class="string">[0-9]\&#123;2\&#125;:[0-9]\&#123;2\&#125;:[0-9]\&#123;2\&#125; +0800&quot;</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 检查代码块语言标识</span></span><br><span class="line">grep -r <span class="string">&quot;^```$&quot;</span> <span class="built_in">source</span>/_posts/</span><br><span class="line"></span><br><span class="line"><span class="comment"># 检查非标准字段</span></span><br><span class="line">grep -r <span class="string">&quot;updated:&quot;</span> <span class="built_in">source</span>/_posts/</span><br><span class="line">grep -r <span class="string">&quot;modified:&quot;</span> <span class="built_in">source</span>/_posts/</span><br><span class="line"></span><br><span class="line"><span class="comment"># 检查缺少 layout 字段</span></span><br><span class="line">grep -L <span class="string">&quot;layout: post&quot;</span> <span class="built_in">source</span>/_posts/**/*.md</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>💡 <strong>提示</strong>：完整的 Python 检查脚本可参考独立文件（待模块化拆分）。</p>
+</blockquote>
+<hr>
+<h2><span id="相关文档">相关文档</span></h2><ul>
+<li><a href="./2026-01-12-markdown-templates.md">Markdown 文章模板集合</a> - 快速创建新文章的模板</li>
+<li><a href="./2026-01-09-markdown-optimization-guide.md">Markdown 文档优化指南</a> - 内容优化标准</li>
+</ul>
+<hr>
+<h2><span id="更新记录">更新记录</span></h2><ul>
+<li>2026-01-09：初始版本</li>
+<li>2026-01-09：补充 Markdownlint 规范、Front Matter 非标准字段检查、内容组织结构要求</li>
+<li>2026-01-12：精简版本，删除详细示例和脚本代码，为模块化拆分做准备</li>
+<li>2026-01-12：添加新模板文档的交叉引用</li>
+</ul>
+</div>
+        </div>
+        
+        <footer class="kratos-entry-footer clearfix">
+            
+            
+            
+                <div class="post-actions text-center clearfix" id="post-actions">
+                
+                    <a class="donate" href="javascript:;" onclick="krOpenDonateModal()"><i class="fa fa-bitcoin"></i> 打赏</a>
+                
+                
+                </div>
+            
+            <div class="footer-tag clearfix">
+                <div class="pull-left">
+                <i class="fa fa-tags"></i>
+                    <a class="tag-none-link" href="/tags/Hexo/" rel="tag">Hexo</a>, <a class="tag-none-link" href="/tags/Markdown/" rel="tag">Markdown</a>, <a class="tag-none-link" href="/tags/%E6%A0%BC%E5%BC%8F%E6%A3%80%E6%9F%A5/" rel="tag">格式检查</a>, <a class="tag-none-link" href="/tags/%E8%A7%84%E8%8C%83/" rel="tag">规范</a>
+                </div>
+                <div class="pull-date">
+                    <time datetime="2026-03-06T09:30:46.395Z" itemprop="dateModified">最后编辑：2026-03-06</time>
+                </div>
+            </div>
+        </footer>
+    </div>
+    
+        <nav class="navigation post-navigation clearfix" role="navigation">
+            
+            <div class="nav-previous clearfix">
+                <a title=" Spring AOP 注解使用案例与场景设计" href="/2026/01/08/tech/backend/2026-01-09-spring-aop-annotation-cases/"><i class="fa fa-angle-left"></i> 上一篇</a>
+            </div>
+            
+            
+            <div class="nav-next clearfix">
+                <a title=" AI 工具 API Key 统一管理：从 .env 到企业级密钥治理" href="/2026/03/03/tech/ai/2026-03-04-ai-api-key-management/">下一篇 <i class="fa fa-angle-right"></i></a>
+            </div>
+            
+        </nav>
+    
+    
+</article>
+
+        
+
+            </section>
+
+            
+                
+
+<section id="kratos-widget-area" class="col-md-4 hidden-xs hidden-sm">
+    <!-- 文章和页面根据splitter来分割，没有的话就从头开始设置为sticky -->
+    
+    
+                <aside id="krw-about" class="widget widget-kratos-about clearfix">
+    <div class="photo-background"></div>
+    <div class="photo-wrapper clearfix">
+        <div class="photo-wrapper-tip text-center">
+            <img class="about-photo" src="/images/theme/Mamimi.JPG" alt="Mamimi" loading="lazy" decoding="auto" />
+        </div>
+    </div>
+    <div class="textwidget">
+        <p class="text-center"></p>
+    </div>
+    <div class="site-meta">
+        <a class="meta-item" href="/archives/">
+            <span class="title">
+                文章
+            </span>
+            <span class="count">
+                28
+            </span>
+        </a>
+        <a class="meta-item" href="/categories/">
+            <span class="title">
+                分类
+            </span>
+            <span class="count">
+                8
+            </span>
+        </a>
+        <a class="meta-item" href="/tags/">
+            <span class="title">
+                标签
+            </span>
+            <span class="count">
+                53
+            </span>
+        </a>
+    </div>
+</aside>
+            
+                    <div class="sticky-area">
+                
+                    <aside id="krw-toc" class="widget widget-kratos-toc clearfix toc-div-class" >
+    <div class="photo-background"></div>
+    <h4 class="widget-title no-after">
+        <i class="fa fa-compass"></i>
+        文章目录
+        <span class="toc-progress-bar" role="progressbar" aria-label="阅读进度："></span>
+    </h4>
+    <div class="textwidget">
+        <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link"><span class="toc-number">1.</span> <span class="toc-text">Markdown 格式检查指南</span></a></li><li class="toc-item toc-level-2"><a class="toc-link"><span class="toc-number">2.</span> <span class="toc-text">📋 目录</span></a></li><li class="toc-item toc-level-2"><a class="toc-link"><span class="toc-number">3.</span> <span class="toc-text">Front Matter 规范</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link"><span class="toc-number">3.1.</span> <span class="toc-text">标准格式</span></a></li><li class="toc-item toc-level-3"><a class="toc-link"><span class="toc-number">3.2.</span> <span class="toc-text">字段说明</span></a></li><li class="toc-item toc-level-3"><a class="toc-link"><span class="toc-number">3.3.</span> <span class="toc-text">关键要求</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link"><span class="toc-number">4.</span> <span class="toc-text">Markdownlint 规范</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link"><span class="toc-number">4.1.</span> <span class="toc-text">核心规则</span></a></li><li class="toc-item toc-level-3"><a class="toc-link"><span class="toc-number">4.2.</span> <span class="toc-text">关键规则说明</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link"><span class="toc-number">4.2.1.</span> <span class="toc-text">MD025 - 单一标题</span></a></li><li class="toc-item toc-level-4"><a class="toc-link"><span class="toc-number">4.2.2.</span> <span class="toc-text">MD031&#x2F;MD032 - 列表前后空行</span></a></li><li class="toc-item toc-level-4"><a class="toc-link"><span class="toc-number">4.2.3.</span> <span class="toc-text">MD013 - 行长度</span></a></li><li class="toc-item toc-level-4"><a class="toc-link"><span class="toc-number">4.2.4.</span> <span class="toc-text">中英文空格规范</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link"><span class="toc-number">4.3.</span> <span class="toc-text">Markdownlint 配置</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link"><span class="toc-number">5.</span> <span class="toc-text">代码规范</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link"><span class="toc-number">5.1.</span> <span class="toc-text">代码块格式</span></a></li><li class="toc-item toc-level-3"><a class="toc-link"><span class="toc-number">5.2.</span> <span class="toc-text">常用语言标识</span></a></li><li class="toc-item toc-level-3"><a class="toc-link"><span class="toc-number">5.3.</span> <span class="toc-text">代码规范要求</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link"><span class="toc-number">6.</span> <span class="toc-text">格式检查清单</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link"><span class="toc-number">6.1.</span> <span class="toc-text">Front Matter 检查</span></a></li><li class="toc-item toc-level-3"><a class="toc-link"><span class="toc-number">6.2.</span> <span class="toc-text">Markdown 语法检查</span></a></li><li class="toc-item toc-level-3"><a class="toc-link"><span class="toc-number">6.3.</span> <span class="toc-text">Markdownlint 检查</span></a></li><li class="toc-item toc-level-3"><a class="toc-link"><span class="toc-number">6.4.</span> <span class="toc-text">文件命名检查</span></a></li><li class="toc-item toc-level-3"><a class="toc-link"><span class="toc-number">6.5.</span> <span class="toc-text">内容格式检查</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link"><span class="toc-number">7.</span> <span class="toc-text">常见格式错误</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link"><span class="toc-number">7.1.</span> <span class="toc-text">错误 1：Front Matter 格式错误</span></a></li><li class="toc-item toc-level-3"><a class="toc-link"><span class="toc-number">7.2.</span> <span class="toc-text">错误 2：日期格式不完整</span></a></li><li class="toc-item toc-level-3"><a class="toc-link"><span class="toc-number">7.3.</span> <span class="toc-text">错误 3：代码块缺少语言标识</span></a></li><li class="toc-item toc-level-3"><a class="toc-link"><span class="toc-number">7.4.</span> <span class="toc-text">错误 4：列表前后缺少空行（MD031&#x2F;MD032）</span></a></li><li class="toc-item toc-level-3"><a class="toc-link"><span class="toc-number">7.5.</span> <span class="toc-text">错误 5：文档中使用 H1 标题（MD025）</span></a></li><li class="toc-item toc-level-3"><a class="toc-link"><span class="toc-number">7.6.</span> <span class="toc-text">错误 6：中英文之间缺少空格</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link"><span class="toc-number">8.</span> <span class="toc-text">自动化检查</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link"><span class="toc-number">8.1.</span> <span class="toc-text">使用 Markdownlint 工具检查</span></a></li><li class="toc-item toc-level-3"><a class="toc-link"><span class="toc-number">8.2.</span> <span class="toc-text">使用脚本检查格式</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link"><span class="toc-number">9.</span> <span class="toc-text">相关文档</span></a></li><li class="toc-item toc-level-2"><a class="toc-link"><span class="toc-number">10.</span> <span class="toc-text">更新记录</span></a></li></ol>
+    </div>
+</aside>
+                
+                
+  <aside id="krw-categories" class="widget widget-kratos-categories clearfix">
+    <h4 class="widget-title"><i class="fa fa-folder"></i>分类列表</h4>
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/docs/">docs</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/gaming/">gaming</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/mindset/">mindset</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/tech/">tech</a><span class="category-list-count">12</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/tech/ai/">ai</a><span class="category-list-count">4</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/tech/backend/">backend</a><span class="category-list-count">7</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/tech/tools/">tools</a><span class="category-list-count">1</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/">设计模式</a><span class="category-list-count">12</span></li></ul>
+  </aside>
+
+
+            
+                
+  <aside id="krw-tags" class="widget widget-kratos-tags clearfix">
+    <h4 class="widget-title"><i class="fa fa-tags"></i>标签聚合</h4>
+      <div class="tag-clouds">
+        <a href="/tags/5W1H/" style="font-size: 0.6em;">5W1H</a> <a href="/tags/AI%E6%8E%A2%E7%B4%A2/" style="font-size: 0.6em;">AI探索</a> <a href="/tags/AI%E6%9E%B6%E6%9E%84/" style="font-size: 0.6em;">AI架构</a> <a href="/tags/AOP/" style="font-size: 0.6em;">AOP</a> <a href="/tags/Hexo/" style="font-size: 0.6em;">Hexo</a> <a href="/tags/Java/" style="font-size: 0.8em;">Java</a> <a href="/tags/MCP/" style="font-size: 0.6em;">MCP</a> <a href="/tags/Markdown/" style="font-size: 0.6em;">Markdown</a> <a href="/tags/MyBatis/" style="font-size: 0.6em;">MyBatis</a> <a href="/tags/MySQL/" style="font-size: 0.8em;">MySQL</a> <a href="/tags/Obsidian/" style="font-size: 0.6em;">Obsidian</a> <a href="/tags/Pipeline/" style="font-size: 0.6em;">Pipeline</a> <a href="/tags/Redis/" style="font-size: 0.8em;">Redis</a> <a href="/tags/SQL/" style="font-size: 0.6em;">SQL</a> <a href="/tags/Spring/" style="font-size: 0.6em;">Spring</a> <a href="/tags/Spring-AI/" style="font-size: 0.6em;">Spring AI</a> <a href="/tags/UNLINK/" style="font-size: 0.6em;">UNLINK</a> <a href="/tags/api-key/" style="font-size: 0.6em;">api-key</a>
+      </div>
+  </aside>
+
+            
+                
+  <aside id="krw-posts" class="widget widget-kratos-posts">
+  <h4 class="widget-title"><i class="fa fa-file"></i>最新文章</h4>
+  <div class="tab-content">
+      <ul class="list-group">
+        
+        
+          
+          
+            <a class="list-group-item" href="/2026/03/05/tech/backend/2026-03-06-redis-unlink-cache-cleanup/"><i class="fa fa-book"></i> 用 UNLINK 清理 Redis Key：从一次线上操作引发的缓存清理思考</a>
+            
+          
+        
+          
+          
+            <a class="list-group-item" href="/2026/03/05/tech/ai/2026-03-05-skill-optimization-practice/"><i class="fa fa-book"></i> Claude Code Skill 设计与优化实践：用多模型协作迭代 optimize-doc</a>
+            
+          
+        
+          
+          
+            <a class="list-group-item" href="/2026/03/03/tech/ai/2026-03-04-ai-api-key-management/"><i class="fa fa-book"></i> AI 工具 API Key 统一管理：从 .env 到企业级密钥治理</a>
+            
+          
+        
+          
+          
+            <a class="list-group-item" href="/2026/01/08/docs/2025-01-09-markdown-format-check/"><i class="fa fa-book"></i> Markdown 格式检查指南：确保文档符合 Hexo 规范</a>
+            
+          
+        
+          
+          
+            <a class="list-group-item" href="/2026/01/08/tech/backend/2026-01-09-spring-aop-annotation-cases/"><i class="fa fa-book"></i> Spring AOP 注解使用案例与场景设计</a>
+            
+          
+        
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+      </ul>
+  </div>
+  </aside>
+
+            
+    </div>
+</section>
+            
+
+        
+
+                </div>
+    </div>
+</div>
+
+<footer>
+    <div id="footer">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-6 col-md-offset-3 footer-list text-center">
+                    <ul class="kratos-social-icons">
+                        
+                    </ul>
+                    <ul class="kratos-copyright">
+                        <div>
+                            <li>&copy; 2026 MamimiJa Nai 版权所有.</li>
+                            <li>本站已运行<span id="kr-since">Loading...</span></li>
+                        </div>
+                        <div>
+                            <li>自豪地使用 <a href="https://github.com/Candinya/Kratos-Rebirth" target="_blank">Kratos:Rebirth</a> 主题</li>
+                            <li>站点由 Mamimi 用 <i class="fa fa-heart" style="color:#d43f57"></i> 搭建</li>
+                        </div>
+                        <!-- 额外的追加注入项 -->
+                        
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <div class="kr-tool text-center">
+            <div class="tool">
+                <!-- 额外的追加注入项 -->
+                
+                
+                    <div class="box search-box">
+                        <a href="/search">
+                            <span class="fa fa-search"></span>
+                        </a>
+                    </div>
+                
+                <div class="box theme-box" id="theme-toggle">
+                    <span class="fa fa-adjust"></span>
+                </div>
+            </div>
+            <div id="gotop-box" class="box gotop-box">
+                <span class="fa fa-chevron-up"></span>
+            </div>
+        </div>
+    </div>
+</footer>
+</div>
+</div>
+
+
+    <div id="kr-donate-modal" class="kr-modal">
+    <div class="kr-modal-bg" onclick="krCloseDonateModal()"></div>
+    <div class="kr-modal-content">
+        <div class="kr-modal-header">
+            <div class="kr-modal-icon">
+                <i class="fa fa-bitcoin"></i>
+            </div>
+            <div class="kr-modal-title">打赏</div>
+            <button class="kr-modal-close" onclick="krCloseDonateModal()">
+                <i class="fa fa-times-circle"></i>
+            </button>
+        </div>
+        <div class="kr-modal-body">
+            <div class="kr-donate-message">打赏提示信息</div>
+            <div class="kr-donate-qr" id="kr-donate-qr">
+                
+            </div>
+            <div class="kr-donate-platforms">
+                
+                    
+                        <button class="kr-donate-platform-button" style="color: #00A0E9;" title="支付宝" onclick="krDonateModalShowPlatformQR('https://qr.alipay.com/fkx10074h80wdlc7rkhh73b', '#00A0E9')">
+                            <i class="fa fa-fa-alipay"></i>
+                        </button>
+                    
+                
+                    
+                        <button class="kr-donate-platform-button" style="color: #07C160;" title="微信" onclick="krDonateModalShowPlatformQR('wxp://f2f0UZPu3nG1PA01tt-I5EDw0wx_G5jA-uDkAw8PuRT9VZtUj-T9s0_Cw7IRYUpTLq7Z', '#07C160')">
+                            <i class="fa fa-fa-weixin"></i>
+                        </button>
+                    
+                
+            </div>
+        </div>
+    </div>
+</div>
+<script defer src="/js/kr-modal/donate.min.js"></script>
+
+
+
+
+
+<!-- 额外的追加注入项 -->
+
+
+        <script>
+    if (!window.kr) {
+        window.kr = {};
+    }
+    window.kr.notMobile = (!(navigator.userAgent.match(/(phone|pad|pod|iPhone|iPod|ios|iPad|Android|Mobile|BlackBerry|IEMobile|MQQBrowser|JUC|Fennec|wOSBrowser|BrowserNG|WebOS|Symbian|Windows Phone)/i)));
+    window.kr.siteRoot = "/";
+</script>
+
+
+  <script defer src="/vendors/nprogress@0.2.0/nprogress.js"></script>
+
+
+
+  <script defer src="/vendors/viewerjs@1.11.6/dist/viewer.min.js"></script>
+
+
+<script defer src="/js/kr-core.min.js"></script>
+
+
+  <script defer src="/js/kr-pjax.min.js"></script>
+
+
+<!-- 额外的追加注入项 -->
+
+  <script src='https://unpkg.com/mermaid@10.6.1/dist/mermaid.min.js'></script>
+<script src="/others/mermaid.js"></script>
+
+
+
+    </body>
+</html>

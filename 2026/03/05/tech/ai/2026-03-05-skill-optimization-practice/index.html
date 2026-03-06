@@ -1,0 +1,964 @@
+<!DOCTYPE html>
+<html lang="zh">
+    <head>
+  <!-- 元数据 -->
+  <meta charset="utf-8">
+  
+  
+  <title>Claude Code Skill 设计与优化实践：用多模型协作迭代 optimize-doc | MamimiJa Nai</title>
+  <link rel="canonical" href="https://leahana.github.io/2026/03/05/tech/ai/2026-03-05-skill-optimization-practice/">
+  <meta name="author" content="Mamimi" />
+  <meta http-equiv="Cache-Control" content="no-transform" />
+  <meta http-equiv="Cache-Control" content="no-siteapp" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="robots" content="index,follow" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
+  <meta name="format-detection" content="telphone=no, email=no" />
+  
+    <meta name="keywords" content="claude-code, multi-model, prompt-engineering, skill" />
+  
+  <meta name="description" content="一句话定位：Skill 是 Claude Code 的”领域专家模块”——把隐性的工作流知识固化成可复用的显性指令。   核心理念：好的 Skill 不靠堆砌信息，而是把正确的内容放在正确的层级，让 AI 按需加载、精准执行。   3 分钟速览版 点击展开核心概念  Skill 三层加载模型graph TB     A[&quot;元数据层name + description始终在上下文&quot;]     B[">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Claude Code Skill 设计与优化实践：用多模型协作迭代 optimize-doc">
+<meta property="og:url" content="https://leahana.github.io/2026/03/05/tech/ai/2026-03-05-skill-optimization-practice/index.html">
+<meta property="og:site_name" content="MamimiJa Nai">
+<meta property="og:description" content="一句话定位：Skill 是 Claude Code 的”领域专家模块”——把隐性的工作流知识固化成可复用的显性指令。   核心理念：好的 Skill 不靠堆砌信息，而是把正确的内容放在正确的层级，让 AI 按需加载、精准执行。   3 分钟速览版 点击展开核心概念  Skill 三层加载模型graph TB     A[&quot;元数据层name + description始终在上下文&quot;]     B[">
+<meta property="og:locale">
+<meta property="article:published_time" content="2026-03-05T04:00:00.000Z">
+<meta property="article:modified_time" content="2026-03-06T09:30:46.396Z">
+<meta property="article:author" content="Mamimi">
+<meta property="article:tag" content="claude-code">
+<meta property="article:tag" content="multi-model">
+<meta property="article:tag" content="prompt-engineering">
+<meta property="article:tag" content="skill">
+<meta name="twitter:card" content="summary">
+  
+  <!-- JSON-LD 结构化数据 -->
+  
+  
+    <script type="application/ld+json">
+    {"@context":"https://schema.org","@type":"BlogPosting","headline":"Claude Code Skill 设计与优化实践：用多模型协作迭代 optimize-doc","description":"\n一句话定位：Skill 是 Claude Code 的”领域专家模块”——把隐性的工作流知识固化成可复用的显性指令。\n\n\n核心理念：好的 Skill 不靠堆砌信息，而是把正确的内容放在正确的层级，让...","image":"https://leahana.github.io/images/theme/Mamimi.JPG","author":{"@type":"Person","name":"Mamimi"},"publisher":{"@type":"Organization","name":"MamimiJa Nai","logo":{"@type":"ImageObject","url":"https://leahana.github.io/images/theme/Mamimi.JPG"}},"datePublished":"2026-03-05T04:00:00.000Z","dateModified":"2026-03-06T09:30:46.396Z","mainEntityOfPage":{"@type":"WebPage","@id":"https://leahana.github.io/2026/03/05/tech/ai/2026-03-05-skill-optimization-practice/"}}
+    </script>
+  
+  <!-- 关键 CSS 预加载 -->
+  <link rel="preload" href="/css/kr-core.min.css" as="style" crossorigin>
+  <link rel="preload" href="/css/kr-theme/light.min.css" as="style" crossorigin>
+  <link rel="preload" href="/css/kr-theme/dark.min.css" as="style" crossorigin>
+  <!-- 样式表文件 -->
+  <link rel="stylesheet" id="kratos-css" href="/css/kr-core.min.css" media="all">
+  <link rel="stylesheet" id="theme-light-css" href="/css/kr-theme/light.min.css" media="all">
+  <link rel="stylesheet" id="theme-dark-css" href="/css/kr-theme/dark.min.css" media="(prefers-color-scheme: dark)">
+  
+    <link rel="stylesheet"  id="highlight-css" href="/css/highlight/highlight.js/night-eighties.min.css" media="print" onload="this.media='all'" onerror="this.media='all'"><noscript><link rel="stylesheet" href="/css/highlight/highlight.js/night-eighties.min.css"></noscript>
+  
+  <script src="/js/kr-theme.min.js"></script>
+  <!-- Mermaid 图表库 + 初始化 -->
+  <script src="/vendors/mermaid@latest/dist/mermaid.min.js"></script>
+  <script src="/others/mermaid.js"></script>
+  <link rel="stylesheet"  id="fontawe-css" href="/vendors/font-awesome@4.7.0/css/font-awesome.min.css" media="print" onload="this.media='all'" onerror="this.media='all'"><noscript><link rel="stylesheet" href="/vendors/font-awesome@4.7.0/css/font-awesome.min.css"></noscript>
+  
+    <link rel="stylesheet"  id="nprogress-css" href="/vendors/nprogress@0.2.0/nprogress.css" media="print" onload="this.media='all'" onerror="this.media='all'"><noscript><link rel="stylesheet" href="/vendors/nprogress@0.2.0/nprogress.css"></noscript>
+  
+  
+    <link rel="stylesheet"  href="/vendors/viewerjs@1.11.6/dist/viewer.min.css" media="print" onload="this.media='all'" onerror="this.media='all'"><noscript><link rel="stylesheet" href="/vendors/viewerjs@1.11.6/dist/viewer.min.css"></noscript>
+  
+  <!-- 预先加载的JS文件 -->
+  
+    <script src="/vendors/qr-code-styling@1.6.0-rc.1/lib/qr-code-styling.js"></script>
+  
+  <!-- 自定义站点横幅和背景 -->
+  <style>
+    
+      .kratos-cover.kratos-cover-2 {
+        background-image: url('');
+      }
+      html[data-theme="dark"] .kratos-cover.kratos-cover-2 {
+        background-image: url('');
+      }
+    
+    
+      @media(min-width:768px) {
+        body.custom-background {
+          background-image: url('/images/theme/background.jpg');
+        }
+        html[data-theme="dark"] body.custom-background {
+          background-image: url('/images/theme/background.jpg');
+        }
+      }
+    
+    
+      .widget-kratos-about .photo-background {
+        background-image: url('/images/theme/avatar-bg.jpg');
+      }
+      html[data-theme="dark"] .widget-kratos-about .photo-background {
+        background-image: url('/images/theme/avatar-bg.jpg');
+      }
+    
+  </style>
+
+  <!-- 额外的追加注入项 -->
+  
+    <style>body.custom-background{background-image:url('/images/theme/background.jpg')!important;background-attachment:fixed!important;background-size:cover!important;background-position:center!important;}#kratos-widget-area .widget-kratos-about .photo-background{background-image:url('/images/theme/avatar-bg.jpg')!important;background-size:cover!important;background-position:35% 35%!important;background-repeat:no-repeat!important;}</style><link rel="stylesheet" href="/css/custom.css">
+  
+<meta name="generator" content="Hexo 8.1.1"></head>
+
+    <body class="custom-background">
+        <div id="kratos-wrapper">
+    <div id="kratos-page">
+        <div id="kratos-header">
+            <header id="kratos-desktop-topnav" class="kratos-topnav">
+                <div class="container">
+                    <div class="nav-header">
+                        <nav id="kratos-menu-wrap">
+                            <ul id="kratos-primary-menu" class="sf-menu">
+                                
+                                    <li>
+                                        
+                                            <a href="/">
+                                        
+                                            
+                                                <i class="fa fa-fa-home"></i>
+                                            
+                                            首页
+                                        </a>
+                                        
+                                    </li>
+                                
+                                    <li>
+                                        
+                                            <a href="/archives">
+                                        
+                                            
+                                                <i class="fa fa-fa-archive"></i>
+                                            
+                                            归档
+                                        </a>
+                                        
+                                    </li>
+                                
+                                    <li>
+                                        
+                                            <a href="/categories">
+                                        
+                                            
+                                                <i class="fa fa-fa-folder-open"></i>
+                                            
+                                            分类
+                                        </a>
+                                        
+                                    </li>
+                                
+                                    <li>
+                                        
+                                            <a href="/tags">
+                                        
+                                            
+                                                <i class="fa fa-fa-tags"></i>
+                                            
+                                            标签
+                                        </a>
+                                        
+                                    </li>
+                                
+                                    <li>
+                                        
+                                            <a href="/search">
+                                        
+                                            
+                                                <i class="fa fa-fa-search"></i>
+                                            
+                                            搜索
+                                        </a>
+                                        
+                                    </li>
+                                
+                                    <li>
+                                        
+                                            <a>
+                                        
+                                            
+                                                <i class="fa fa-fa-th-list"></i>
+                                            
+                                            更多
+                                        </a>
+                                        
+                                            <ul class="sub-menu">
+                                                
+                                                    <li>
+                                                        <a href="/about">
+                                                            
+                                                                <i class="fa fa-fa-user"></i>
+                                                            
+                                                            关于我
+                                                        </a>
+                                                    </li>
+                                                
+                                                    <li>
+                                                        <a href="/links">
+                                                            
+                                                                <i class="fa fa-fa-link"></i>
+                                                            
+                                                            友情链接
+                                                        </a>
+                                                    </li>
+                                                
+                                            </ul>
+                                        
+                                    </li>
+                                
+                            </ul>
+                        </nav>
+                    </div>
+                </div>
+            </header>
+            <header id="kratos-mobile-topnav" class="kratos-topnav">
+                <div class="container">
+                    <div class="color-logo"><a href="/">MamimiJa Nai</a></div>
+                    <div id="kratos-nav-toggle-wrapper" class="nav-toggle">
+                        <a id="kratos-nav-toggle" class="kratos-nav-toggle">
+                            <i></i>
+                        </a>
+                    </div>
+                </div>
+            </header>
+        </div>
+        <div class="kratos-start kratos-hero-2">
+            <!-- <div class="kratos-overlay"></div> -->
+            <div class="kratos-cover kratos-cover-2 text-center">
+                <div class="desc desc2 animate-box">
+                    <a href="/">
+                        <h2>MamimiJa Nai</h2> <br />
+                        <span></span>
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <div id="kratos-blog-post">
+            <div class="container">
+                <div id="main" class="row">
+
+
+        
+
+            
+
+            <section class="kr-main-col col-md-8">
+
+        
+
+            <article itemscope itemtype="https://schema.org/Article">
+    <link itemprop="mainEntityOfPage" href="https://leahana.github.io/2026/03/05/tech/ai/2026-03-05-skill-optimization-practice/">
+    <div class="kratos-hentry kratos-page-inner clearfix">
+        <header class="kratos-page-header">
+            
+                <h1 class="kratos-page-title text-center" itemprop="name headline">Claude Code Skill 设计与优化实践：用多模型协作迭代 optimize-doc</h1>
+            
+            <ul class="kratos-page-meta text-center">
+                <li><time datetime="2026-03-05T04:00:00.000Z" itemprop="datePublished"><i class="fa fa-calendar"></i> 2026-03-05</time></li>
+                <li itemprop="author" itemscope itemtype="https://schema.org/Person">
+                    <i class="fa fa-user"></i> 作者 <span itemprop="name">Mamimi</span>
+                </li>
+                
+                    <li>
+                        <i class="fa fa-edit"></i> 
+                        
+                        
+                            ~8.65K
+                        
+                        字
+                    </li>
+                
+                
+                
+            </ul>
+        </header>
+        <div class="kratos-page-content kr-post">
+            
+            
+            
+                <div class="kratos-post-inner-toc toc-div-class" >
+                    <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link"><span class="toc-number">1.</span> <span class="toc-text">3 分钟速览版</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link"><span class="toc-number">1.1.</span> <span class="toc-text">Skill 三层加载模型</span></a></li><li class="toc-item toc-level-3"><a class="toc-link"><span class="toc-number">1.2.</span> <span class="toc-text">optimize-doc 优化前后对比</span></a></li><li class="toc-item toc-level-3"><a class="toc-link"><span class="toc-number">1.3.</span> <span class="toc-text">多模型分工</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link"><span class="toc-number">2.</span> <span class="toc-text">深度剖析版</span></a></li><li class="toc-item toc-level-2"><a class="toc-link"><span class="toc-number">3.</span> <span class="toc-text">1. Skill 核心概念</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link"><span class="toc-number">3.1.</span> <span class="toc-text">1.1 什么是 Skill</span></a></li><li class="toc-item toc-level-3"><a class="toc-link"><span class="toc-number">3.2.</span> <span class="toc-text">1.2 Skill 与传统工具的区别</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link"><span class="toc-number">4.</span> <span class="toc-text">2. Skill 设计理念</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link"><span class="toc-number">4.1.</span> <span class="toc-text">2.1 Progressive Disclosure 原则</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link"><span class="toc-number">4.1.1.</span> <span class="toc-text">第一层：元数据（约 100 words，始终存在）</span></a></li><li class="toc-item toc-level-4"><a class="toc-link"><span class="toc-number">4.1.2.</span> <span class="toc-text">第二层：SKILL.md 正文（触发时加载，建议 &lt; 5000 words）</span></a></li><li class="toc-item toc-level-4"><a class="toc-link"><span class="toc-number">4.1.3.</span> <span class="toc-text">第三层：捆绑资源（按需加载，不限容量）</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link"><span class="toc-number">4.2.</span> <span class="toc-text">2.2 触发描述的编写</span></a></li><li class="toc-item toc-level-3"><a class="toc-link"><span class="toc-number">4.3.</span> <span class="toc-text">2.3 组织结构最佳实践</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link"><span class="toc-number">5.</span> <span class="toc-text">3. optimize-doc Skill 设计实践</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link"><span class="toc-number">5.1.</span> <span class="toc-text">3.1 初始设计思路</span></a></li><li class="toc-item toc-level-3"><a class="toc-link"><span class="toc-number">5.2.</span> <span class="toc-text">3.2 YAML Frontmatter 配置</span></a></li><li class="toc-item toc-level-3"><a class="toc-link"><span class="toc-number">5.3.</span> <span class="toc-text">3.3 工作流程设计</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link"><span class="toc-number">6.</span> <span class="toc-text">4. Skill 优化方案：多模型协作实录</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link"><span class="toc-number">6.1.</span> <span class="toc-text">4.1 Haiku 4.5 的初步方案</span></a></li><li class="toc-item toc-level-3"><a class="toc-link"><span class="toc-number">6.2.</span> <span class="toc-text">4.2 Opus 4.6 的审核与修正</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link"><span class="toc-number">6.2.1.</span> <span class="toc-text">问题 1：未读完就下结论</span></a></li><li class="toc-item toc-level-4"><a class="toc-link"><span class="toc-number">6.2.2.</span> <span class="toc-text">问题 2：过度工程</span></a></li><li class="toc-item toc-level-4"><a class="toc-link"><span class="toc-number">6.2.3.</span> <span class="toc-text">问题 3：目标行数过激</span></a></li><li class="toc-item toc-level-4"><a class="toc-link"><span class="toc-number">6.2.4.</span> <span class="toc-text">问题 4：遗漏了真正的 bug</span></a></li><li class="toc-item toc-level-4"><a class="toc-link"><span class="toc-number">6.2.5.</span> <span class="toc-text">问题 5：内容重复</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link"><span class="toc-number">6.3.</span> <span class="toc-text">4.3 Sonnet 4.6 的执行结果</span></a></li><li class="toc-item toc-level-3"><a class="toc-link"><span class="toc-number">6.4.</span> <span class="toc-text">4.4 一个意外插曲：cc-switch 导致文件丢失</span></a></li><li class="toc-item toc-level-3"><a class="toc-link"><span class="toc-number">6.5.</span> <span class="toc-text">4.5 案例：资源文件未加载导致格式错误（auto-post v1.2.0）</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link"><span class="toc-number">6.5.1.</span> <span class="toc-text">问题现象</span></a></li><li class="toc-item toc-level-4"><a class="toc-link"><span class="toc-number">6.5.2.</span> <span class="toc-text">根因分析：三处缺陷的叠加</span></a></li><li class="toc-item toc-level-4"><a class="toc-link"><span class="toc-number">6.5.3.</span> <span class="toc-text">修复方案</span></a></li><li class="toc-item toc-level-4"><a class="toc-link"><span class="toc-number">6.5.4.</span> <span class="toc-text">Agent 可靠性原则</span></a></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link"><span class="toc-number">7.</span> <span class="toc-text">5. 实施建议</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link"><span class="toc-number">7.1.</span> <span class="toc-text">5.1 Skill 创建检查清单</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link"><span class="toc-number">7.1.1.</span> <span class="toc-text">元数据层</span></a></li><li class="toc-item toc-level-4"><a class="toc-link"><span class="toc-number">7.1.2.</span> <span class="toc-text">SKILL.md 层</span></a></li><li class="toc-item toc-level-4"><a class="toc-link"><span class="toc-number">7.1.3.</span> <span class="toc-text">资源层</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link"><span class="toc-number">7.2.</span> <span class="toc-text">5.2 常见问题与解决方案</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link"><span class="toc-number">7.2.1.</span> <span class="toc-text">Q1：SKILL.md 写多长合适？</span></a></li><li class="toc-item toc-level-4"><a class="toc-link"><span class="toc-number">7.2.2.</span> <span class="toc-text">Q2：scripts 和 SKILL.md 中的代码示例有什么区别？</span></a></li><li class="toc-item toc-level-4"><a class="toc-link"><span class="toc-number">7.2.3.</span> <span class="toc-text">Q3：如何验证 Skill 优化后没有”过度精简”？</span></a></li><li class="toc-item toc-level-4"><a class="toc-link"><span class="toc-number">7.2.4.</span> <span class="toc-text">Q4：多模型协作适合什么场景？</span></a></li><li class="toc-item toc-level-4"><a class="toc-link"><span class="toc-number">7.2.5.</span> <span class="toc-text">Q5：文件被 cc-switch 覆盖怎么办？</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link"><span class="toc-number">7.3.</span> <span class="toc-text">5.3 后续迭代方向</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link"><span class="toc-number">8.</span> <span class="toc-text">更新记录</span></a></li></ol>
+                </div>
+            
+            <hr />
+            <div itemprop="articleBody"><blockquote>
+<p>一句话定位：Skill 是 Claude Code 的”领域专家模块”——把隐性的工作流知识固化成可复用的显性指令。</p>
+</blockquote>
+<blockquote>
+<p>核心理念：好的 Skill 不靠堆砌信息，而是把正确的内容放在正确的层级，让 AI 按需加载、精准执行。</p>
+</blockquote>
+<hr>
+<h2><span id="3-分钟速览版">3 分钟速览版</span></h2><details>
+<summary><strong>点击展开核心概念</strong></summary>
+
+<h3><span id="skill-三层加载模型">Skill 三层加载模型</span></h3><pre class="mermaid">graph TB
+    A["元数据层<br>name + description<br>始终在上下文"]
+    B["指令层<br>SKILL.md 正文<br>触发时加载"]
+    C["资源层<br>scripts / references / assets<br>按需加载"]
+
+    A -->|"触发 Skill"| B
+    B -->|"执行时参考"| C
+
+    style A fill:#bbdefb,stroke:#333,color:#000
+    style B fill:#c8e6c9,stroke:#333,color:#000
+    style C fill:#ffccbc,stroke:#333,color:#000</pre>
+
+<h3><span id="optimize-doc-优化前后对比">optimize-doc 优化前后对比</span></h3><table>
+<thead>
+<tr>
+<th>维度</th>
+<th>v2.0（优化前）</th>
+<th>v2.1（优化后）</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>SKILL.md 行数</td>
+<td>541 行</td>
+<td>319 行（-41%）</td>
+</tr>
+<tr>
+<td>可视化决策逻辑</td>
+<td>内联在 SKILL.md</td>
+<td>拆到 references&#x2F;</td>
+</tr>
+<tr>
+<td>格式规则</td>
+<td>两处重复</td>
+<td>仅 markdown-rules.md</td>
+</tr>
+<tr>
+<td>验证脚本 bug</td>
+<td>代码块检测有歧义</td>
+<td>状态机修复</td>
+</tr>
+<tr>
+<td>步骤数量</td>
+<td>10 步（5+6 重复）</td>
+<td>9 步（合并可视化）</td>
+</tr>
+</tbody></table>
+<h3><span id="多模型分工">多模型分工</span></h3><table>
+<thead>
+<tr>
+<th>角色</th>
+<th>模型</th>
+<th>职责</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>提案</td>
+<td>Haiku 4.5</td>
+<td>快速识别问题，输出初步方案</td>
+</tr>
+<tr>
+<td>审核</td>
+<td>Opus 4.6</td>
+<td>深度推理，发现遗漏和错误</td>
+</tr>
+<tr>
+<td>执行</td>
+<td>Sonnet 4.6</td>
+<td>高效编辑，精准落地</td>
+</tr>
+</tbody></table>
+</details>
+
+<hr>
+<h2><span id="深度剖析版">深度剖析版</span></h2><h2><span id="1-skill-核心概念">1. Skill 核心概念</span></h2><h3><span id="11-什么是-skill">1.1 什么是 Skill</span></h3><p>Skill 是 Claude Code 的模块化能力扩展包。它通过结构化文件（指令 + 脚本 + 参考文档 + 资产模板），为 Claude 注入特定领域的程序化知识，使其能够执行原本需要大量上下文和多轮对话才能完成的复杂任务。</p>
+<p>一个 Skill 本质上回答三个问题：</p>
+<ul>
+<li><strong>何时激活</strong>：通过 <code>name</code> + <code>description</code> 让 Claude 识别触发时机</li>
+<li><strong>如何执行</strong>：通过 SKILL.md 提供工作流程和决策规则</li>
+<li><strong>用什么资源</strong>：通过 <code>scripts/</code>、<code>references/</code>、<code>assets/</code> 提供可复用工具</li>
+</ul>
+<h3><span id="12-skill-与传统工具的区别">1.2 Skill 与传统工具的区别</span></h3><p>传统工具（CLI、API）是<strong>单一操作</strong>的封装：输入参数，返回结果。</p>
+<p>Skill 是<strong>完整工作流</strong>的封装，包含决策逻辑、质量标准、错误处理和资源引用：</p>
+<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">传统工具：markdownlint file.md  →  返回格式错误列表</span><br><span class="line"></span><br><span class="line">Skill：读取文档 → 分析受众 → 设计结构 → 重写内容</span><br><span class="line">       → 选择可视化 → 补充实战 → 验证格式 → 保存输出</span><br></pre></td></tr></table></figure>
+
+<p>关键差异在于 Skill 赋予 Claude <strong>判断力</strong>——理解目标、选择策略、评估质量，而非机械执行命令。</p>
+<h2><span id="2-skill-设计理念">2. Skill 设计理念</span></h2><h3><span id="21-progressive-disclosure-原则">2.1 Progressive Disclosure 原则</span></h3><p>Skill 采用三层渐进加载，核心是<strong>按需加载，避免上下文污染</strong>：</p>
+<h4><span id="第一层元数据约-100-words始终存在">第一层：元数据（约 100 words，始终存在）</span></h4><figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">---</span></span><br><span class="line"><span class="attr">name:</span> <span class="string">optimize-doc</span></span><br><span class="line"><span class="attr">description:</span> <span class="string">优化</span> <span class="string">Markdown</span> <span class="string">博客文档...</span></span><br><span class="line">  <span class="string">This</span> <span class="string">skill</span> <span class="string">should</span> <span class="string">be</span> <span class="string">used</span> <span class="string">when</span> <span class="string">a</span> <span class="string">user</span> <span class="string">asks</span> <span class="string">to</span> <span class="string">optimize...</span></span><br><span class="line"><span class="meta">---</span></span><br></pre></td></tr></table></figure>
+
+<p>这层的唯一职责是让 Claude 判断”是否需要激活这个 Skill”。<code>description</code> 写得好不好，直接决定触发准确率。</p>
+<h4><span id="第二层skillmd-正文触发时加载建议-lt-5000-words">第二层：SKILL.md 正文（触发时加载，建议 &lt; 5000 words）</span></h4><p>包含核心工作流程、决策规则、资源索引。不该塞入大段参考材料——那是第三层的职责。</p>
+<h4><span id="第三层捆绑资源按需加载不限容量">第三层：捆绑资源（按需加载，不限容量）</span></h4><figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">scripts/      →  可直接运行的脚本，无需读入上下文</span><br><span class="line">references/   →  参考文档，Claude 需要时才读取</span><br><span class="line">assets/       →  模板和素材，直接用于输出</span><br></pre></td></tr></table></figure>
+
+<p><strong>实践案例</strong>：optimize-doc v2.0 把 160 行可视化选择指南写在 SKILL.md 里，每次触发都占用上下文。v2.1 把它移到 <code>references/visualization-guide.md</code>，只有执行到”添加可视化”步骤时才加载。</p>
+<h3><span id="22-触发描述的编写">2.2 触发描述的编写</span></h3><p>触发描述（description）决定 Skill 能否被正确激活。</p>
+<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 好的描述：what + when，双语关键词</span></span><br><span class="line"><span class="attr">description:</span> <span class="string">&gt;</span></span><br><span class="line"><span class="string">  优化 Markdown 博客文档，按照专业标准改进内容结构、可读性和实用性。</span></span><br><span class="line"><span class="string">  This skill should be used when a user asks to optimize, improve, or</span></span><br><span class="line"><span class="string">  rewrite markdown documentation for blog posts or technical articles.</span></span><br><span class="line"><span class="string"></span></span><br><span class="line"><span class="comment"># 差的描述：模糊，缺少触发条件</span></span><br><span class="line"><span class="attr">description:</span> <span class="string">A</span> <span class="string">tool</span> <span class="string">for</span> <span class="string">working</span> <span class="string">with</span> <span class="string">markdown</span> <span class="string">files.</span></span><br></pre></td></tr></table></figure>
+
+<p>有效描述的四要素：</p>
+<ul>
+<li>使用第三人称（”This skill should be used when…”）</li>
+<li>中英文关键词并存（提高匹配率）</li>
+<li>明确触发动词（optimize &#x2F; improve &#x2F; rewrite）</li>
+<li>指定适用范围（blog posts &#x2F; technical articles）</li>
+</ul>
+<h3><span id="23-组织结构最佳实践">2.3 组织结构最佳实践</span></h3><p>内容放置的核心判断依据：<strong>这段内容在 10 次执行中会被用到几次？</strong></p>
+<table>
+<thead>
+<tr>
+<th>使用频率</th>
+<th>放置位置</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>10&#x2F;10 次</td>
+<td>SKILL.md 正文</td>
+</tr>
+<tr>
+<td>3-7&#x2F;10 次</td>
+<td>SKILL.md 简述 + references&#x2F; 详细展开</td>
+</tr>
+<tr>
+<td>1-2&#x2F;10 次</td>
+<td>仅 references&#x2F;，SKILL.md 只写引用指示</td>
+</tr>
+<tr>
+<td>反复执行的代码</td>
+<td>scripts&#x2F;（确定性执行，节省 token）</td>
+</tr>
+<tr>
+<td>输出模板</td>
+<td>assets&#x2F;（直接复制使用）</td>
+</tr>
+</tbody></table>
+<h2><span id="3-optimize-doc-skill-设计实践">3. optimize-doc Skill 设计实践</span></h2><h3><span id="31-初始设计思路">3.1 初始设计思路</span></h3><p>optimize-doc 解决的核心问题是：<strong>每次手动优化博客文档，都要重复相同的决策</strong>——选结构、加可视化、验格式、补实战案例。</p>
+<p>Skill 把这些隐性知识固化为显性流程：</p>
+<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">输入：一篇原始 Markdown 文档</span><br><span class="line">输出：双版本结构 + Mermaid 图表 + 实战案例 + FAQ + 格式验证通过的专业文档</span><br></pre></td></tr></table></figure>
+
+<h3><span id="32-yaml-frontmatter-配置">3.2 YAML Frontmatter 配置</span></h3><figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">---</span></span><br><span class="line"><span class="attr">name:</span> <span class="string">optimize-doc</span></span><br><span class="line"><span class="attr">description:</span> <span class="string">优化</span> <span class="string">Markdown</span> <span class="string">博客文档，按照专业标准改进内容结构、可读性和实用性。</span></span><br><span class="line">  <span class="string">This</span> <span class="string">skill</span> <span class="string">should</span> <span class="string">be</span> <span class="string">used</span> <span class="string">when</span> <span class="string">a</span> <span class="string">user</span> <span class="string">asks</span> <span class="string">to</span> <span class="string">optimize,</span> <span class="string">improve,</span> <span class="string">or</span> <span class="string">rewrite</span></span><br><span class="line">  <span class="string">markdown</span> <span class="string">documentation</span> <span class="string">for</span> <span class="string">blog</span> <span class="string">posts,</span> <span class="string">technical</span> <span class="string">articles,</span> <span class="string">or</span> <span class="string">other</span></span><br><span class="line">  <span class="string">markdown-based</span> <span class="string">content.</span></span><br><span class="line"><span class="attr">arguments:</span></span><br><span class="line">  <span class="bullet">-</span> <span class="attr">name:</span> <span class="string">file</span></span><br><span class="line">    <span class="attr">description:</span> <span class="string">要优化的</span> <span class="string">Markdown</span> <span class="string">文件路径（绝对路径）</span></span><br><span class="line">    <span class="attr">required:</span> <span class="literal">true</span></span><br><span class="line">  <span class="bullet">-</span> <span class="attr">name:</span> <span class="string">type</span></span><br><span class="line">    <span class="attr">description:</span> <span class="string">文章类型</span> <span class="string">(mindset/tech/tools/gaming/anime)</span></span><br><span class="line">    <span class="attr">required:</span> <span class="literal">false</span></span><br><span class="line">  <span class="bullet">-</span> <span class="attr">name:</span> <span class="string">output_path</span></span><br><span class="line">    <span class="attr">description:</span> <span class="string">输出文件路径（绝对路径，默认：桌面）</span></span><br><span class="line">    <span class="attr">required:</span> <span class="literal">false</span></span><br><span class="line"><span class="meta">---</span></span><br></pre></td></tr></table></figure>
+
+<p>只有 <code>file</code> 标记为 <code>required</code>——其余参数有合理默认值，降低使用门槛。</p>
+<h3><span id="33-工作流程设计">3.3 工作流程设计</span></h3><p>v2.1 的工作流包含 9 个步骤，核心逻辑：</p>
+<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">分析原文 → 确定路径 → 设计结构 → 重写内容 → 添加可视化</span><br><span class="line">→ 补充实战 → 格式验证 → 保存文档 → 反馈结果</span><br></pre></td></tr></table></figure>
+
+<p>每步都有明确的输入、输出和质量标准。例如”添加可视化”步骤：</p>
+<ul>
+<li>决策依据：<code>references/visualization-guide.md</code> 中的决策树</li>
+<li>硬约束：Mermaid 图 ≤ 3 张，节点数 ≤ 8，超出改用 CDN 图片</li>
+<li>验证项：PJAX 兼容、链接可访问、颜色与博客风格协调</li>
+</ul>
+<h2><span id="4-skill-优化方案多模型协作实录">4. Skill 优化方案：多模型协作实录</span></h2><h3><span id="41-haiku-45-的初步方案">4.1 Haiku 4.5 的初步方案</span></h3><p>Haiku 快速扫描 Skill 文件后，提出 5 项建议：</p>
+<ol>
+<li>重构 SKILL.md（541 → 200 行）</li>
+<li>创建 <code>references/visualization-guide.md</code></li>
+<li>完善 <code>document-template.md</code>（”只有前 100 行，不完整”）</li>
+<li>新增 <code>scripts/init_output_path.py</code></li>
+<li>改进 arguments 说明</li>
+</ol>
+<h3><span id="42-opus-46-的审核与修正">4.2 Opus 4.6 的审核与修正</span></h3><p>Opus 逐条审核后发现 5 个问题：</p>
+<h4><span id="问题-1未读完就下结论">问题 1：未读完就下结论</span></h4><p>Haiku 读 <code>document-template.md</code> 时设了 <code>limit=100</code>，只看开头就判断”不完整”。实际该文件有 586 行，是完整模板。</p>
+<p>教训：审查文件前必须完整读取，或先检查总行数。</p>
+<h4><span id="问题-2过度工程">问题 2：过度工程</span></h4><p>建议新增 <code>init_output_path.py</code>——但这个逻辑只有 5 行（有指定用指定，没有存桌面），不满足 scripts 收录标准：”被反复重写”或”需要确定性执行”。</p>
+<h4><span id="问题-3目标行数过激">问题 3：目标行数过激</span></h4><p>541 → 200 行意味着砍掉 63%，可能丢失关键程序化知识。合理目标是 ~320 行（移走参考性内容）。</p>
+<h4><span id="问题-4遗漏了真正的-bug">问题 4：遗漏了真正的 bug</span></h4><p><code>validate_markdown.py</code> 中代码块检测有歧义：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 旧代码（有 bug）</span></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">is_code_block_start</span>(<span class="params">self, line</span>):</span><br><span class="line">    <span class="comment"># \w* 允许零字符，导致结束标记 ``` 也被匹配为&quot;开始&quot;</span></span><br><span class="line">    <span class="keyword">return</span> re.<span class="keyword">match</span>(<span class="string">r&#x27;^```\w*\s*$&#x27;</span>, line) <span class="keyword">is</span> <span class="keyword">not</span> <span class="literal">None</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">is_code_block_end</span>(<span class="params">self, line</span>):</span><br><span class="line">    <span class="keyword">return</span> re.<span class="keyword">match</span>(<span class="string">r&#x27;^```\s*$&#x27;</span>, line) <span class="keyword">is</span> <span class="keyword">not</span> <span class="literal">None</span></span><br></pre></td></tr></table></figure>
+
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 修复后：用状态机区分开始/结束</span></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">is_code_fence</span>(<span class="params">self, line</span>):</span><br><span class="line">    <span class="keyword">return</span> re.<span class="keyword">match</span>(<span class="string">r&#x27;^```&#x27;</span>, line) <span class="keyword">is</span> <span class="keyword">not</span> <span class="literal">None</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">check_code_blocks</span>(<span class="params">self</span>):</span><br><span class="line">    in_code_block = <span class="literal">False</span></span><br><span class="line">    <span class="keyword">for</span> i, line <span class="keyword">in</span> <span class="built_in">enumerate</span>(<span class="variable language_">self</span>.lines):</span><br><span class="line">        <span class="keyword">if</span> <span class="keyword">not</span> <span class="variable language_">self</span>.is_code_fence(line):</span><br><span class="line">            <span class="keyword">continue</span></span><br><span class="line">        <span class="keyword">if</span> <span class="keyword">not</span> in_code_block:</span><br><span class="line">            in_code_block = <span class="literal">True</span>   <span class="comment"># 开始</span></span><br><span class="line">        <span class="keyword">else</span>:</span><br><span class="line">            in_code_block = <span class="literal">False</span>  <span class="comment"># 结束</span></span><br></pre></td></tr></table></figure>
+
+<h4><span id="问题-5内容重复">问题 5：内容重复</span></h4><p>SKILL.md 和 <code>references/markdown-rules.md</code> 都列出了 MD022&#x2F;MD032&#x2F;MD036 的说明，违反 single source of truth 原则。</p>
+<h3><span id="43-sonnet-46-的执行结果">4.3 Sonnet 4.6 的执行结果</span></h3><p>按优先级执行所有修改：</p>
+<ul>
+<li><strong>P0</strong>：创建 <code>references/visualization-guide.md</code>，移入约 160 行可视化逻辑</li>
+<li><strong>P1</strong>：精简步骤 2（删除伪代码）、合并步骤 5+6、删除重复格式规则、删除 emoji 堆砌的示例输出</li>
+<li><strong>P2</strong>：用状态机修复 <code>validate_markdown.py</code> 的代码块检测 bug</li>
+</ul>
+<p>最终结果：</p>
+<table>
+<thead>
+<tr>
+<th>指标</th>
+<th>变化</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>SKILL.md 行数</td>
+<td>541 → 319（-41%）</td>
+</tr>
+<tr>
+<td>references 文件数</td>
+<td>1 → 2</td>
+</tr>
+<tr>
+<td>重复内容处</td>
+<td>3 → 0</td>
+</tr>
+<tr>
+<td>脚本 bug</td>
+<td>1 → 0</td>
+</tr>
+</tbody></table>
+<h3><span id="44-一个意外插曲cc-switch-导致文件丢失">4.4 一个意外插曲：cc-switch 导致文件丢失</span></h3><p>本次优化过程中发现了一个值得注意的问题：<strong>cc-switch 的 symlink 管理机制在会话切换后会覆盖文件</strong>。</p>
+<p>具体表现：Sonnet 创建了 <code>visualization-guide.md</code> 并编辑了 SKILL.md，但在切换模型（Haiku → Opus → Sonnet）之后，这些文件的修改时间恢复到了原始版本（2月9日）。</p>
+<p>排查过程：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 检查两个路径的文件状态</span></span><br><span class="line"><span class="built_in">ls</span> -lah ~/.claude/skills/optimize-doc/references/</span><br><span class="line"><span class="built_in">ls</span> -lah ~/.cc-switch/skills/optimize-doc/references/</span><br><span class="line"></span><br><span class="line"><span class="comment"># 结果：visualization-guide.md 不存在，SKILL.md 时间戳回退</span></span><br></pre></td></tr></table></figure>
+
+<p>解决方案：手动重新写入所有丢失的修改，并验证两个路径的同步状态。</p>
+<p>防范建议：在使用 cc-switch 切换模型前，确保关键文件已写入磁盘并验证时间戳。</p>
+<h3><span id="45-案例资源文件未加载导致格式错误auto-post-v120">4.5 案例：资源文件未加载导致格式错误（auto-post v1.2.0）</span></h3><p>这是一个典型的 Agent 可靠性问题——Skill 的 references&#x2F; 中有正确的规范，但 Agent 执行时跳过了加载，导致输出不符合规范。</p>
+<h4><span id="问题现象">问题现象</span></h4><p>使用 <code>/auto-post</code> 生成文章后，更新记录使用了列表格式：</p>
+<figure class="highlight markdown"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="section">## 更新记录</span></span><br><span class="line"></span><br><span class="line"><span class="bullet">-</span> 2025-05-22：初始版本</span><br></pre></td></tr></table></figure>
+
+<p>但 <code>references/format-rules.md</code> 明确要求表格 + 版本号格式：</p>
+<figure class="highlight markdown"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="section">## 更新记录</span></span><br><span class="line"></span><br><span class="line">| 版本 | 日期 | 说明 |</span><br><span class="line">|------|------|------|</span><br><span class="line">| v1.0 | 2025-05-22 | 初始版本 |</span><br></pre></td></tr></table></figure>
+
+<h4><span id="根因分析三处缺陷的叠加">根因分析：三处缺陷的叠加</span></h4><table>
+<thead>
+<tr>
+<th>#</th>
+<th>缺陷位置</th>
+<th>具体问题</th>
+<th>严重度</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>1</td>
+<td>SKILL.md 自检清单</td>
+<td>写的是旧列表格式 <code>- YYYY-MM-DD：初始版本</code>，与 format-rules.md <strong>直接矛盾</strong></td>
+<td>根因</td>
+</tr>
+<tr>
+<td>2</td>
+<td>参考资源 section 标题</td>
+<td>标题为”按需加载”，暗示所有资源可跳过，削弱了 format-rules.md 的强制性</td>
+<td>助因</td>
+</tr>
+<tr>
+<td>3</td>
+<td>Step 4 无硬前置</td>
+<td>仅写”对照 format-rules.md 自检”，未要求必须先 Read 该文件</td>
+<td>助因</td>
+</tr>
+</tbody></table>
+<p>Agent 执行时的决策链：看到标题”按需加载” → 判断 format-rules.md 不是必需的 → 依赖 SKILL.md 内的自检清单 → 清单写的是列表格式 → 输出列表格式。</p>
+<p><strong>根因不是 Agent 没读文件，而是 SKILL.md 自检清单本身就写错了。</strong> 即使 Agent 读了 format-rules.md，面对两处矛盾的指令也可能随机选择其一。</p>
+<h4><span id="修复方案">修复方案</span></h4><p>三处同时修复，消除矛盾源：</p>
+<figure class="highlight text"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">修复 1：自检清单 — 删除内联的错误格式描述，改为引用 format-rules.md</span><br><span class="line">  旧：- [ ] 更新记录存在，格式为 `- YYYY-MM-DD：初始版本`</span><br><span class="line">  新：- [ ] 更新记录使用表格格式，含版本号（参见 format-rules.md §更新记录规范）</span><br><span class="line"></span><br><span class="line">修复 2：参考资源 — 去掉&quot;按需加载&quot;标题，改为表格明确区分必须/按需</span><br><span class="line">  format-rules.md 标注为：是，禁止跳过</span><br><span class="line"></span><br><span class="line">修复 3：Step 3 并行加载 — format-rules.md 与模板文件同时 Read，Step 4 设兜底检查</span><br></pre></td></tr></table></figure>
+
+<h4><span id="agent-可靠性原则">Agent 可靠性原则</span></h4><p>这个案例验证了 Google&#x2F;Kaggle Agent 白皮书中的两条核心原则：</p>
+<p><strong>1. Single Source of Truth</strong>：同一规则不要在两处维护不同描述。SKILL.md 的自检清单和 format-rules.md 对更新记录格式的描述矛盾了，Agent 无法判断哪个是权威的。修复方式是清单只引用，不内联。</p>
+<p><strong>2. Reproducibility</strong>：Agent 的错误必须能够复现和防止。仅靠”提醒 Agent 下次记得读文件”是不可靠的——每次会话是独立的，Agent 没有跨会话记忆。必须在 Skill 结构层面消除错误的可能性：将强制加载写入工作流步骤，而非依赖 Agent 的自主判断。</p>
+<h2><span id="5-实施建议">5. 实施建议</span></h2><h3><span id="51-skill-创建检查清单">5.1 Skill 创建检查清单</span></h3><h4><span id="元数据层">元数据层</span></h4><ul>
+<li><input disabled type="checkbox"> <code>name</code> 简洁可搜索</li>
+<li><input disabled type="checkbox"> <code>description</code> 包含 what + when，中英文并存</li>
+<li><input disabled type="checkbox"> <code>description</code> 使用第三人称</li>
+<li><input disabled type="checkbox"> 只有真正必需的参数标记为 <code>required</code></li>
+</ul>
+<h4><span id="skillmd-层">SKILL.md 层</span></h4><ul>
+<li><input disabled type="checkbox"> 正文 &lt; 5000 words</li>
+<li><input disabled type="checkbox"> 工作流步骤无重叠</li>
+<li><input disabled type="checkbox"> 复杂参考内容已拆到 references&#x2F;</li>
+<li><input disabled type="checkbox"> 每段信息只出现在一处（single source of truth）</li>
+</ul>
+<h4><span id="资源层">资源层</span></h4><ul>
+<li><input disabled type="checkbox"> scripts&#x2F;：仅反复使用或需确定性执行的代码</li>
+<li><input disabled type="checkbox"> references&#x2F;：SKILL.md 中有明确引用指示</li>
+<li><input disabled type="checkbox"> assets&#x2F;：模板完整可用，无需读入上下文理解</li>
+</ul>
+<h3><span id="52-常见问题与解决方案">5.2 常见问题与解决方案</span></h3><h4><span id="q1skillmd-写多长合适">Q1：SKILL.md 写多长合适？</span></h4><p>没有固定答案。核心判断：每段内容在 10 次执行中被用到几次？</p>
+<ul>
+<li>必须每次参考 → 放 SKILL.md</li>
+<li>偶尔查阅 → 放 references&#x2F;，SKILL.md 只写引用</li>
+</ul>
+<p>经验区间：300-500 行。</p>
+<h4><span id="q2scripts-和-skillmd-中的代码示例有什么区别">Q2：scripts 和 SKILL.md 中的代码示例有什么区别？</span></h4><p>SKILL.md 中的代码是<strong>说明性</strong>的（帮助 Claude 理解逻辑）。</p>
+<p>scripts&#x2F; 中的代码是<strong>执行性</strong>的（直接运行产生结果）。</p>
+<p>简单逻辑（&lt; 10 行）用 SKILL.md 说明即可；需要实际运行的，放 scripts&#x2F;。</p>
+<h4><span id="q3如何验证-skill-优化后没有过度精简">Q3：如何验证 Skill 优化后没有”过度精简”？</span></h4><p>用优化后的 Skill 执行一次完整任务，观察 Claude 是否需要”猜测”SKILL.md 中未提及的规则。如果需要，说明精简过度。</p>
+<h4><span id="q4多模型协作适合什么场景">Q4：多模型协作适合什么场景？</span></h4><table>
+<thead>
+<tr>
+<th>任务</th>
+<th>推荐模型</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>方案评审、架构决策</td>
+<td>Opus</td>
+</tr>
+<tr>
+<td>文件编辑、执行明确任务</td>
+<td>Sonnet</td>
+</tr>
+<tr>
+<td>快速探索、初步方案</td>
+<td>Haiku</td>
+</tr>
+</tbody></table>
+<p>Skill 的开发周期本身就是很好的例子：Haiku 快速提案、Opus 深度审核、Sonnet 精准落地。</p>
+<h4><span id="q5文件被-cc-switch-覆盖怎么办">Q5：文件被 cc-switch 覆盖怎么办？</span></h4><p>在切换模型前运行检查：</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 检查关键文件的修改时间</span></span><br><span class="line"><span class="built_in">ls</span> -lah ~/.claude/skills/your-skill/</span><br><span class="line"></span><br><span class="line"><span class="comment"># 对比两个路径的文件状态</span></span><br><span class="line">diff &lt;(<span class="built_in">ls</span> -lah ~/.claude/skills/your-skill/) \</span><br><span class="line">     &lt;(<span class="built_in">ls</span> -lah ~/.cc-switch/skills/your-skill/)</span><br></pre></td></tr></table></figure>
+
+<p>如果发现时间戳回退，重新写入丢失的内容。长期方案：将 skills 目录纳入 git 版本管理。</p>
+<h3><span id="53-后续迭代方向">5.3 后续迭代方向</span></h3><p>基于本次经验，optimize-doc v2.2 可考虑：</p>
+<ol>
+<li><strong>修复验证脚本的 false positive</strong>：当前 <code>check_headings</code>、<code>check_lists</code>、<code>check_horizontal_rules</code> 不跳过代码块内容，导致约 30 个误报</li>
+<li><strong>修正步骤编号</strong>：合并步骤 5+6 后，编号出现 5→7 的间隙</li>
+<li><strong>CDN 路径参数化</strong>：<code>leahana/blog-images</code> 硬编码在多个文件中，应提取为配置项</li>
+<li><strong>按文章类型精简流程</strong>：gaming&#x2F;anime 类型不需要故障排查和代码示例章节</li>
+</ol>
+<hr>
+<h2><span id="更新记录">更新记录</span></h2><table>
+<thead>
+<tr>
+<th>版本</th>
+<th>日期</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>v1.0</td>
+<td>2026-03-05</td>
+<td>初始版本，基于 optimize-doc v2.0→v2.1 优化过程</td>
+</tr>
+<tr>
+<td>v1.1</td>
+<td>2026-03-06</td>
+<td>新增 4.5 节：auto-post 资源文件未加载导致格式错误案例</td>
+</tr>
+</tbody></table>
+</div>
+        </div>
+        
+        <footer class="kratos-entry-footer clearfix">
+            
+            
+            
+                <div class="post-actions text-center clearfix" id="post-actions">
+                
+                    <a class="donate" href="javascript:;" onclick="krOpenDonateModal()"><i class="fa fa-bitcoin"></i> 打赏</a>
+                
+                
+                </div>
+            
+            <div class="footer-tag clearfix">
+                <div class="pull-left">
+                <i class="fa fa-tags"></i>
+                    <a class="tag-none-link" href="/tags/claude-code/" rel="tag">claude-code</a>, <a class="tag-none-link" href="/tags/multi-model/" rel="tag">multi-model</a>, <a class="tag-none-link" href="/tags/prompt-engineering/" rel="tag">prompt-engineering</a>, <a class="tag-none-link" href="/tags/skill/" rel="tag">skill</a>
+                </div>
+                <div class="pull-date">
+                    <time datetime="2026-03-06T09:30:46.396Z" itemprop="dateModified">最后编辑：2026-03-06</time>
+                </div>
+            </div>
+        </footer>
+    </div>
+    
+        <nav class="navigation post-navigation clearfix" role="navigation">
+            
+            <div class="nav-previous clearfix">
+                <a title=" AI 工具 API Key 统一管理：从 .env 到企业级密钥治理" href="/2026/03/03/tech/ai/2026-03-04-ai-api-key-management/"><i class="fa fa-angle-left"></i> 上一篇</a>
+            </div>
+            
+            
+            <div class="nav-next clearfix">
+                <a title=" 用 UNLINK 清理 Redis Key：从一次线上操作引发的缓存清理思考" href="/2026/03/05/tech/backend/2026-03-06-redis-unlink-cache-cleanup/">下一篇 <i class="fa fa-angle-right"></i></a>
+            </div>
+            
+        </nav>
+    
+    
+</article>
+
+        
+
+            </section>
+
+            
+                
+
+<section id="kratos-widget-area" class="col-md-4 hidden-xs hidden-sm">
+    <!-- 文章和页面根据splitter来分割，没有的话就从头开始设置为sticky -->
+    
+    
+                <aside id="krw-about" class="widget widget-kratos-about clearfix">
+    <div class="photo-background"></div>
+    <div class="photo-wrapper clearfix">
+        <div class="photo-wrapper-tip text-center">
+            <img class="about-photo" src="/images/theme/Mamimi.JPG" alt="Mamimi" loading="lazy" decoding="auto" />
+        </div>
+    </div>
+    <div class="textwidget">
+        <p class="text-center"></p>
+    </div>
+    <div class="site-meta">
+        <a class="meta-item" href="/archives/">
+            <span class="title">
+                文章
+            </span>
+            <span class="count">
+                28
+            </span>
+        </a>
+        <a class="meta-item" href="/categories/">
+            <span class="title">
+                分类
+            </span>
+            <span class="count">
+                8
+            </span>
+        </a>
+        <a class="meta-item" href="/tags/">
+            <span class="title">
+                标签
+            </span>
+            <span class="count">
+                53
+            </span>
+        </a>
+    </div>
+</aside>
+            
+                    <div class="sticky-area">
+                
+                    <aside id="krw-toc" class="widget widget-kratos-toc clearfix toc-div-class" >
+    <div class="photo-background"></div>
+    <h4 class="widget-title no-after">
+        <i class="fa fa-compass"></i>
+        文章目录
+        <span class="toc-progress-bar" role="progressbar" aria-label="阅读进度："></span>
+    </h4>
+    <div class="textwidget">
+        <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link"><span class="toc-number">1.</span> <span class="toc-text">3 分钟速览版</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link"><span class="toc-number">1.1.</span> <span class="toc-text">Skill 三层加载模型</span></a></li><li class="toc-item toc-level-3"><a class="toc-link"><span class="toc-number">1.2.</span> <span class="toc-text">optimize-doc 优化前后对比</span></a></li><li class="toc-item toc-level-3"><a class="toc-link"><span class="toc-number">1.3.</span> <span class="toc-text">多模型分工</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link"><span class="toc-number">2.</span> <span class="toc-text">深度剖析版</span></a></li><li class="toc-item toc-level-2"><a class="toc-link"><span class="toc-number">3.</span> <span class="toc-text">1. Skill 核心概念</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link"><span class="toc-number">3.1.</span> <span class="toc-text">1.1 什么是 Skill</span></a></li><li class="toc-item toc-level-3"><a class="toc-link"><span class="toc-number">3.2.</span> <span class="toc-text">1.2 Skill 与传统工具的区别</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link"><span class="toc-number">4.</span> <span class="toc-text">2. Skill 设计理念</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link"><span class="toc-number">4.1.</span> <span class="toc-text">2.1 Progressive Disclosure 原则</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link"><span class="toc-number">4.1.1.</span> <span class="toc-text">第一层：元数据（约 100 words，始终存在）</span></a></li><li class="toc-item toc-level-4"><a class="toc-link"><span class="toc-number">4.1.2.</span> <span class="toc-text">第二层：SKILL.md 正文（触发时加载，建议 &lt; 5000 words）</span></a></li><li class="toc-item toc-level-4"><a class="toc-link"><span class="toc-number">4.1.3.</span> <span class="toc-text">第三层：捆绑资源（按需加载，不限容量）</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link"><span class="toc-number">4.2.</span> <span class="toc-text">2.2 触发描述的编写</span></a></li><li class="toc-item toc-level-3"><a class="toc-link"><span class="toc-number">4.3.</span> <span class="toc-text">2.3 组织结构最佳实践</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link"><span class="toc-number">5.</span> <span class="toc-text">3. optimize-doc Skill 设计实践</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link"><span class="toc-number">5.1.</span> <span class="toc-text">3.1 初始设计思路</span></a></li><li class="toc-item toc-level-3"><a class="toc-link"><span class="toc-number">5.2.</span> <span class="toc-text">3.2 YAML Frontmatter 配置</span></a></li><li class="toc-item toc-level-3"><a class="toc-link"><span class="toc-number">5.3.</span> <span class="toc-text">3.3 工作流程设计</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link"><span class="toc-number">6.</span> <span class="toc-text">4. Skill 优化方案：多模型协作实录</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link"><span class="toc-number">6.1.</span> <span class="toc-text">4.1 Haiku 4.5 的初步方案</span></a></li><li class="toc-item toc-level-3"><a class="toc-link"><span class="toc-number">6.2.</span> <span class="toc-text">4.2 Opus 4.6 的审核与修正</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link"><span class="toc-number">6.2.1.</span> <span class="toc-text">问题 1：未读完就下结论</span></a></li><li class="toc-item toc-level-4"><a class="toc-link"><span class="toc-number">6.2.2.</span> <span class="toc-text">问题 2：过度工程</span></a></li><li class="toc-item toc-level-4"><a class="toc-link"><span class="toc-number">6.2.3.</span> <span class="toc-text">问题 3：目标行数过激</span></a></li><li class="toc-item toc-level-4"><a class="toc-link"><span class="toc-number">6.2.4.</span> <span class="toc-text">问题 4：遗漏了真正的 bug</span></a></li><li class="toc-item toc-level-4"><a class="toc-link"><span class="toc-number">6.2.5.</span> <span class="toc-text">问题 5：内容重复</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link"><span class="toc-number">6.3.</span> <span class="toc-text">4.3 Sonnet 4.6 的执行结果</span></a></li><li class="toc-item toc-level-3"><a class="toc-link"><span class="toc-number">6.4.</span> <span class="toc-text">4.4 一个意外插曲：cc-switch 导致文件丢失</span></a></li><li class="toc-item toc-level-3"><a class="toc-link"><span class="toc-number">6.5.</span> <span class="toc-text">4.5 案例：资源文件未加载导致格式错误（auto-post v1.2.0）</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link"><span class="toc-number">6.5.1.</span> <span class="toc-text">问题现象</span></a></li><li class="toc-item toc-level-4"><a class="toc-link"><span class="toc-number">6.5.2.</span> <span class="toc-text">根因分析：三处缺陷的叠加</span></a></li><li class="toc-item toc-level-4"><a class="toc-link"><span class="toc-number">6.5.3.</span> <span class="toc-text">修复方案</span></a></li><li class="toc-item toc-level-4"><a class="toc-link"><span class="toc-number">6.5.4.</span> <span class="toc-text">Agent 可靠性原则</span></a></li></ol></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link"><span class="toc-number">7.</span> <span class="toc-text">5. 实施建议</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link"><span class="toc-number">7.1.</span> <span class="toc-text">5.1 Skill 创建检查清单</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link"><span class="toc-number">7.1.1.</span> <span class="toc-text">元数据层</span></a></li><li class="toc-item toc-level-4"><a class="toc-link"><span class="toc-number">7.1.2.</span> <span class="toc-text">SKILL.md 层</span></a></li><li class="toc-item toc-level-4"><a class="toc-link"><span class="toc-number">7.1.3.</span> <span class="toc-text">资源层</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link"><span class="toc-number">7.2.</span> <span class="toc-text">5.2 常见问题与解决方案</span></a><ol class="toc-child"><li class="toc-item toc-level-4"><a class="toc-link"><span class="toc-number">7.2.1.</span> <span class="toc-text">Q1：SKILL.md 写多长合适？</span></a></li><li class="toc-item toc-level-4"><a class="toc-link"><span class="toc-number">7.2.2.</span> <span class="toc-text">Q2：scripts 和 SKILL.md 中的代码示例有什么区别？</span></a></li><li class="toc-item toc-level-4"><a class="toc-link"><span class="toc-number">7.2.3.</span> <span class="toc-text">Q3：如何验证 Skill 优化后没有”过度精简”？</span></a></li><li class="toc-item toc-level-4"><a class="toc-link"><span class="toc-number">7.2.4.</span> <span class="toc-text">Q4：多模型协作适合什么场景？</span></a></li><li class="toc-item toc-level-4"><a class="toc-link"><span class="toc-number">7.2.5.</span> <span class="toc-text">Q5：文件被 cc-switch 覆盖怎么办？</span></a></li></ol></li><li class="toc-item toc-level-3"><a class="toc-link"><span class="toc-number">7.3.</span> <span class="toc-text">5.3 后续迭代方向</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link"><span class="toc-number">8.</span> <span class="toc-text">更新记录</span></a></li></ol>
+    </div>
+</aside>
+                
+                
+  <aside id="krw-categories" class="widget widget-kratos-categories clearfix">
+    <h4 class="widget-title"><i class="fa fa-folder"></i>分类列表</h4>
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/docs/">docs</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/gaming/">gaming</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/mindset/">mindset</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/tech/">tech</a><span class="category-list-count">12</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/tech/ai/">ai</a><span class="category-list-count">4</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/tech/backend/">backend</a><span class="category-list-count">7</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/tech/tools/">tools</a><span class="category-list-count">1</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/">设计模式</a><span class="category-list-count">12</span></li></ul>
+  </aside>
+
+
+            
+                
+  <aside id="krw-tags" class="widget widget-kratos-tags clearfix">
+    <h4 class="widget-title"><i class="fa fa-tags"></i>标签聚合</h4>
+      <div class="tag-clouds">
+        <a href="/tags/5W1H/" style="font-size: 0.6em;">5W1H</a> <a href="/tags/AI%E6%8E%A2%E7%B4%A2/" style="font-size: 0.6em;">AI探索</a> <a href="/tags/AI%E6%9E%B6%E6%9E%84/" style="font-size: 0.6em;">AI架构</a> <a href="/tags/AOP/" style="font-size: 0.6em;">AOP</a> <a href="/tags/Hexo/" style="font-size: 0.6em;">Hexo</a> <a href="/tags/Java/" style="font-size: 0.8em;">Java</a> <a href="/tags/MCP/" style="font-size: 0.6em;">MCP</a> <a href="/tags/Markdown/" style="font-size: 0.6em;">Markdown</a> <a href="/tags/MyBatis/" style="font-size: 0.6em;">MyBatis</a> <a href="/tags/MySQL/" style="font-size: 0.8em;">MySQL</a> <a href="/tags/Obsidian/" style="font-size: 0.6em;">Obsidian</a> <a href="/tags/Pipeline/" style="font-size: 0.6em;">Pipeline</a> <a href="/tags/Redis/" style="font-size: 0.8em;">Redis</a> <a href="/tags/SQL/" style="font-size: 0.6em;">SQL</a> <a href="/tags/Spring/" style="font-size: 0.6em;">Spring</a> <a href="/tags/Spring-AI/" style="font-size: 0.6em;">Spring AI</a> <a href="/tags/UNLINK/" style="font-size: 0.6em;">UNLINK</a> <a href="/tags/api-key/" style="font-size: 0.6em;">api-key</a>
+      </div>
+  </aside>
+
+            
+                
+  <aside id="krw-posts" class="widget widget-kratos-posts">
+  <h4 class="widget-title"><i class="fa fa-file"></i>最新文章</h4>
+  <div class="tab-content">
+      <ul class="list-group">
+        
+        
+          
+          
+            <a class="list-group-item" href="/2026/03/05/tech/backend/2026-03-06-redis-unlink-cache-cleanup/"><i class="fa fa-book"></i> 用 UNLINK 清理 Redis Key：从一次线上操作引发的缓存清理思考</a>
+            
+          
+        
+          
+          
+            <a class="list-group-item" href="/2026/03/05/tech/ai/2026-03-05-skill-optimization-practice/"><i class="fa fa-book"></i> Claude Code Skill 设计与优化实践：用多模型协作迭代 optimize-doc</a>
+            
+          
+        
+          
+          
+            <a class="list-group-item" href="/2026/03/03/tech/ai/2026-03-04-ai-api-key-management/"><i class="fa fa-book"></i> AI 工具 API Key 统一管理：从 .env 到企业级密钥治理</a>
+            
+          
+        
+          
+          
+            <a class="list-group-item" href="/2026/01/08/docs/2025-01-09-markdown-format-check/"><i class="fa fa-book"></i> Markdown 格式检查指南：确保文档符合 Hexo 规范</a>
+            
+          
+        
+          
+          
+            <a class="list-group-item" href="/2026/01/08/tech/backend/2026-01-09-spring-aop-annotation-cases/"><i class="fa fa-book"></i> Spring AOP 注解使用案例与场景设计</a>
+            
+          
+        
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+      </ul>
+  </div>
+  </aside>
+
+            
+    </div>
+</section>
+            
+
+        
+
+                </div>
+    </div>
+</div>
+
+<footer>
+    <div id="footer">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-6 col-md-offset-3 footer-list text-center">
+                    <ul class="kratos-social-icons">
+                        
+                    </ul>
+                    <ul class="kratos-copyright">
+                        <div>
+                            <li>&copy; 2026 MamimiJa Nai 版权所有.</li>
+                            <li>本站已运行<span id="kr-since">Loading...</span></li>
+                        </div>
+                        <div>
+                            <li>自豪地使用 <a href="https://github.com/Candinya/Kratos-Rebirth" target="_blank">Kratos:Rebirth</a> 主题</li>
+                            <li>站点由 Mamimi 用 <i class="fa fa-heart" style="color:#d43f57"></i> 搭建</li>
+                        </div>
+                        <!-- 额外的追加注入项 -->
+                        
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <div class="kr-tool text-center">
+            <div class="tool">
+                <!-- 额外的追加注入项 -->
+                
+                
+                    <div class="box search-box">
+                        <a href="/search">
+                            <span class="fa fa-search"></span>
+                        </a>
+                    </div>
+                
+                <div class="box theme-box" id="theme-toggle">
+                    <span class="fa fa-adjust"></span>
+                </div>
+            </div>
+            <div id="gotop-box" class="box gotop-box">
+                <span class="fa fa-chevron-up"></span>
+            </div>
+        </div>
+    </div>
+</footer>
+</div>
+</div>
+
+
+    <div id="kr-donate-modal" class="kr-modal">
+    <div class="kr-modal-bg" onclick="krCloseDonateModal()"></div>
+    <div class="kr-modal-content">
+        <div class="kr-modal-header">
+            <div class="kr-modal-icon">
+                <i class="fa fa-bitcoin"></i>
+            </div>
+            <div class="kr-modal-title">打赏</div>
+            <button class="kr-modal-close" onclick="krCloseDonateModal()">
+                <i class="fa fa-times-circle"></i>
+            </button>
+        </div>
+        <div class="kr-modal-body">
+            <div class="kr-donate-message">打赏提示信息</div>
+            <div class="kr-donate-qr" id="kr-donate-qr">
+                
+            </div>
+            <div class="kr-donate-platforms">
+                
+                    
+                        <button class="kr-donate-platform-button" style="color: #00A0E9;" title="支付宝" onclick="krDonateModalShowPlatformQR('https://qr.alipay.com/fkx10074h80wdlc7rkhh73b', '#00A0E9')">
+                            <i class="fa fa-fa-alipay"></i>
+                        </button>
+                    
+                
+                    
+                        <button class="kr-donate-platform-button" style="color: #07C160;" title="微信" onclick="krDonateModalShowPlatformQR('wxp://f2f0UZPu3nG1PA01tt-I5EDw0wx_G5jA-uDkAw8PuRT9VZtUj-T9s0_Cw7IRYUpTLq7Z', '#07C160')">
+                            <i class="fa fa-fa-weixin"></i>
+                        </button>
+                    
+                
+            </div>
+        </div>
+    </div>
+</div>
+<script defer src="/js/kr-modal/donate.min.js"></script>
+
+
+
+
+
+<!-- 额外的追加注入项 -->
+
+
+        <script>
+    if (!window.kr) {
+        window.kr = {};
+    }
+    window.kr.notMobile = (!(navigator.userAgent.match(/(phone|pad|pod|iPhone|iPod|ios|iPad|Android|Mobile|BlackBerry|IEMobile|MQQBrowser|JUC|Fennec|wOSBrowser|BrowserNG|WebOS|Symbian|Windows Phone)/i)));
+    window.kr.siteRoot = "/";
+</script>
+
+
+  <script defer src="/vendors/nprogress@0.2.0/nprogress.js"></script>
+
+
+
+  <script defer src="/vendors/viewerjs@1.11.6/dist/viewer.min.js"></script>
+
+
+<script defer src="/js/kr-core.min.js"></script>
+
+
+  <script defer src="/js/kr-pjax.min.js"></script>
+
+
+<!-- 额外的追加注入项 -->
+
+  <script src='https://unpkg.com/mermaid@10.6.1/dist/mermaid.min.js'></script>
+<script src="/others/mermaid.js"></script>
+
+
+
+    </body>
+</html>
