@@ -12,8 +12,8 @@ NC='\033[0m' # No Color
 
 echo -e "${YELLOW}🖼️  检查图片URL...${NC}"
 
-# 获取所有被git追踪的markdown文件
-MD_FILES=$(git ls-files | grep -E "\.md$" || true)
+# 获取所有被git追踪的markdown文件（排除 CLAUDE.md，其中含示例 URL）
+MD_FILES=$(git ls-files | grep -E "\.md$" | grep -v "^CLAUDE\.md$" || true)
 
 if [ -z "$MD_FILES" ]; then
     echo -e "${GREEN}✅ 没有需要检查的markdown文件${NC}"
