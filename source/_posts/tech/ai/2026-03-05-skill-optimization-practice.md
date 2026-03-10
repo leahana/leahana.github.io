@@ -367,6 +367,56 @@ Agent 执行时的决策链：看到标题"按需加载" → 判断 format-rules
 
 **2. Reproducibility**：Agent 的错误必须能够复现和防止。仅靠"提醒 Agent 下次记得读文件"是不可靠的——每次会话是独立的，Agent 没有跨会话记忆。必须在 Skill 结构层面消除错误的可能性：将强制加载写入工作流步骤，而非依赖 Agent 的自主判断。
 
+### 4.6 v2.2 迭代：代码块跳过与 MD018 检测
+
+基于 5.3 节列出的迭代方向，v2.2 完成了两项改进。
+
+#### 改进 1：预计算代码块映射，消除误报
+
+v2.1 的状态机修复仅应用于 `check_code_blocks()`，其余 5 个 check 方法（`check_headings`、`check_lists`、`check_tables`、`check_horizontal_rules`、`check_emphasis_as_heading`）仍会检测代码块内部的内容，产生大量误报。
+
+v2.2 引入 `_build_code_block_map()`，在验证开始时一次性预计算所有代码块的行范围：
+
+```python
+def _build_code_block_map(self):
+    """预计算每行是否在代码块内部，供所有 check 方法共享"""
+    self._in_code_block = set()
+    self._code_fence_lines = set()
+    self._code_fence_open = set()   # 开启围栏行号
+    self._code_fence_close = set()  # 关闭围栏行号
+    in_block = False
+    for i, line in enumerate(self.lines):
+        if line.strip().startswith('```'):
+            self._code_fence_lines.add(i)
+            if not in_block:
+                self._code_fence_open.add(i)
+            else:
+                self._code_fence_close.add(i)
+            in_block = not in_block
+            continue
+        if in_block:
+            self._in_code_block.add(i)
+```
+
+所有 6 个 check 方法通过共享的 `_is_inside_code_block()` / `_is_code_fence()` 统一跳过代码块内容。`check_code_blocks()` 也改用 `_code_fence_open` / `_code_fence_close` 集合，不再需要独立的开闭判断逻辑，废弃的 `is_code_block_start()` / `is_code_block_end()` 被彻底删除。
+
+#### 改进 2：新增 MD018 标题格式检测
+
+新增 `is_heading_no_space()` 检测 `##标题` 这类 `#` 后缺空格的常见错误：
+
+```python
+def is_heading_no_space(self, line: str) -> bool:
+    # 匹配 # 后直接跟非空格非 # 非数字字符，排除 #123 等 issue 引用
+    return re.match(r'^#{1,6}[^\s#\d]', line) is not None
+```
+
+正则设计要点：`[^\s#\d]` 排除了三种合法场景——空格（正确格式）、`#`（连续 `#` 号）、数字（`#123` issue 引用）。
+
+同步更新了 Skill 的规范文档：
+
+- **SKILL.md**：「严格格式规范」中 MD018 升为第一条规则并加粗，新增「特别注意」段落给出正反例
+- **markdown-rules.md**：在 MD022 之前新增完整的「标题 `#` 后必须有空格 (MD018)」章节，含正确/错误示例
+
 ## 5. 实施建议
 
 ### 5.1 Skill 创建检查清单
@@ -441,12 +491,16 @@ diff <(ls -lah ~/.claude/skills/your-skill/) \
 
 ### 5.3 后续迭代方向
 
-基于本次经验，optimize-doc v2.2 可考虑：
+v2.2 已完成（详见 4.6 节）：
 
-1. **修复验证脚本的 false positive**：当前 `check_headings`、`check_lists`、`check_horizontal_rules` 不跳过代码块内容，导致约 30 个误报
-2. **修正步骤编号**：合并步骤 5+6 后，编号出现 5→7 的间隙
-3. **CDN 路径参数化**：`leahana/blog-images` 硬编码在多个文件中，应提取为配置项
-4. **按文章类型精简流程**：gaming/anime 类型不需要故障排查和代码示例章节
+1. **验证脚本 false positive 修复**：预计算代码块映射，所有 6 个 check 方法统一跳过代码块内容
+2. **新增 MD018 标题格式检测**：`is_heading_no_space()` + SKILL.md / markdown-rules.md 同步更新规范
+
+后续可考虑：
+
+1. **修正步骤编号**：合并步骤 5+6 后，编号出现 5→7 的间隙
+2. **CDN 路径参数化**：`leahana/blog-images` 硬编码在多个文件中，应提取为配置项
+3. **按文章类型精简流程**：gaming/anime 类型不需要故障排查和代码示例章节
 
 ---
 
@@ -456,3 +510,4 @@ diff <(ls -lah ~/.claude/skills/your-skill/) \
 |------|------|------|
 | v1.0 | 2026-03-05 | 初始版本，基于 optimize-doc v2.0→v2.1 优化过程 |
 | v1.1 | 2026-03-06 | 新增 4.5 节：auto-post 资源文件未加载导致格式错误案例 |
+| v1.2 | 2026-03-11 | 新增 4.6 节：v2.2 代码块跳过与 MD018 检测；更新 5.3 迭代方向 |
