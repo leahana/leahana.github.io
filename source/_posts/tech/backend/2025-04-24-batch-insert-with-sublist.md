@@ -49,21 +49,21 @@ graph LR
 
 ### 🎯 什么时候使用？
 
-    ```mermaid
-    graph TD
-        A[数据量 > 1000] --> B{需要入库?}
-        B -->|是| C[使用分批处理]
-        B -->|否| D[考虑流式处理]
+```mermaid
+graph TD
+    A[数据量 > 1000] --> B{需要入库?}
+    B -->|是| C[使用分批处理]
+    B -->|否| D[考虑流式处理]
 
-        C --> E{数据库限制?}
-        E -->|有| F[适配批次大小]
-        E -->|无| G[默认1000条/批]
+    C --> E{数据库限制?}
+    E -->|有| F[适配批次大小]
+    E -->|无| G[默认1000条/批]
 
-        style A fill:#ffcdd2
-        style C fill:#c8e6c9
-        style D fill:#fff3e0
-        style F fill:#e3f2fd
-    ```
+    style A fill:#ffcdd2
+    style C fill:#c8e6c9
+    style D fill:#fff3e0
+    style F fill:#e3f2fd
+```
 
 ![怎么处理才好呢：数据量级与处理方式的选型](https://cdn.jsdelivr.net/gh/leahana/blog-images@dev/tech/backend/2025-04-24-batch-insert-with-sublist/batch-processing-decision.jpg)
 
