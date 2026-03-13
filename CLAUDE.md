@@ -18,7 +18,7 @@ This is a Hexo-based static blog site titled "MamimiJa Nai" (oiiai.top) with Chi
 ### Security Checks
 
 - `pnpm check:secrets` - Manually check for sensitive information in files
-- `pnpm hooks:install` - Install Git hooks for automatic secret checking
+- `pnpm hooks:install` - Configure Git to use `.githooks/` directory for automatic secret checking
 
 ### Creating Content
 
@@ -40,6 +40,10 @@ source/               # Source content directory
 themes/              # Git submodules for themes
 ├── kratos-rebirth/  # Active theme (custom fork)
 └── [other themes]   # Inactive themes
+
+.githooks/           # Git hooks (version controlled)
+├── pre-commit       # Secret scan on staged files
+└── pre-push         # Full secret scan + image URL check
 
 scaffolds/           # Post/page templates (post.md, page.md, draft.md)
 scripts/             # Utility scripts (secret checking, hooks installation)
@@ -69,6 +73,7 @@ This is handled automatically by the GitHub Actions workflow.
    - Checks out code with submodules
    - Installs pnpm and dependencies
    - Builds theme assets
+   - Runs secret scan (`pnpm check:secrets`)
    - Runs `hexo generate` to create static files
    - Deploys `public/` to GitHub Pages
 
@@ -92,11 +97,13 @@ pnpm check:secrets
 **Detection Patterns**:
 
 - Passwords/API keys: `password:`, `apikey:`, `secret:`
-- Tokens: `access_token`, `auth_token`, `bearer`
-- Service keys: Stripe (`sk-`), GitHub (`ghp_`, `gho_`, `ghu_`), AWS (`AKIA`)
+- Tokens: `access_token`, `auth_token`, `bearer`, JWT (`eyJ...`)
+- Service keys: Stripe (`sk-`), GitHub (`ghp_`, `gho_`, `ghu_`), AWS (`AKIA`), Google (`AIza`), Slack (`xox`), SendGrid (`SG.`)
 - Database URLs: `mysql://`, `mongodb://`, `postgresql://`, `redis://`
 
-**If Hooks Are Missing**:
+**Hooks Setup**:
+
+Hooks are version-controlled in `.githooks/` and activated via `core.hooksPath`:
 
 ```bash
 pnpm hooks:install
@@ -247,9 +254,18 @@ This project includes custom Claude Code skills in `.claude/skills/`:
 | `optimize-doc` | 优化 Markdown 文档，提升可读性和实用性 | `source/docs/2025-01-09-markdown-optimization-guide.md` |
 | `save` | 保存当前对话为 Markdown 文件进行存档 | - |
 
+### Available Commands
+
+| Command | Description |
+|---------|-------------|
+| `/security-review` | AI 驱动的安全审查，扫描密钥泄露、配置风险、脚本注入等 |
+
 ### Usage
 
 ```bash
+# 安全审查
+/security-review
+
 # 优化文档
 /optimize-doc path/to/article.md
 
