@@ -37,7 +37,7 @@ cd leahana.github.io && git checkout hexo
 pnpm install
 cd themes/kratos-rebirth && pnpm install && pnpm run build && cd ../..
 
-pnpm dev  # http://localhost:4000
+hexo server  # http://localhost:4000
 ```
 
 ---
@@ -56,9 +56,10 @@ themes/kratos-rebirth/ # 主题子模块
 
 ### 命令速查
 ```bash
-pnpm dev      # 本地开发
-pnpm build    # 生成静态站点
-pnpm preview  # 预览（含草稿）
+hexo server             # 本地开发
+hexo generate           # 生成静态站点
+hexo server --drafts    # 预览（含草稿）
+hexo new post <title>   # 新建文章
 ```
 
 ### 部署流程

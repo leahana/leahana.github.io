@@ -36,6 +36,8 @@ graph LR
     style E fill:#f3e5f5
 ```
 
+![数据搬运大作战：Java List 分片与批量入库指南](https://cdn.jsdelivr.net/gh/leahana/blog-images@dev/tech/backend/2025-04-24-batch-insert-with-sublist/batch-insert-core-concept.jpg)
+
 ### 💎 为什么需要分批处理？
 
 | 问题 | 不分批 | 分批处理 |
@@ -62,6 +64,8 @@ graph TD
     style D fill:#fff3e0
     style F fill:#e3f2fd
 ```
+
+![怎么处理才好呢：数据量级与处理方式的选型](https://cdn.jsdelivr.net/gh/leahana/blog-images@dev/tech/backend/2025-04-24-batch-insert-with-sublist/batch-processing-decision.jpg)
 
 </details>
 
@@ -536,6 +540,7 @@ from itertools import batched
 
 ## 更新记录
 
+- 2026-03-11：为速览版两个 mermaid 图表添加生动配图
 - 2026-01-12：添加 Python 版本实现（itertools.batched 和 more-itertools）
 - 2026-01-12：添加 6 个常见问题解答
 - 2026-01-12：添加 3 分钟速览版（核心概念图、对比表、决策树）

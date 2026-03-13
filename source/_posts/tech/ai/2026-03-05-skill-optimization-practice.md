@@ -367,6 +367,148 @@ Agent 执行时的决策链：看到标题"按需加载" → 判断 format-rules
 
 **2. Reproducibility**：Agent 的错误必须能够复现和防止。仅靠"提醒 Agent 下次记得读文件"是不可靠的——每次会话是独立的，Agent 没有跨会话记忆。必须在 Skill 结构层面消除错误的可能性：将强制加载写入工作流步骤，而非依赖 Agent 的自主判断。
 
+### 4.6 v2.2 迭代：代码块跳过与 MD018 检测
+
+基于 5.3 节列出的迭代方向，v2.2 完成了两项改进。
+
+#### 改进 1：预计算代码块映射，消除误报
+
+v2.1 的状态机修复仅应用于 `check_code_blocks()`，其余 5 个 check 方法（`check_headings`、`check_lists`、`check_tables`、`check_horizontal_rules`、`check_emphasis_as_heading`）仍会检测代码块内部的内容，产生大量误报。
+
+v2.2 引入 `_build_code_block_map()`，在验证开始时一次性预计算所有代码块的行范围：
+
+```python
+def _build_code_block_map(self):
+    """预计算每行是否在代码块内部，供所有 check 方法共享"""
+    self._in_code_block = set()
+    self._code_fence_lines = set()
+    self._code_fence_open = set()   # 开启围栏行号
+    self._code_fence_close = set()  # 关闭围栏行号
+    in_block = False
+    for i, line in enumerate(self.lines):
+        if line.strip().startswith('```'):
+            self._code_fence_lines.add(i)
+            if not in_block:
+                self._code_fence_open.add(i)
+            else:
+                self._code_fence_close.add(i)
+            in_block = not in_block
+            continue
+        if in_block:
+            self._in_code_block.add(i)
+```
+
+所有 6 个 check 方法通过共享的 `_is_inside_code_block()` / `_is_code_fence()` 统一跳过代码块内容。`check_code_blocks()` 也改用 `_code_fence_open` / `_code_fence_close` 集合，不再需要独立的开闭判断逻辑，废弃的 `is_code_block_start()` / `is_code_block_end()` 被彻底删除。
+
+#### 改进 2：新增 MD018 标题格式检测
+
+新增 `is_heading_no_space()` 检测 `##标题` 这类 `#` 后缺空格的常见错误：
+
+```python
+def is_heading_no_space(self, line: str) -> bool:
+    # 匹配 # 后直接跟非空格非 # 非数字字符，排除 #123 等 issue 引用
+    return re.match(r'^#{1,6}[^\s#\d]', line) is not None
+```
+
+正则设计要点：`[^\s#\d]` 排除了三种合法场景——空格（正确格式）、`#`（连续 `#` 号）、数字（`#123` issue 引用）。
+
+同步更新了 Skill 的规范文档：
+
+- **SKILL.md**：「严格格式规范」中 MD018 升为第一条规则并加粗，新增「特别注意」段落给出正反例
+- **markdown-rules.md**：在 MD022 之前新增完整的「标题 `#` 后必须有空格 (MD018)」章节，含正确/错误示例
+
+### 4.7 v2.3 迭代：Frontmatter 误报修复
+
+#### 问题发现
+
+使用 `/optimize-doc` 生成一篇新文章后，运行 `validate_markdown.py` 验证格式，每次都报两个"错误"：
+
+```text
+❌ 发现 2 个错误:
+  - 第 1 行: 分隔线后需要空行
+  - 第 9 行: 分隔线前需要空行
+```
+
+第 1 行和第 9 行正是 YAML frontmatter 的 `---` 分隔符：
+
+```yaml
+---          ← 第 1 行，被误判为分隔线
+layout: post
+title: ...
+date: ...
+toc: true
+---          ← 第 9 行，被误判为分隔线
+```
+
+这不是真正的格式错误——每篇博客文章都以 frontmatter 开头，是 Hexo 的标准格式。但 `check_horizontal_rules()` 的 `is_horizontal_rule()` 正则 `^[\s\-*_]{3,}\s*$` 无差别匹配了所有 `---`，无法区分 frontmatter 分隔符和正文中的水平分隔线。
+
+#### 根因分析
+
+验证脚本的区域感知只有一层——代码块（v2.2 加入）。但 Markdown 博客文件实际有三种"特殊区域"需要跳过：
+
+| 区域 | 标记 | v2.2 是否跳过 |
+|------|------|:----------:|
+| 代码块 | ` ``` ` ... ` ``` ` | 是 |
+| YAML Frontmatter | `---` ... `---`（文件开头） | **否** |
+| HTML 注释 | `<!--` ... `-->` | 否（暂不需要） |
+
+Frontmatter 的 `---` 被 `is_horizontal_rule()` 匹配后，由于第 1 行前无空行、第 9 行后紧跟正文内容（`>`），触发了"分隔线前/后需要空行"的检查。
+
+#### 修复方案
+
+新增 `_build_frontmatter_map()` 方法，在验证开始时（`_build_code_block_map()` 之前）预计算 frontmatter 区域：
+
+```python
+def _build_frontmatter_map(self):
+    """检测 YAML frontmatter 区域（文件以 --- 开头，到第二个 --- 结束）"""
+    self._frontmatter_lines = set()
+    if not self.lines or self.lines[0].strip() != '---':
+        return
+    self._frontmatter_lines.add(0)
+    for i in range(1, len(self.lines)):
+        self._frontmatter_lines.add(i)
+        if self.lines[i].strip() == '---':
+            break
+```
+
+关键设计决策：
+
+- **检测条件**：仅当文件第 1 行恰好是 `---` 时才启用，不会误判正文中的分隔线
+- **范围界定**：从第 1 行扫描到第二个 `---`，中间所有行都标记为 frontmatter
+- **执行顺序**：必须在 `_build_code_block_map()` 之前执行，因为后者也需要跳过 frontmatter 区域（避免将 frontmatter 的 `---` 误判为代码块围栏）
+
+所有 6 个 check 方法的跳过条件从：
+
+```python
+if self._is_inside_code_block(i) or self._is_code_fence(i):
+    continue
+```
+
+统一扩展为：
+
+```python
+if self._is_inside_frontmatter(i) or self._is_inside_code_block(i) or self._is_code_fence(i):
+    continue
+```
+
+#### 修复验证
+
+```text
+# 修复前
+❌ 发现 2 个错误:
+  - 第 1 行: 分隔线后需要空行
+  - 第 9 行: 分隔线前需要空行
+
+# 修复后
+✅ 文件格式验证通过！
+```
+
+交叉验证了多篇已有博客文章（含不同 frontmatter 长度），均通过。
+
+#### 复盘：为什么 v2.2 没发现这个问题
+
+v2.2 的测试用例是已有的博客文章（当时恰好都通过了，因为 `check_headings()` 的 `if i > 5` 硬编码跳过了前 5 行，间接绕过了 frontmatter），而 `check_horizontal_rules()` 没有类似的硬编码保护。这说明"硬编码跳过"是脆弱的——正确做法是结构化地识别和跳过特殊区域。
+
 ## 5. 实施建议
 
 ### 5.1 Skill 创建检查清单
@@ -441,12 +583,16 @@ diff <(ls -lah ~/.claude/skills/your-skill/) \
 
 ### 5.3 后续迭代方向
 
-基于本次经验，optimize-doc v2.2 可考虑：
+已完成的迭代：
 
-1. **修复验证脚本的 false positive**：当前 `check_headings`、`check_lists`、`check_horizontal_rules` 不跳过代码块内容，导致约 30 个误报
-2. **修正步骤编号**：合并步骤 5+6 后，编号出现 5→7 的间隙
-3. **CDN 路径参数化**：`leahana/blog-images` 硬编码在多个文件中，应提取为配置项
-4. **按文章类型精简流程**：gaming/anime 类型不需要故障排查和代码示例章节
+- **v2.2**（详见 4.6 节）：预计算代码块映射 + MD018 标题格式检测
+- **v2.3**（详见 4.7 节）：Frontmatter 区域识别，消除 `---` 误报
+
+后续可考虑：
+
+1. **修正步骤编号**：合并步骤 5+6 后，编号出现 5→7 的间隙
+2. **CDN 路径参数化**：`leahana/blog-images` 硬编码在多个文件中，应提取为配置项
+3. **按文章类型精简流程**：gaming/anime 类型不需要故障排查和代码示例章节
 
 ---
 
@@ -456,3 +602,5 @@ diff <(ls -lah ~/.claude/skills/your-skill/) \
 |------|------|------|
 | v1.0 | 2026-03-05 | 初始版本，基于 optimize-doc v2.0→v2.1 优化过程 |
 | v1.1 | 2026-03-06 | 新增 4.5 节：auto-post 资源文件未加载导致格式错误案例 |
+| v1.2 | 2026-03-11 | 新增 4.6 节：v2.2 代码块跳过与 MD018 检测；更新 5.3 迭代方向 |
+| v1.3 | 2026-03-12 | 新增 4.7 节：v2.3 Frontmatter 误报修复（`_build_frontmatter_map`）；更新 5.3 |
