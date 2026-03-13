@@ -135,17 +135,21 @@ toc: true
 
 ### Update Records (Changelog)
 
-**CRITICAL**: When modifying content, NEVER rename the file. Instead, add an entry to the "更新记录" section at the end of the article:
+**CRITICAL**: When modifying content, NEVER rename the file. Instead, append a new row to the "更新记录" table at the end of the article:
 
 ```markdown
+---
+
 ## 更新记录
 
-- 2025-01-09：初始版本
-- 2025-01-12：补充 XXX 内容
-- 2025-01-15：修正 YYY 错误
+| 版本 | 日期 | 说明 |
+|------|------|------|
+| v1.0 | 2025-01-09 | 初始版本 |
+| v1.1 | 2025-01-12 | 补充 XXX 内容 |
+| v1.2 | 2025-01-15 | 修正 YYY 错误 |
 ```
 
-**Format**: `- YYYY-MM-DD：简短描述本次修改内容`
+**版本规则**：`v1.0`=初始版本，`v1.x`=内容修改，`v2.0`=结构重写/重构。新条目追加到表格末尾。
 
 This practice ensures:
 
