@@ -1,0 +1,6 @@
+#!/bin/bash
+# Pre-push hook: 推送前检查敏感信息和图片URL
+
+echo "🔄 推送前检查..."
+bash bin/check-secrets.sh
+bash bin/check-images.sh
