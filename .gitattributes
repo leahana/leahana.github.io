@@ -1,5 +1,7 @@
 # Keep GitHub language stats focused on blog content.
 source/css/custom.styl linguist-detectable=false
+bin/*.sh linguist-vendored
+source/others/*.js linguist-vendored
 
 # Include Markdown in language statistics for this content-first repo.
 *.md linguist-detectable
