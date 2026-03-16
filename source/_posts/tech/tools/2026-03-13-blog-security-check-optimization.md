@@ -104,7 +104,35 @@ git config core.hooksPath .githooks
 
 输出分三级：Critical / Warning / Info，每项附文件路径和修复建议。
 
-### 4. CI 添加安全检查步骤
+### 4. 修复图片检查 jsDelivr 误报 400
+
+**问题**：`check-images.sh` 用 curl 检查 CDN 图片 URL 时，jsDelivr 对无 User-Agent 的请求返回 400，导致有效图片被误判为警告，hook 形同虚设。
+
+**现象对比**：
+
+| 请求方 | 返回码 | 实际图片状态 |
+|--------|--------|------------|
+| curl（无 UA） | 400 | 图片存在 |
+| 浏览器 | 200 | 图片存在 |
+| curl（无 UA） | 400 | 图片不存在 |
+
+两种情况 hook 行为相同，无法区分真假报错，**丧失预警能力**。
+
+**修复**：curl 加上浏览器 User-Agent：
+
+```bash
+# 修复前
+STATUS=$(curl -s -o /dev/null -w "%{http_code}" --max-time 5 "$url")
+
+# 修复后
+STATUS=$(curl -s -o /dev/null -w "%{http_code}" --max-time 5 \
+    -A "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36" \
+    "$url")
+```
+
+修复后效果：图片存在返回 200 通过，图片不存在返回 404 阻断推送，push 前即可验证，无需等待 CI 完成。
+
+### 5. CI 添加安全检查步骤
 
 在 `.github/workflows/deploy.yml` 的 `hexo generate` 前插入密钥扫描：
 
@@ -152,6 +180,7 @@ pnpm check:secrets
 | 扩展检测模式 | 22 → 26 条正则 | 覆盖 Google/Slack/SendGrid/JWT |
 | AI 安全审查 | 新建 `/security-review` 命令 | 按需深度扫描 |
 | CI 安全检查 | `deploy.yml` 加 `check:secrets` 步骤 | 部署前兜底防护 |
+| 修复图片 URL 误报 | curl 加浏览器 UA | jsDelivr 400 误报消除，push 前可准确验证图片 |
 
 四层防护体系：**本地提交 → 本地推送 → CI 部署 → AI 审查**，从快速拦截到深度分析，层层递进。
 
@@ -160,3 +189,4 @@ pnpm check:secrets
 | 版本 | 日期 | 说明 |
 |------|------|------|
 | v1.0 | 2026-03-13 | 初始版本 |
+| v1.1 | 2026-03-16 | 补充图片检查 jsDelivr 误报 400 修复方案 |
