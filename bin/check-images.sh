@@ -30,7 +30,7 @@ while IFS= read -r file; do
     fi
 
     # 提取所有cdn.jsdelivr.net图片URL，格式: ![...](https://cdn.jsdelivr.net/...)
-    URLS=$(grep -oE "https://cdn\.jsdelivr\.net/gh/[^)\"'\s]+" "$file" 2>/dev/null || true)
+    URLS=$(grep -oE "https://cdn\.jsdelivr\.net/gh/[^)\"' ]+" "$file" 2>/dev/null || true)
 
     if [ -z "$URLS" ]; then
         continue
