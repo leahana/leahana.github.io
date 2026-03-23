@@ -18,7 +18,7 @@ toc: true
 
 ### 业务场景
 
-项目里有一套 TMS 系统，tms 库下有 8 张调度业务表（scada_dispatch_defect、scada_dispatch_task 等）。建表阶段开发对实际数据长度没把握，字段长度普遍使用 VARCHAR(500) 这类「安全值」——上线运行半年后，想做一次系统化的表结构治理，把冗余的字段长度收口，同时补全缺失的字段注释。
+项目里有一套调度管理系统，demo_db 库下有 8 张业务表（dispatch_defect、dispatch_task 等）。建表阶段开发对实际数据长度没把握，字段长度普遍使用 VARCHAR(500) 这类「安全值」——上线运行半年后，想做一次系统化的表结构治理，把冗余的字段长度收口，同时补全缺失的字段注释。
 
 ### 痛点分析
 
@@ -29,6 +29,8 @@ toc: true
 ### 目标
 
 对 8 张表的全部 VARCHAR / CHAR 字段完成量化分析，自动生成带字符集、NULL 约束、默认值和注释的完整 ALTER TABLE 语句，DBA 确认目标长度后统一执行变更。
+
+> **注**：本文示例使用脱敏表名和库名（dispatch_*、demo_db），实际使用时请替换为真实环境的表名和库名。
 
 ---
 
@@ -73,7 +75,7 @@ DROP PROCEDURE IF EXISTS sp_analyze_field_lengths;
 DELIMITER $$
 
 CREATE PROCEDURE sp_analyze_field_lengths(
-    IN p_schema      VARCHAR(64),  -- 目标数据库名，如 'tms'
+    IN p_schema      VARCHAR(64),  -- 目标数据库名，如 'demo_db'
     IN p_tables      TEXT,         -- 逗号分隔的表名，如 'table_a,table_b'
     IN p_gc_max_len  INT           -- GROUP_CONCAT 最大长度，建议 1048576（1 MB）
 )
@@ -125,10 +127,10 @@ DELIMITER ;
 ### 调用示例
 
 ```sql
--- 分析 tms 库下 8 张调度业务表的 varchar/char 字段
+-- 分析 demo_db 库下 8 张业务表的 varchar/char 字段
 CALL sp_analyze_field_lengths(
-    'tms',
-    'scada_dispatch_defect,scada_dispatch_task,scada_dispatch_plan,scada_dispatch_log,scada_dispatch_config,scada_dispatch_record,scada_dispatch_alarm,scada_dispatch_worker',
+    'demo_db',
+    'dispatch_defect,dispatch_task,dispatch_plan,dispatch_log,dispatch_config,dispatch_record,dispatch_alarm,dispatch_worker',
     1048576
 );
 ```
@@ -136,16 +138,16 @@ CALL sp_analyze_field_lengths(
 ### 示例输出（节选）
 
 ```text
-+-----------------------+-------------+---------+---------+---------+---------+
-| tbl                   | col         | dtype   | def_len | max_len | avg_len |
-+-----------------------+-------------+---------+---------+---------+---------+
-| scada_dispatch_defect | remark      | varchar |     500 |      48 |    15.2 |
-| scada_dispatch_defect | address     | varchar |     500 |      63 |    28.7 |
-| scada_dispatch_task   | description | varchar |    1000 |     120 |    65.8 |
-| scada_dispatch_task   | task_name   | varchar |     500 |      45 |    22.5 |
-| scada_dispatch_defect | handler     | varchar |     255 |      20 |    10.1 |
-| scada_dispatch_defect | status_desc | varchar |     200 |      12 |     8.3 |
-+-----------------------+-------------+---------+---------+---------+---------+
++------------------+-------------+---------+---------+---------+---------+
+| tbl              | col         | dtype   | def_len | max_len | avg_len |
++------------------+-------------+---------+---------+---------+---------+
+| dispatch_defect  | remark      | varchar |     500 |      48 |    15.2 |
+| dispatch_defect  | address     | varchar |     500 |      63 |    28.7 |
+| dispatch_task    | description | varchar |    1000 |     120 |    65.8 |
+| dispatch_task    | task_name   | varchar |     500 |      45 |    22.5 |
+| dispatch_defect  | handler     | varchar |     255 |      20 |    10.1 |
+| dispatch_defect  | status_desc | varchar |     200 |      12 |     8.3 |
++------------------+-------------+---------+---------+---------+---------+
 ```
 
 > **读图要点**：`def_len - max_len` 差值越大说明字段越冗余。`avg_len` 远低于 `max_len`（< 30%）进一步验证数据分布稀疏，可大幅缩减字段长度。
@@ -196,16 +198,16 @@ SELECT
         ''';'
     ) AS `ALTER DDL`
 FROM information_schema.COLUMNS c
-WHERE c.TABLE_SCHEMA = 'tms'
+WHERE c.TABLE_SCHEMA = 'demo_db'
   AND c.TABLE_NAME IN (
-      'scada_dispatch_defect',
-      'scada_dispatch_task',
-      'scada_dispatch_plan',
-      'scada_dispatch_log',
-      'scada_dispatch_config',
-      'scada_dispatch_record',
-      'scada_dispatch_alarm',
-      'scada_dispatch_worker'
+      'dispatch_defect',
+      'dispatch_task',
+      'dispatch_plan',
+      'dispatch_log',
+      'dispatch_config',
+      'dispatch_record',
+      'dispatch_alarm',
+      'dispatch_worker'
   )
   AND c.DATA_TYPE IN ('varchar', 'char')
 ORDER BY c.TABLE_NAME, c.ORDINAL_POSITION;
@@ -214,11 +216,11 @@ ORDER BY c.TABLE_NAME, c.ORDINAL_POSITION;
 ### 示例输出（节选）
 
 ```sql
-ALTER TABLE `scada_dispatch_defect` MODIFY COLUMN `remark` VARCHAR(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NULL COMMENT '备注信息';
-ALTER TABLE `scada_dispatch_defect` MODIFY COLUMN `address` VARCHAR(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NULL COMMENT '【待补充注释】';
-ALTER TABLE `scada_dispatch_defect` MODIFY COLUMN `handler` VARCHAR(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NULL COMMENT '处理人';
-ALTER TABLE `scada_dispatch_task` MODIFY COLUMN `task_name` VARCHAR(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '任务名称';
-ALTER TABLE `scada_dispatch_task` MODIFY COLUMN `description` VARCHAR(200) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NULL DEFAULT '' COMMENT '任务描述';
+ALTER TABLE `dispatch_defect` MODIFY COLUMN `remark` VARCHAR(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NULL COMMENT '备注信息';
+ALTER TABLE `dispatch_defect` MODIFY COLUMN `address` VARCHAR(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NULL COMMENT '【待补充注释】';
+ALTER TABLE `dispatch_defect` MODIFY COLUMN `handler` VARCHAR(32) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NULL COMMENT '处理人';
+ALTER TABLE `dispatch_task` MODIFY COLUMN `task_name` VARCHAR(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL COMMENT '任务名称';
+ALTER TABLE `dispatch_task` MODIFY COLUMN `description` VARCHAR(200) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NULL DEFAULT '' COMMENT '任务描述';
 ```
 
 ### 字段长度档位建议
