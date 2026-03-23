@@ -205,30 +205,30 @@ blog-images/
 
 Draft posts are not rendered by default. Use `--drafts` flag with `hexo server` or `hexo generate` to include them.
 
-### Article Templates
+### optimize-doc Support Docs
 
-**Ready-to-use templates** are available in `source/docs/2025-01-12-markdown-templates.md`:
+The `optimize-doc` workflow has three public companion docs under `source/docs/`:
 
-| Template | Use Case | Time Investment |
-|----------|----------|----------------:|
-| **普通笔记（轻量级）** | Quick notes, ideas, temporary records | 5-15 minutes |
-| **问题-方法型技术实战（完整级）** | Solving technical problems with complete solutions | 1-3 hours |
+| Document | Primary Use |
+|----------|-------------|
+| `2025-01-12-markdown-templates.md` | Template entry for starting a new article |
+| `2025-01-09-markdown-optimization-guide.md` | Method guide for restructuring and improving drafts |
+| `2025-01-09-markdown-format-check.md` | Rule sheet for final Markdown / frontmatter validation |
 
 **Documentation Structure**:
 
 ```
 source/docs/
-├── 2025-01-09-markdown-format-check.md      # Format standards
-├── 2025-01-09-markdown-optimization-guide.md # Content optimization
-└── 2025-01-12-markdown-templates.md         # Article templates ⭐
+├── 2025-01-12-markdown-templates.md          # Template companion doc
+├── 2025-01-09-markdown-optimization-guide.md # Method companion doc
+└── 2025-01-09-markdown-format-check.md       # Rule companion doc
 ```
 
 **When to use each**:
 
-- **Quick notes** → Use template 1 (普通笔记)
-- **Technical solutions** → Use template 2 (问题-方法型实战)
-- **Deep optimization** → Refer to `markdown-optimization-guide.md`
-- **Format checking** → Refer to `markdown-format-check.md`
+- **Starting from a blank page** → Start with `markdown-templates.md`
+- **Improving an existing draft** → Refer to `markdown-optimization-guide.md`
+- **Checking Markdown / frontmatter before publish** → Refer to `markdown-format-check.md`
 
 ## Special Features
 
@@ -255,7 +255,7 @@ This project includes custom Claude Code skills in `.claude/skills/`:
 
 | Skill | Description | Reference |
 |-------|-------------|-----------|
-| `optimize-doc` | 优化 Markdown 文档，提升可读性和实用性 | `source/docs/2025-01-09-markdown-optimization-guide.md` |
+| `optimize-doc` | 博客型 Markdown 优化工作流；结合模板、优化指南和格式规范使用 | `source/docs/2025-01-12-markdown-templates.md`, `source/docs/2025-01-09-markdown-optimization-guide.md`, `source/docs/2025-01-09-markdown-format-check.md` |
 | `save` | 保存当前对话为 Markdown 文件进行存档 | - |
 
 ### Available Commands

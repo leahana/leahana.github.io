@@ -111,7 +111,7 @@ source/_posts/
 ## Special Features
 
 - **Mermaid diagrams**: Use \`\`\`mermaid\`\`\` blocks
-- **Article templates**: `source/docs/2025-01-12-markdown-templates.md`
+- **optimize-doc companion docs**: `source/docs/`（模板、方法、格式规范）
 - **Git hooks**: Auto-check secrets on commit/push
 - **Post assets**: `post_asset_folder: true` enabled
 
