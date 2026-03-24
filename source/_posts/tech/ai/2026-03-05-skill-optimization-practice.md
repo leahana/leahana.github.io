@@ -600,6 +600,97 @@ MD036 违规 ❌
 
 这个案例与 `**粗体**` 问题的机制完全相同，进一步验证了 Template as Specification 原则：**当模板与其他参考源对同一规则给出不同示范时，AI 没有判断"哪个更权威"的能力，只会随机选择其一**。消除矛盾的唯一方式是确保所有参考源严格一致。
 
+### 4.9 v2.5 迭代：Mermaid subgraph 语法规范缺失
+
+#### 问题发现
+
+在编写一篇 GitHub Actions 博客文章时，生成了包含三层防护体系的 Mermaid subgraph 图。review 阶段发现图表语法错误，无法正常渲染：
+
+```mermaid
+graph TD
+    subgraph 第一层 本地防护
+        A[pre-commit Hook] --> B[扫描暂存文件]
+    end
+    subgraph 第二层 CI 防护
+        E[GitHub Actions] --> F[check:secrets 阻断构建]
+    end
+
+    第一层 本地防护 --> 第二层 CI 防护
+```
+
+两处错误：
+
+1. `subgraph 第一层 本地防护`：subgraph 名称含空格，未使用 ID + 显示名称分离的写法
+2. `第一层 本地防护 --> 第二层 CI 防护`：直接用含空格的显示名称作为连接节点
+
+#### 根因分析
+
+排查 `references/visualization-guide.md`，发现全文有方向规范、颜色规范、节点数限制、PJAX 说明，**唯独没有 subgraph 语法规范**。
+
+`markdown-optimization-guide.md`（companion doc）的图表类型表格中第 179 行写着：
+
+```
+| `graph TD` + `subgraph` | 分层架构 | 三层架构 |
+```
+
+只有场景描述，没有任何语法示例。
+
+Claude 生成 subgraph 时只能依赖自身预训练知识，而不是 Skill 规定的规范，容易产生两类错误：
+
+| 错误类型 | 错误写法 | 正确写法 |
+|----------|---------|---------|
+| 名称含空格直接用作 ID | `subgraph 第一层 本地防护` | `subgraph SG1["第一层：本地防护"]` |
+| 用显示名称连接 subgraph | `第一层 本地防护 --> 第二层 CI 防护` | `SG1 --> SG2` |
+
+这与 4.8 节的"Template as Specification"是同一机制，只是作用对象从 `assets/document-template.md` 换成了 `references/visualization-guide.md`：**Reference 文件同样是 AI 的隐式规范来源，缺失等于默许错误**。
+
+#### 修复方案
+
+在 `visualization-guide.md` 的 `### PJAX 兼容性` 之前，新增 `### subgraph 语法规范` 章节：
+
+```markdown
+### subgraph 语法规范
+
+使用 subgraph 分组时，**必须**遵循 ID + 显示名称分离的写法：
+
+✅ 正确写法：
+
+```mermaid
+graph TD
+    subgraph SG1["第一层：本地防护"]
+        A[pre-commit Hook] --> B[扫描结果]
+    end
+    subgraph SG2["第二层：CI 防护"]
+        C[GitHub Actions] --> D[阻断构建]
+    end
+    SG1 --> SG2
+```
+
+❌ 错误写法（中文名含空格直接作为连接节点）：
+
+```
+subgraph 第一层 本地防护
+    ...
+end
+第一层 本地防护 --> 第二层 CI 防护
+```
+
+**规则**：
+- subgraph 声明格式：`subgraph ID["显示名称"]`（ID 用 ASCII，不含空格）
+- subgraph 间连接使用 ID：`SG1 --> SG2`
+- 含中文或空格的名称必须放在引号内作为显示名
+```
+
+同步更新 `markdown-optimization-guide.md` companion doc 表格中 subgraph 行，补充语法格式说明。
+
+#### Agent 可靠性原则补充
+
+在 4.8 节 Template as Specification 基础上，补充：
+
+**4. Reference as Specification**：references/ 目录的规范文档，不只是"供 Claude 查阅的参考"。凡是 Reference 中提到"支持 X 功能"而没有给出正确语法示例的地方，AI 就会用自身预训练知识去填充，结果可能正确也可能错误。正确做法是：一旦提到某种语法模式，必须同时给出 `✅ 正确写法` 和 `❌ 错误写法` 的示例对比。
+
+---
+
 ## 5. 实施建议
 
 ### 5.1 Skill 创建检查清单
@@ -679,6 +770,7 @@ diff <(ls -lah ~/.claude/skills/your-skill/) \
 - **v2.2**（详见 4.6 节）：预计算代码块映射 + MD018 标题格式检测
 - **v2.3**（详见 4.7 节）：Frontmatter 区域识别，消除 `---` 误报
 - **v2.4**（详见 4.8 节）：修复 `document-template.md` 中 5 处 `**粗体**` 伪标题，消除 AI 生成文章时的 MD036 泛化违规
+- **v2.5**（详见 4.9 节）：在 `visualization-guide.md` 中新增 subgraph 语法规范，补充正确/错误示例对比，消除 Mermaid subgraph 连接语法错误
 
 继续优化当前 skill 的局部迭代：
 
@@ -790,3 +882,4 @@ diff <(ls -lah ~/.claude/skills/your-skill/) \
 | v1.3 | 2026-03-12 | 新增 4.7 节：v2.3 Frontmatter 误报修复（`_build_frontmatter_map`）；更新 5.3 |
 | v1.4 | 2026-03-23 | 新增第 6 节，收束为 skill 边界与演化路径结论 |
 | v1.5 | 2026-03-23 | 新增 4.8 节：v2.4 模板 `**粗体**` 诱导 MD036 违规修复 + tags 格式矛盾修复；更新 5.3 |
+| v1.6 | 2026-03-24 | 新增 4.9 节：v2.5 visualization-guide.md 补充 subgraph 语法规范，提炼 Reference as Specification 原则 |
