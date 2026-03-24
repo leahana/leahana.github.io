@@ -176,7 +176,7 @@
 |---------|---------|------|
 | `graph TD/LR` | 流程、概念关系 | 架构图、数据流 |
 | `sequenceDiagram` | 时序交互 | API 调用流程 |
-| `graph TD` + `subgraph` | 分层架构 | 三层架构 |
+| `graph TD` + `subgraph` | 分层架构 | 三层架构（需用 `subgraph ID["名称"]` 格式，ID 连接用 `SG1 --> SG2`） |
 | `pie` | 占比分布 | 技术栈占比 |
 | `gantt` | 时间线 | 项目计划 |
 
