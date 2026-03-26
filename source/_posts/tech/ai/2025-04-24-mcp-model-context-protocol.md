@@ -74,7 +74,7 @@ graph LR
 
 ## 1. MCP 协议深度解析
 
-### 🎯 1.1 核心概念˘
+### 🎯 1.1 核心概念
 
 **MCP（Model Context Protocol）** 是 Anthropic 于 2024 年 11 月开源的 AI 应用互操作协议。
 
