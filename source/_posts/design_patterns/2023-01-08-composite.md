@@ -175,3 +175,11 @@ if __name__ == "__main__":
 - **Decorator**：Decorator 为对象添加功能，Composite 构建层次结构
 - **Iterator**：常用于遍历 Composite 结构
 - **Visitor**：可以对 Composite 结构执行复杂操作
+
+---
+
+## 更新记录
+
+| 版本 | 日期 | 说明 |
+|------|------|------|
+| v1.0 | 2023-01-08 | 初始版本 |

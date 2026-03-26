@@ -54,13 +54,18 @@ toc: true
 Follow `.markdownlint.yaml`: 80 char line limit (code exempt), allowed HTML: `<details>`, `<summary>`, `<br>`.
 
 ### Content Updates (NEVER RENAME FILES)
-Append to "更新记录" section when modifying:
+Append a new row to the "更新记录" table when modifying:
 ```markdown
+---
+
 ## 更新记录
-- 2025-01-09：初始版本
-- 2025-01-12：补充 XXX 内容
+
+| 版本 | 日期 | 说明 |
+|------|------|------|
+| v1.0 | 2025-01-09 | 初始版本 |
+| v1.1 | 2025-01-12 | 补充 XXX 内容 |
 ```
-Format: `- YYYY-MM-DD：简短描述` (Chinese, concise)
+Version: `v1.0`=initial, `v1.x`=content update, `v2.0`=rewrite. Chinese, concise.
 
 ### Directory Structure
 ```
@@ -106,7 +111,7 @@ source/_posts/
 ## Special Features
 
 - **Mermaid diagrams**: Use \`\`\`mermaid\`\`\` blocks
-- **Article templates**: `source/docs/2025-01-12-markdown-templates.md`
+- **optimize-doc companion docs**: `source/docs/`（模板、方法、格式规范）
 - **Git hooks**: Auto-check secrets on commit/push
 - **Post assets**: `post_asset_folder: true` enabled
 

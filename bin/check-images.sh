@@ -30,7 +30,7 @@ while IFS= read -r file; do
     fi
 
     # 提取所有cdn.jsdelivr.net图片URL，格式: ![...](https://cdn.jsdelivr.net/...)
-    URLS=$(grep -oE "https://cdn\.jsdelivr\.net/gh/[^)\"'\s]+" "$file" 2>/dev/null || true)
+    URLS=$(grep -oE "https://cdn\.jsdelivr\.net/gh/[^)\"' ]+" "$file" 2>/dev/null || true)
 
     if [ -z "$URLS" ]; then
         continue
@@ -43,8 +43,10 @@ while IFS= read -r file; do
 
         echo -n "  检查: $url ... "
 
-        # 发送HEAD请求检查URL是否可访问，超时5秒
-        STATUS=$(curl -s -o /dev/null -w "%{http_code}" --max-time 5 "$url" 2>/dev/null || echo "000")
+        # 发送HEAD请求检查URL是否可访问，超时5秒（模拟浏览器 UA，避免 jsDelivr 返回 400）
+        STATUS=$(curl -s -o /dev/null -w "%{http_code}" --max-time 5 \
+            -A "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36" \
+            "$url" 2>/dev/null || echo "000")
 
         if [ "$STATUS" = "404" ]; then
             echo -e "${RED}❌ 404 Not Found${NC}"

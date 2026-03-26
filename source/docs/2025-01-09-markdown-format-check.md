@@ -1,21 +1,37 @@
----
-layout: post
-title: Markdown 格式检查指南：确保文档符合 Hexo 规范
-date: 2025-01-09 00:00:00 +0800
-categories: [docs]
-tags: [Markdown, 格式检查, Hexo, 规范]
-description: 本文档定义了本博客 Markdown 文档的格式检查标准，包括 Front Matter、代码格式、Markdown 语法等规范，并提供自动化检查工具。
-toc: true
----
+# optimize-doc 配套：Markdown 格式检查规范
 
-## Markdown 格式检查指南
+本文档是 `optimize-doc` 拆分出的格式规则文档，用来说明
+Markdown / Hexo 文章在交付前应满足的格式约束。
 
-> 本文档定义了本博客 Markdown 文档的格式检查标准，专注于确保文档符合 Hexo 规范和 Markdown 语法要求。
->
-> 💡 **提示**：本文档为精简版，详细错误示例和检查脚本可参考相关文档或独立文件。
+## 文档定位
+
+- 角色：格式规范与验收清单
+- 适用阶段：文章内容基本完成后，进入最终校验时
+- 对应 skill 环节：格式检查、发布前自检
+
+## 与 skill 的关系
+
+本文档是 `optimize-doc` 的公开配套文档之一。
+
+- 面向对象：仓库协作者、博客维护者、需要理解规则的人
+- 文档职责：解释规则和示例
+- skill 职责：执行工作流、组合模板、调用检查逻辑
+
+## 适用时机
+
+当你在 `optimize-doc` 工作流的最后阶段检查格式合规性时，
+看本文档。
+
+- 如果你是在写新文章，先看
+  [optimize-doc 配套：Markdown 起稿模板](./2025-01-12-markdown-templates.md)
+- 如果你是在增强结构和可读性，先看
+  [optimize-doc 配套：Markdown 优化方法指南](./2025-01-09-markdown-optimization-guide.md)
 
 ## 📋 目录
 
+- [文档定位](#文档定位)
+- [与-skill-的关系](#与-skill-的关系)
+- [适用时机](#适用时机)
 - [Front Matter 规范](#front-matter-规范)
 - [Markdownlint 规范](#markdownlint-规范)
 - [代码规范](#代码规范)
@@ -413,14 +429,18 @@ grep -L "layout: post" source/_posts/**/*.md
 
 ## 相关文档
 
-- [Markdown 文章模板集合](./2025-01-12-markdown-templates.md) - 快速创建新文章的模板
-- [Markdown 文档优化指南](./2025-01-09-markdown-optimization-guide.md) - 内容优化标准
+- [optimize-doc 配套：Markdown 起稿模板](./2025-01-12-markdown-templates.md) - 起稿与选模板时查看
+- [optimize-doc 配套：Markdown 优化方法指南](./2025-01-09-markdown-optimization-guide.md) - 调整结构与可读性时查看
 
 ---
 
 ## 更新记录
 
-- 2025-01-09：初始版本
-- 2025-01-09：补充 Markdownlint 规范、Front Matter 非标准字段检查、内容组织结构要求
-- 2025-01-12：精简版本，删除详细示例和脚本代码，为模块化拆分做准备
-- 2025-01-12：添加新模板文档的交叉引用
+| 版本 | 日期 | 说明 |
+|------|------|------|
+| v1.0 | 2025-01-09 | 初始版本 |
+| v1.1 | 2025-01-09 | 补充 Markdownlint 规范、Front Matter 非标准字段检查、内容组织结构要求 |
+| v1.2 | 2025-01-12 | 精简版本，删除详细示例和脚本代码，为模块化拆分做准备 |
+| v1.3 | 2025-01-12 | 添加新模板文档的交叉引用 |
+| v1.4 | 2026-03-23 | 新增适用时机说明，收口为格式校验入口文档 |
+| v1.5 | 2026-03-23 | 调整为 optimize-doc 配套格式规范文档 |

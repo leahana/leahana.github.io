@@ -526,3 +526,11 @@ public class UserService {
 2. ^^[Spring AOP API文档](https://docs.spring.io/spring-framework/docs/current/javadoc-api/org/springframework/aop/package-summary.html)^^
 3. ^^[AspectJ编程指南](https://www.eclipse.org/aspectj/doc/released/progguide/index.html)^^
 4. ^^[Spring AOP与AspectJ区别](https://spring.io/blog/2012/05/23/what-is-aspect-oriented-programming)^^
+
+---
+
+## 更新记录
+
+| 版本 | 日期 | 说明 |
+|------|------|------|
+| v1.0 | 2026-01-09 | 初始版本 |

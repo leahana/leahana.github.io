@@ -1,0 +1,4 @@
+#!/bin/bash
+# Pre-commit hook: 检查敏感信息
+
+bash bin/check-secrets.sh --staged

@@ -90,7 +90,7 @@ graph TD
     E --> G[跨应用复用]
     E --> H[统一安全标准]
 
-    F --> I[✅ 生态繁荣]
+    F --> I[生态繁荣]
     G --> I
     H --> I
 
@@ -116,18 +116,18 @@ graph TD
 
 ```mermaid
 graph TD
-    subgraph Host[🤖 Host Layer - AI应用]
+    subgraph Host["🤖 Host Layer - AI应用"]
         H1[Claude]
         H2[Cursor]
         H3[自定义应用]
     end
 
-    subgraph Transport[📡 Transport Layer - 传输层]
+    subgraph Transport["📡 Transport Layer - 传输层"]
         T1[STDIO<br/>进程通信]
         T2[SSE<br/>HTTP流]
     end
 
-    subgraph Server[🛠️ Server Layer - 工具服务器]
+    subgraph Server["🛠️ Server Layer - 工具服务器"]
         S1[文件系统]
         S2[数据库]
         S3[API服务]
@@ -998,3 +998,11 @@ MCP (SSE)：        ~20-50ms
 ### 📝 文档信息
 
 📅 最后更新：2025-04-24 | 👤 作者：MamimiJa Nai | 🏷️ 技术栈：Spring AI 1.0.0-M6
+
+---
+
+## 更新记录
+
+| 版本 | 日期 | 说明 |
+|------|------|------|
+| v1.0 | 2025-04-24 | 初始版本 |

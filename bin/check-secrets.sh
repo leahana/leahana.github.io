@@ -31,6 +31,10 @@ PATTERNS=(
     "ghs_[a-zA-Z0-9]{36,}"  # GitHub server token
     "ghr_[a-zA-Z0-9]{36,}"  # GitHub refresh token
     "AKIA[0-9A-Z]{16}"      # AWS access key
+    "AIza[0-9A-Za-z_-]{35}"       # Google API Key
+    "xox[bpors]-[0-9a-zA-Z-]{10,}"  # Slack Token
+    "SG\.[a-zA-Z0-9_-]{22}\.[a-zA-Z0-9_-]{43}"  # SendGrid API Key
+    "eyJ[A-Za-z0-9_-]*\.eyJ[A-Za-z0-9_-]*\.[A-Za-z0-9_-]*"  # JWT Token
     "mysql://[^:/]+:[^@]+@"        # MySQL connection string with password
     "mongodb://[^:/]+:[^@]+@"      # MongoDB connection string with password
     "postgresql://[^:/]+:[^@]+@"   # PostgreSQL connection string with password

@@ -18,7 +18,7 @@ This is a Hexo-based static blog site titled "MamimiJa Nai" (oiiai.top) with Chi
 ### Security Checks
 
 - `pnpm check:secrets` - Manually check for sensitive information in files
-- `pnpm hooks:install` - Install Git hooks for automatic secret checking
+- `pnpm hooks:install` - Configure Git to use `.githooks/` directory for automatic secret checking
 
 ### Creating Content
 
@@ -40,6 +40,10 @@ source/               # Source content directory
 themes/              # Git submodules for themes
 ├── kratos-rebirth/  # Active theme (custom fork)
 └── [other themes]   # Inactive themes
+
+.githooks/           # Git hooks (version controlled)
+├── pre-commit       # Secret scan on staged files
+└── pre-push         # Full secret scan + image URL check
 
 scaffolds/           # Post/page templates (post.md, page.md, draft.md)
 scripts/             # Utility scripts (secret checking, hooks installation)
@@ -69,6 +73,7 @@ This is handled automatically by the GitHub Actions workflow.
    - Checks out code with submodules
    - Installs pnpm and dependencies
    - Builds theme assets
+   - Runs secret scan (`pnpm check:secrets`)
    - Runs `hexo generate` to create static files
    - Deploys `public/` to GitHub Pages
 
@@ -92,11 +97,13 @@ pnpm check:secrets
 **Detection Patterns**:
 
 - Passwords/API keys: `password:`, `apikey:`, `secret:`
-- Tokens: `access_token`, `auth_token`, `bearer`
-- Service keys: Stripe (`sk-`), GitHub (`ghp_`, `gho_`, `ghu_`), AWS (`AKIA`)
+- Tokens: `access_token`, `auth_token`, `bearer`, JWT (`eyJ...`)
+- Service keys: Stripe (`sk-`), GitHub (`ghp_`, `gho_`, `ghu_`), AWS (`AKIA`), Google (`AIza`), Slack (`xox`), SendGrid (`SG.`)
 - Database URLs: `mysql://`, `mongodb://`, `postgresql://`, `redis://`
 
-**If Hooks Are Missing**:
+**Hooks Setup**:
+
+Hooks are version-controlled in `.githooks/` and activated via `core.hooksPath`:
 
 ```bash
 pnpm hooks:install
@@ -128,17 +135,21 @@ toc: true
 
 ### Update Records (Changelog)
 
-**CRITICAL**: When modifying content, NEVER rename the file. Instead, add an entry to the "更新记录" section at the end of the article:
+**CRITICAL**: When modifying content, NEVER rename the file. Instead, append a new row to the "更新记录" table at the end of the article:
 
 ```markdown
+---
+
 ## 更新记录
 
-- 2025-01-09：初始版本
-- 2025-01-12：补充 XXX 内容
-- 2025-01-15：修正 YYY 错误
+| 版本 | 日期 | 说明 |
+|------|------|------|
+| v1.0 | 2025-01-09 | 初始版本 |
+| v1.1 | 2025-01-12 | 补充 XXX 内容 |
+| v1.2 | 2025-01-15 | 修正 YYY 错误 |
 ```
 
-**Format**: `- YYYY-MM-DD：简短描述本次修改内容`
+**版本规则**：`v1.0`=初始版本，`v1.x`=内容修改，`v2.0`=结构重写/重构。新条目追加到表格末尾。
 
 This practice ensures:
 
@@ -194,30 +205,30 @@ blog-images/
 
 Draft posts are not rendered by default. Use `--drafts` flag with `hexo server` or `hexo generate` to include them.
 
-### Article Templates
+### optimize-doc Support Docs
 
-**Ready-to-use templates** are available in `source/docs/2025-01-12-markdown-templates.md`:
+The `optimize-doc` workflow has three public companion docs under `source/docs/`:
 
-| Template | Use Case | Time Investment |
-|----------|----------|----------------:|
-| **普通笔记（轻量级）** | Quick notes, ideas, temporary records | 5-15 minutes |
-| **问题-方法型技术实战（完整级）** | Solving technical problems with complete solutions | 1-3 hours |
+| Document | Primary Use |
+|----------|-------------|
+| `2025-01-12-markdown-templates.md` | Template entry for starting a new article |
+| `2025-01-09-markdown-optimization-guide.md` | Method guide for restructuring and improving drafts |
+| `2025-01-09-markdown-format-check.md` | Rule sheet for final Markdown / frontmatter validation |
 
 **Documentation Structure**:
 
 ```
 source/docs/
-├── 2025-01-09-markdown-format-check.md      # Format standards
-├── 2025-01-09-markdown-optimization-guide.md # Content optimization
-└── 2025-01-12-markdown-templates.md         # Article templates ⭐
+├── 2025-01-12-markdown-templates.md          # Template companion doc
+├── 2025-01-09-markdown-optimization-guide.md # Method companion doc
+└── 2025-01-09-markdown-format-check.md       # Rule companion doc
 ```
 
 **When to use each**:
 
-- **Quick notes** → Use template 1 (普通笔记)
-- **Technical solutions** → Use template 2 (问题-方法型实战)
-- **Deep optimization** → Refer to `markdown-optimization-guide.md`
-- **Format checking** → Refer to `markdown-format-check.md`
+- **Starting from a blank page** → Start with `markdown-templates.md`
+- **Improving an existing draft** → Refer to `markdown-optimization-guide.md`
+- **Checking Markdown / frontmatter before publish** → Refer to `markdown-format-check.md`
 
 ## Special Features
 
@@ -244,12 +255,21 @@ This project includes custom Claude Code skills in `.claude/skills/`:
 
 | Skill | Description | Reference |
 |-------|-------------|-----------|
-| `optimize-doc` | 优化 Markdown 文档，提升可读性和实用性 | `source/docs/2025-01-09-markdown-optimization-guide.md` |
+| `optimize-doc` | 博客型 Markdown 优化工作流；结合模板、优化指南和格式规范使用 | `source/docs/2025-01-12-markdown-templates.md`, `source/docs/2025-01-09-markdown-optimization-guide.md`, `source/docs/2025-01-09-markdown-format-check.md` |
 | `save` | 保存当前对话为 Markdown 文件进行存档 | - |
+
+### Available Commands
+
+| Command | Description |
+|---------|-------------|
+| `/security-review` | AI 驱动的安全审查，扫描密钥泄露、配置风险、脚本注入等 |
 
 ### Usage
 
 ```bash
+# 安全审查
+/security-review
+
 # 优化文档
 /optimize-doc path/to/article.md
 

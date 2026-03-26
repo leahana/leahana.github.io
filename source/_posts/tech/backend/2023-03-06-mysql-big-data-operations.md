@@ -309,5 +309,7 @@ public interface BigDataSearchMapper extends BaseMapper<BigDataSearchEntity> {
 
 ## 更新记录
 
-- 2023-03-06：初始版本
-- 2026-03-11：优化文档结构，添加速查版、对比分析和 FAQ
+| 版本 | 日期 | 说明 |
+|------|------|------|
+| v1.0 | 2023-03-06 | 初始版本 |
+| v1.1 | 2026-03-11 | 优化文档结构，添加速查版、对比分析和 FAQ |

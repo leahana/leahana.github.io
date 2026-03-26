@@ -750,5 +750,7 @@ private static final ClassValue<Method[]> METHOD_CACHE = new ClassValue<>() {
 
 ## 更新记录
 
-- 2026-03-12：初始版本
-- 2026-03-12：补充优缺点分析、进阶方案（LambdaMetafactory / ReflectASM）、HashMap 线程安全风险、AccessibleObject 批量 API
+| 版本 | 日期 | 说明 |
+|------|------|------|
+| v1.0 | 2026-03-12 | 初始版本 |
+| v1.1 | 2026-03-12 | 补充优缺点分析、进阶方案（LambdaMetafactory / ReflectASM）、HashMap 线程安全风险、AccessibleObject 批量 API |

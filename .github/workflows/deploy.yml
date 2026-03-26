@@ -38,6 +38,9 @@ jobs:
           pnpm install
           pnpm run build
 
+      - name: Security check - scan for secrets
+        run: pnpm run check:secrets
+
       - name: Generate static site
         run: pnpm run build
 
