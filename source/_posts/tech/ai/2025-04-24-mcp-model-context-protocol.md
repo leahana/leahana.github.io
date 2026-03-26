@@ -74,7 +74,7 @@ graph LR
 
 ## 1. MCP 协议深度解析
 
-### 🎯 1.1 核心概念
+### 🎯 1.1 核心概念˘
 
 **MCP（Model Context Protocol）** 是 Anthropic 于 2024 年 11 月开源的 AI 应用互操作协议。
 
@@ -90,7 +90,7 @@ graph TD
     E --> G[跨应用复用]
     E --> H[统一安全标准]
 
-    F --> I[✅ 生态繁荣]
+    F --> I[生态繁荣]
     G --> I
     H --> I
 
@@ -116,18 +116,18 @@ graph TD
 
 ```mermaid
 graph TD
-    subgraph Host[🤖 Host Layer - AI应用]
+    subgraph Host["🤖 Host Layer - AI应用"]
         H1[Claude]
         H2[Cursor]
         H3[自定义应用]
     end
 
-    subgraph Transport[📡 Transport Layer - 传输层]
+    subgraph Transport["📡 Transport Layer - 传输层"]
         T1[STDIO<br/>进程通信]
         T2[SSE<br/>HTTP流]
     end
 
-    subgraph Server[🛠️ Server Layer - 工具服务器]
+    subgraph Server["🛠️ Server Layer - 工具服务器"]
         S1[文件系统]
         S2[数据库]
         S3[API服务]
