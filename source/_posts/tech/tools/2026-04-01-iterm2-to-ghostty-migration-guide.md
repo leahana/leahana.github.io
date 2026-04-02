@@ -32,6 +32,7 @@ toc: true
 - 你只想稳定可用、不折腾，`Terminal.app` 仍然完全够用
 - 你想要 AI 协作体验，可以看看 `Warp`
 - 你追求跨平台、可编程和强配置，`WezTerm` 很有吸引力
+- 你主要在 Linux / KDE 环境里工作，`Konsole` 依然很值得考虑
 
 ```mermaid
 graph TD
@@ -41,6 +42,7 @@ graph TD
     B -->|系统自带与稳定| E["Terminal.app"]
     B -->|AI 协作体验| F["Warp"]
     B -->|跨平台与可编程| G["WezTerm"]
+    B -->|Linux 桌面集成| H["Konsole"]
 
     style A fill:#e3f2fd,stroke:#333,color:#000
     style C fill:#c8e6c9,stroke:#333,color:#000
@@ -48,6 +50,7 @@ graph TD
     style E fill:#ffccbc,stroke:#333,color:#000
     style F fill:#ffccbc,stroke:#333,color:#000
     style G fill:#e3f2fd,stroke:#333,color:#000
+    style H fill:#d1c4e9,stroke:#333,color:#000
 ```
 
 ---
@@ -94,6 +97,7 @@ Profiles、触发器、Shell Integration 和大量细节功能，放到今天
 | `Terminal.app` | 系统自带，稳定，零安装成本，适合基础 Shell 工作 | 高级能力较少，个性化和扩展空间有限 | 不想折腾、只求稳的人 |
 | `Warp` | 命令组织和 AI 体验有特色，上手门槛低 | 工作流更“产品化”，不一定符合所有纯终端用户习惯 | 喜欢新交互、愿意拥抱 AI 辅助的用户 |
 | `WezTerm` | 跨平台、可编程、配置能力强，对高级用户很友好 | 学习和调优成本更高，不是最轻松的上手路线 | 想深度定制终端的人 |
+| `Konsole` | KDE 集成完善，标签页、分屏、Profile、配色等基础能力很成熟 | 更偏 Linux / KDE 语境，在 macOS 迁移讨论里参考价值有限 | 长期在 KDE 桌面下工作的开发者 |
 
 如果只做一个简单判断，我会这样归纳：
 
@@ -102,6 +106,7 @@ Profiles、触发器、Shell Integration 和大量细节功能，放到今天
 - `Terminal.app` 更像“稳定基础设施”
 - `Warp` 更像“重新设计过的人机界面”
 - `WezTerm` 更像“终端工程师的乐园”
+- `Konsole` 更像“Linux / KDE 世界里的稳健老将”
 
 ---
 
@@ -228,6 +233,50 @@ ghostty +list-keybinds --default
 
 这一步很有价值，因为 `Ghostty` 的最佳实践往往不是“背默认快捷键”，
 而是先确认有哪些可用动作，再把它们整理成你自己的工作流。
+
+### 如果你在 Ghostty 里高频使用 Claude Code
+
+这一类 AI 终端工作流，最容易踩的坑不是“快捷键不够多”，而是
+`Option`、`Cmd` 和终端自身菜单快捷键之间的语义没有先理清。
+
+在 macOS 上，如果你希望 `Ghostty` 里的 `Claude Code` 正常识别
+`Option/Alt` 快捷键，第一步通常不是改 Claude，而是先让 `Ghostty`
+把 `Option` 视为真正的 `Alt/Meta`：
+
+```ini
+# local.ghostty
+macos-option-as-alt = true
+```
+
+这样做的直接收益是：`Option+P`、`Option+T` 不会再退化成 `pi`、
+`dagger` 之类的特殊字符输入，而是能被终端程序当成 `Alt+...`
+快捷键来识别。
+
+接着要记住 Claude Code 当前这几个键的语义：
+
+- `Option/Alt+P` 打开或切换 `model picker`
+- `Option/Alt+T` 切换 extended thinking
+- effort 的 `low`、`medium`、`high`、`max` 不是直接绑在 `Alt+P`
+  上，而是通过 `/effort` 命令，或者先打开 `/model` 再在 picker 里调
+
+如果你已经习惯了 Windows 上的 `Alt+P`，又希望在 macOS 上额外保留
+一个不影响 `Cmd+T` 这类原生窗口快捷键的别名，一个很稳的补法是：
+
+```ini
+# local.ghostty
+keybind = cmd+key_p=esc:p
+```
+
+这里有两个细节值得记住：
+
+- 用 `key_p` 而不是裸 `p`，是为了按物理键匹配，减少键盘布局差异的
+  干扰
+- 这类“只为当前机器补 AI 工作流手感”的兼容项，优先写进
+  `local.ghostty`，不要为了临时实验再额外造一个顶层 `config` 入口
+
+这样整理后的结果是：`Option` 负责把终端语义校准到 `Alt/Meta`，
+`Cmd+P` 只作为一个额外的 model picker 别名，Ghostty 自己的窗口级
+快捷键则尽量保持不动。
 
 ---
 
@@ -625,6 +674,8 @@ shell 注入和核心行为项到底有没有被 Ghostty 真正吃进去。
 - `Terminal.app` 很适合作为永远可用的系统保底终端
 - `Warp` 值得把它当成另一种交互范式，而不是传统终端替代品
 - `WezTerm` 很强，但它更适合愿意投资时间做深度定制的人
+- `Konsole` 更适合 KDE / Linux 主力环境，优点是桌面集成和传统终端能力
+  都很成熟，但它不是这篇 macOS 迁移场景里的主角
 
 所以我的实际结论不是“`Ghostty` 全面胜出”，而是：
 
@@ -661,10 +712,15 @@ shell 注入和核心行为项到底有没有被 Ghostty 真正吃进去。
 - [Ghostty Docs - Configuration Reference](https://ghostty.org/docs/config/reference)
 - [Ghostty Docs - Keybindings](https://ghostty.org/docs/config/keybind)
 - [Ghostty Docs - Keybinding Action Reference](https://ghostty.org/docs/config/keybind/reference)
+- [Claude Code Docs - Interactive Mode](https://code.claude.com/docs/en/interactive-mode)
+- [Claude Code Docs - Terminal Config](https://code.claude.com/docs/en/terminal-config)
+- [Claude Code Docs - Model Configuration](https://code.claude.com/docs/en/model-config)
+- [Claude Code Docs - Customize Keyboard Shortcuts](https://code.claude.com/docs/en/keybindings)
 - [iTerm2 Features](https://iterm2.com/features.html)
 - [Apple Terminal User Guide](https://support.apple.com/en-gu/guide/terminal/trml2df0220c/mac)
 - [Warp Documentation](https://docs.warp.dev/)
 - [WezTerm Documentation](https://wezterm.org/)
+- [Konsole Documentation](https://docs.kde.org/stable5/en/konsole/konsole/)
 
 ---
 
@@ -677,3 +733,5 @@ shell 注入和核心行为项到底有没有被 Ghostty 真正吃进去。
 | v1.2 | 2026-04-01 | 补充 Ghostty 配置路径、模块化装配、Ghostty 专属 prompt 与 quick terminal 实践认知 |
 | v1.3 | 2026-04-01 | 新增一套可长期维护的 Ghostty 最终推荐配置清单 |
 | v1.4 | 2026-04-01 | 校准迁移叙述为 ZDOTDIR 隔离方案，并补充 `+show-config` 验证说明 |
+| v1.5 | 2026-04-02 | 在终端对比中补充 `Konsole` 的定位、优缺点与适用场景 |
+| v1.6 | 2026-04-02 | 补充 Ghostty 中 Claude Code 的 Option/Meta、Cmd+P 与 effort 规则 |
