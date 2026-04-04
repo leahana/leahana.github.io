@@ -1,0 +1,1013 @@
+<!DOCTYPE html>
+<html lang="zh">
+    <head>
+  <!-- 元数据 -->
+  <meta charset="utf-8">
+  
+  
+  <title>Kaggle × Google Agent 5 Days 白皮书精读：Day 1 Agent 基础架构 | MamimiJa Nai</title>
+  <link rel="canonical" href="https://leahana.github.io/2026/03/30/tech/ai/2026-03-31-kaggle-google-agent-5days-day1-whitepaper-reading/">
+  <meta name="author" content="Mamimi" />
+  <meta http-equiv="Cache-Control" content="no-transform" />
+  <meta http-equiv="Cache-Control" content="no-siteapp" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="robots" content="index,follow" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
+  <meta name="format-detection" content="telphone=no, email=no" />
+  
+    <meta name="keywords" content="AI-Agents, Agent, Google, Kaggle, 白皮书精读" />
+  
+  <meta name="description" content="精读 Kaggle × Google 5 Days Agent 课程 Day 1 白皮书，系统梳理 Agent 的定义、架构、运行循环、工具体系与 AgentOps。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Kaggle × Google Agent 5 Days 白皮书精读：Day 1 Agent 基础架构">
+<meta property="og:url" content="https://leahana.github.io/2026/03/30/tech/ai/2026-03-31-kaggle-google-agent-5days-day1-whitepaper-reading/index.html">
+<meta property="og:site_name" content="MamimiJa Nai">
+<meta property="og:description" content="精读 Kaggle × Google 5 Days Agent 课程 Day 1 白皮书，系统梳理 Agent 的定义、架构、运行循环、工具体系与 AgentOps。">
+<meta property="og:locale">
+<meta property="article:published_time" content="2026-03-30T20:00:00.000Z">
+<meta property="article:modified_time" content="2026-04-04T07:39:20.332Z">
+<meta property="article:author" content="Mamimi">
+<meta property="article:tag" content="AI-Agents">
+<meta property="article:tag" content="Agent">
+<meta property="article:tag" content="Google">
+<meta property="article:tag" content="Kaggle">
+<meta property="article:tag" content="白皮书精读">
+<meta name="twitter:card" content="summary">
+  
+  <!-- JSON-LD 结构化数据 -->
+  
+  
+    <script type="application/ld+json">
+    {"@context":"https://schema.org","@type":"BlogPosting","headline":"Kaggle × Google Agent 5 Days 白皮书精读：Day 1 Agent 基础架构","description":"精读 Kaggle × Google 5 Days Agent 课程 Day 1 白皮书，系统梳理 Agent 的定义、架构、运行循环、工具体系与 AgentOps。","image":"https://leahana.github.io/images/theme/Mamimi.JPG","author":{"@type":"Person","name":"Mamimi"},"publisher":{"@type":"Organization","name":"MamimiJa Nai","logo":{"@type":"ImageObject","url":"https://leahana.github.io/images/theme/Mamimi.JPG"}},"datePublished":"2026-03-30T20:00:00.000Z","dateModified":"2026-04-04T07:39:20.332Z","mainEntityOfPage":{"@type":"WebPage","@id":"https://leahana.github.io/2026/03/30/tech/ai/2026-03-31-kaggle-google-agent-5days-day1-whitepaper-reading/"}}
+    </script>
+  
+  <!-- 关键 CSS 预加载 -->
+  <link rel="preload" href="/css/kr-core.min.css" as="style">
+  <link rel="preload" href="/css/kr-theme/light.min.css" as="style">
+  <link rel="preload" href="/css/kr-theme/dark.min.css" as="style">
+  <!-- 样式表文件 -->
+  <link rel="stylesheet" id="kratos-css" href="/css/kr-core.min.css" media="all">
+  <link rel="stylesheet" id="theme-light-css" href="/css/kr-theme/light.min.css" media="all">
+  <link rel="stylesheet" id="theme-dark-css" href="/css/kr-theme/dark.min.css" media="(prefers-color-scheme: dark)">
+  
+    <link rel="stylesheet"  id="highlight-css" href="/css/highlight/highlight.js/night-eighties.min.css" media="print" onload="this.media='all'" onerror="this.media='all'"><noscript><link rel="stylesheet" href="/css/highlight/highlight.js/night-eighties.min.css"></noscript>
+  
+  <script src="/js/kr-theme.min.js"></script>
+  <!-- Mermaid 图表库 + 初始化 -->
+  <script src="https://unpkg.com/mermaid@10.6.1/dist/mermaid.min.js"></script>
+  <script src="/others/mermaid.js"></script>
+  <link rel="stylesheet"  id="fontawe-css" href="/vendors/font-awesome@4.7.0/css/font-awesome.min.css" media="print" onload="this.media='all'" onerror="this.media='all'"><noscript><link rel="stylesheet" href="/vendors/font-awesome@4.7.0/css/font-awesome.min.css"></noscript>
+  
+    <link rel="stylesheet"  id="nprogress-css" href="/vendors/nprogress@0.2.0/nprogress.css" media="print" onload="this.media='all'" onerror="this.media='all'"><noscript><link rel="stylesheet" href="/vendors/nprogress@0.2.0/nprogress.css"></noscript>
+  
+  
+    <link rel="stylesheet"  href="/vendors/viewerjs@1.11.6/dist/viewer.min.css" media="print" onload="this.media='all'" onerror="this.media='all'"><noscript><link rel="stylesheet" href="/vendors/viewerjs@1.11.6/dist/viewer.min.css"></noscript>
+  
+  <!-- 预先加载的JS文件 -->
+  
+    <script src="/vendors/qr-code-styling@1.6.0-rc.1/lib/qr-code-styling.js"></script>
+  
+  <!-- 自定义站点横幅和背景 -->
+  <style>
+    
+      .kratos-cover.kratos-cover-2 {
+        background-image: url('');
+      }
+      html[data-theme="dark"] .kratos-cover.kratos-cover-2 {
+        background-image: url('');
+      }
+    
+    
+      @media(min-width:768px) {
+        body.custom-background {
+          background-image: url('/images/theme/background.jpg');
+        }
+        html[data-theme="dark"] body.custom-background {
+          background-image: url('/images/theme/background.jpg');
+        }
+      }
+    
+    
+      .widget-kratos-about .photo-background {
+        background-image: url('/images/theme/avatar-bg.jpg');
+      }
+      html[data-theme="dark"] .widget-kratos-about .photo-background {
+        background-image: url('/images/theme/avatar-bg.jpg');
+      }
+    
+  </style>
+
+  <!-- 额外的追加注入项 -->
+  
+    <style>body.custom-background{background-image:url('/images/theme/background.jpg')!important;background-attachment:fixed!important;background-size:cover!important;background-position:center!important;}#kratos-widget-area .widget-kratos-about .photo-background{background-image:url('/images/theme/avatar-bg.jpg')!important;background-size:cover!important;background-position:35% 35%!important;background-repeat:no-repeat!important;}</style><link rel="stylesheet" href="/css/custom.css">
+  
+<meta name="generator" content="Hexo 8.1.1"></head>
+
+    <body class="custom-background">
+        <div id="kratos-wrapper">
+    <div id="kratos-page">
+        <div id="kratos-header">
+            <header id="kratos-desktop-topnav" class="kratos-topnav">
+                <div class="container">
+                    <div class="nav-header">
+                        <nav id="kratos-menu-wrap">
+                            <ul id="kratos-primary-menu" class="sf-menu">
+                                
+                                    <li>
+                                        
+                                            <a href="/">
+                                        
+                                            
+                                                <i class="fa fa-fa-home"></i>
+                                            
+                                            首页
+                                        </a>
+                                        
+                                    </li>
+                                
+                                    <li>
+                                        
+                                            <a href="/archives">
+                                        
+                                            
+                                                <i class="fa fa-fa-archive"></i>
+                                            
+                                            归档
+                                        </a>
+                                        
+                                    </li>
+                                
+                                    <li>
+                                        
+                                            <a href="/categories">
+                                        
+                                            
+                                                <i class="fa fa-fa-folder-open"></i>
+                                            
+                                            分类
+                                        </a>
+                                        
+                                    </li>
+                                
+                                    <li>
+                                        
+                                            <a href="/tags">
+                                        
+                                            
+                                                <i class="fa fa-fa-tags"></i>
+                                            
+                                            标签
+                                        </a>
+                                        
+                                    </li>
+                                
+                                    <li>
+                                        
+                                            <a href="/search">
+                                        
+                                            
+                                                <i class="fa fa-fa-search"></i>
+                                            
+                                            搜索
+                                        </a>
+                                        
+                                    </li>
+                                
+                                    <li>
+                                        
+                                            <a>
+                                        
+                                            
+                                                <i class="fa fa-fa-th-list"></i>
+                                            
+                                            更多
+                                        </a>
+                                        
+                                            <ul class="sub-menu">
+                                                
+                                                    <li>
+                                                        <a href="/about">
+                                                            
+                                                                <i class="fa fa-fa-user"></i>
+                                                            
+                                                            关于我
+                                                        </a>
+                                                    </li>
+                                                
+                                                    <li>
+                                                        <a href="/links">
+                                                            
+                                                                <i class="fa fa-fa-link"></i>
+                                                            
+                                                            友情链接
+                                                        </a>
+                                                    </li>
+                                                
+                                            </ul>
+                                        
+                                    </li>
+                                
+                            </ul>
+                        </nav>
+                    </div>
+                </div>
+            </header>
+            <header id="kratos-mobile-topnav" class="kratos-topnav">
+                <div class="container">
+                    <div class="color-logo"><a href="/">MamimiJa Nai</a></div>
+                    <div id="kratos-nav-toggle-wrapper" class="nav-toggle">
+                        <a id="kratos-nav-toggle" class="kratos-nav-toggle">
+                            <i></i>
+                        </a>
+                    </div>
+                </div>
+            </header>
+        </div>
+        <div class="kratos-start kratos-hero-2">
+            <!-- <div class="kratos-overlay"></div> -->
+            <div class="kratos-cover kratos-cover-2 text-center">
+                <div class="desc desc2 animate-box">
+                    <a href="/">
+                        <h2>MamimiJa Nai</h2> <br />
+                        <span></span>
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <div id="kratos-blog-post">
+            <div class="container">
+                <div id="main" class="row">
+
+
+        
+
+            
+
+            <section class="kr-main-col col-md-8">
+
+        
+
+            <article itemscope itemtype="https://schema.org/Article">
+    <link itemprop="mainEntityOfPage" href="https://leahana.github.io/2026/03/30/tech/ai/2026-03-31-kaggle-google-agent-5days-day1-whitepaper-reading/">
+    <div class="kratos-hentry kratos-page-inner clearfix">
+        <header class="kratos-page-header">
+            
+                <h1 class="kratos-page-title text-center" itemprop="name headline">Kaggle × Google Agent 5 Days 白皮书精读：Day 1 Agent 基础架构</h1>
+            
+            <ul class="kratos-page-meta text-center">
+                <li><time datetime="2026-03-30T20:00:00.000Z" itemprop="datePublished"><i class="fa fa-calendar"></i> 2026-03-31</time></li>
+                <li itemprop="author" itemscope itemtype="https://schema.org/Person">
+                    <i class="fa fa-user"></i> 作者 <span itemprop="name">Mamimi</span>
+                </li>
+                
+                    <li>
+                        <i class="fa fa-edit"></i> 
+                        
+                        
+                            ~8.27K
+                        
+                        字
+                    </li>
+                
+                
+                
+            </ul>
+        </header>
+        <div class="kratos-page-content kr-post">
+            
+            
+            
+                <div class="kratos-post-inner-toc toc-div-class" >
+                    <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%B8%BA%E4%BB%80%E4%B9%88-Day-1-%E5%80%BC%E5%BE%97%E7%B2%BE%E8%AF%BB"><span class="toc-number">1.</span> <span class="toc-text">为什么 Day 1 值得精读</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Day-1-%E5%85%88%E5%9B%9E%E7%AD%94%EF%BC%9A%E4%BB%80%E4%B9%88%E6%89%8D%E7%AE%97-Agent"><span class="toc-number">2.</span> <span class="toc-text">Day 1 先回答：什么才算 Agent</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#Agent-%E5%92%8C-Model-%E7%9A%84%E8%BE%B9%E7%95%8C%EF%BC%8C%E5%BF%85%E9%A1%BB%E5%85%88%E5%88%86%E6%B8%85"><span class="toc-number">2.1.</span> <span class="toc-text">Agent 和 Model 的边界，必须先分清</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%8A%8A-Day-1-%E8%AF%BB%E6%88%90%E4%B8%80%E5%BC%A0%E5%9B%9B%E5%B1%82%E6%9E%B6%E6%9E%84%E5%9B%BE"><span class="toc-number">3.</span> <span class="toc-text">把 Day 1 读成一张四层架构图</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#Model%EF%BC%9A%E4%B8%8D%E6%98%AF%E4%B8%BB%E8%A7%92%E6%BB%A4%E9%95%9C%EF%BC%8C%E8%80%8C%E6%98%AF%E4%B8%AD%E5%A4%AE%E5%86%B3%E7%AD%96%E5%99%A8"><span class="toc-number">3.1.</span> <span class="toc-text">Model：不是主角滤镜，而是中央决策器</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Tools%EF%BC%9A%E8%AE%A9%E6%A8%A1%E5%9E%8B%E4%BB%8E%E2%80%9C%E4%BC%9A%E8%AF%B4%E2%80%9D%E5%8F%98%E6%88%90%E2%80%9C%E8%83%BD%E5%81%9A%E2%80%9D"><span class="toc-number">3.2.</span> <span class="toc-text">Tools：让模型从“会说”变成“能做”</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Orchestration-Layer%EF%BC%9A%E7%9C%9F%E6%AD%A3%E5%86%B3%E5%AE%9A%E2%80%9C%E5%83%8F%E4%B8%8D%E5%83%8F-Agent%E2%80%9D%E7%9A%84%E5%9C%B0%E6%96%B9"><span class="toc-number">3.3.</span> <span class="toc-text">Orchestration Layer：真正决定“像不像 Agent”的地方</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Runtime%EF%BC%9A%E7%99%BD%E7%9A%AE%E4%B9%A6%E6%B2%A1%E5%A4%A7%E8%AE%B2%EF%BC%8C%E4%BD%86%E8%90%BD%E5%9C%B0%E4%B8%80%E5%AE%9A%E7%BB%95%E4%B8%8D%E8%BF%87%E5%8E%BB"><span class="toc-number">3.4.</span> <span class="toc-text">Runtime：白皮书没大讲，但落地一定绕不过去</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Agent-%E4%B8%8D%E6%98%AF%E4%B8%80%E6%AC%A1%E5%9B%9E%E7%AD%94%EF%BC%8C%E8%80%8C%E6%98%AF%E4%B8%80%E6%AE%B5%E5%BE%AA%E7%8E%AF"><span class="toc-number">4.</span> <span class="toc-text">Agent 不是一次回答，而是一段循环</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#ReAct%E3%80%81CoT%E3%80%81ToT-%E5%9C%A8%E8%BF%99%E9%87%8C%E5%88%86%E5%88%AB%E6%89%AE%E6%BC%94%E4%BB%80%E4%B9%88%E8%A7%92%E8%89%B2"><span class="toc-number">4.1.</span> <span class="toc-text">ReAct、CoT、ToT 在这里分别扮演什么角色</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%99%BD%E7%9A%AE%E4%B9%A6%E7%BB%99%E5%87%BA%E7%9A%84-ReAct-%E5%BA%8F%E5%88%97%E5%BE%88%E5%80%BC%E5%BE%97%E8%AE%B0%E4%BD%8F"><span class="toc-number">4.2.</span> <span class="toc-text">白皮书给出的 ReAct 序列很值得记住</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Tools-%E4%B8%8D%E6%98%AF%E9%99%84%E4%BB%B6%EF%BC%8C%E8%80%8C%E6%98%AF-Agent-%E7%9A%84%E8%83%BD%E5%8A%9B%E8%BE%B9%E7%95%8C"><span class="toc-number">5.</span> <span class="toc-text">Tools 不是附件，而是 Agent 的能力边界</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#Extensions%EF%BC%9A%E6%8A%8A-API-%E6%95%99%E4%BC%9A%E7%BB%99-Agent"><span class="toc-number">5.1.</span> <span class="toc-text">Extensions：把 API 教会给 Agent</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Functions%EF%BC%9A%E6%8A%8A%E6%89%A7%E8%A1%8C%E6%9D%83%E6%94%B6%E5%9B%9E%E5%88%B0%E5%AE%A2%E6%88%B7%E7%AB%AF"><span class="toc-number">5.2.</span> <span class="toc-text">Functions：把执行权收回到客户端</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Data-Stores%EF%BC%9A%E8%A7%A3%E5%86%B3%E7%9A%84%E4%B8%8D%E6%98%AF%E7%9F%A5%E8%AF%86%E9%87%8F%EF%BC%8C%E8%80%8C%E6%98%AF%E7%9F%A5%E8%AF%86%E6%97%B6%E6%95%88%E6%80%A7"><span class="toc-number">5.3.</span> <span class="toc-text">Data Stores：解决的不是知识量，而是知识时效性</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BB%8E-targeted-learning-%E5%88%B0-AgentOps-%E9%9B%8F%E5%BD%A2"><span class="toc-number">6.</span> <span class="toc-text">从 targeted learning 到 AgentOps 雏形</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%B8%89%E7%A7%8D-targeted-learning%EF%BC%8C%E6%9C%AC%E8%B4%A8%E6%98%AF%E5%9C%A8%E6%95%99%E6%A8%A1%E5%9E%8B%E6%9B%B4%E4%BC%9A%E7%94%A8%E5%B7%A5%E5%85%B7"><span class="toc-number">6.1.</span> <span class="toc-text">三种 targeted learning，本质是在教模型更会用工具</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Vertex-AI-%E9%82%A3%E4%B8%80%E8%8A%82%EF%BC%8C%E5%B7%B2%E7%BB%8F%E5%BE%88%E6%8E%A5%E8%BF%91%E4%BB%8A%E5%A4%A9%E8%AF%B4%E7%9A%84-AgentOps"><span class="toc-number">6.2.</span> <span class="toc-text">Vertex AI 那一节，已经很接近今天说的 AgentOps</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%99%BD%E7%9A%AE%E4%B9%A6%E6%9C%80%E5%90%8E%E7%BB%99%E4%BA%86%E4%B8%A4%E4%B8%AA%E9%80%92%E8%BF%9B%E7%A4%BA%E4%BE%8B"><span class="toc-number">7.</span> <span class="toc-text">白皮书最后给了两个递进示例</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%A4%BA%E4%BE%8B%E4%B8%80%EF%BC%9ALangChain-LangGraph-%E5%8E%9F%E5%9E%8B"><span class="toc-number">7.1.</span> <span class="toc-text">示例一：LangChain &#x2F; LangGraph 原型</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%A4%BA%E4%BE%8B%E4%BA%8C%EF%BC%9AVertex-AI-%E7%94%9F%E4%BA%A7%E7%BA%A7%E6%9E%B6%E6%9E%84"><span class="toc-number">7.2.</span> <span class="toc-text">示例二：Vertex AI 生产级架构</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%88%91%E4%BB%8E-Day-1-%E5%B8%A6%E8%B5%B0%E7%9A%84-5-%E4%B8%AA%E8%AE%A4%E7%9F%A5%E9%94%9A%E7%82%B9"><span class="toc-number">8.</span> <span class="toc-text">我从 Day 1 带走的 5 个认知锚点</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Day-2-%E5%80%BC%E5%BE%97%E6%9C%9F%E5%BE%85%E4%BB%80%E4%B9%88"><span class="toc-number">9.</span> <span class="toc-text">Day 2 值得期待什么</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%8F%82%E8%80%83%E8%B5%84%E6%96%99"><span class="toc-number">10.</span> <span class="toc-text">参考资料</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%9B%B4%E6%96%B0%E8%AE%B0%E5%BD%95"><span class="toc-number">11.</span> <span class="toc-text">更新记录</span></a></li></ol>
+                </div>
+            
+            <hr />
+            <div itemprop="articleBody"><blockquote>
+<p>🎯 <strong>一句话定位</strong>：这不是一篇“Agent 很火”的概念文，而是把 Kaggle<br>和 Google 的 Day 1 白皮书，拆成开发者真正能拿来理解架构的认知地图。</p>
+<p>💡 <strong>核心理念</strong>：Day 1 真正要讲清楚的，不是“Agent 会不会思考”，而是<br>一个可运行的 Agent 系统，到底由哪些层组成，又为什么它比单纯的<br>Model 更接近“应用”。</p>
+</blockquote>
+<hr>
+<h2 id="为什么-Day-1-值得精读"><a href="#为什么-Day-1-值得精读" class="headerlink" title="为什么 Day 1 值得精读"></a>为什么 Day 1 值得精读</h2><p>Google 和 Kaggle 在 2025 年推出了 <code>5-Day AI Agents Intensive Course</code>。<br>官方回顾里提到，这套课程围绕 AI Agent 的设计、评估与部署展开；而<br>Day 1 的白皮书，就是整个系列的认知底座。</p>
+<p>如果说后面几天会进入工具、评估、多 Agent 和生产化，那么 Day 1<br>负责回答的，是最根本的三个问题：</p>
+<ul>
+<li>Agent 到底是什么</li>
+<li>Agent 和单纯的 Model 差在哪里</li>
+<li>一个能跑起来的 Agent，最小架构应该长什么样</li>
+</ul>
+<p>整个 5 Days 可以先粗看成下面这张学习地图：</p>
+<table>
+<thead>
+<tr>
+<th>天数</th>
+<th>主题焦点</th>
+<th>你会建立的认知</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Day 1</td>
+<td>Agent 基础架构</td>
+<td>Agent 的定义、组件与运行循环</td>
+</tr>
+<tr>
+<td>Day 2</td>
+<td>Tools &#x2F; Memory &#x2F; Context</td>
+<td>Agent 如何连接外部世界与知识</td>
+</tr>
+<tr>
+<td>Day 3</td>
+<td>Build</td>
+<td>如何把架构变成可运行原型</td>
+</tr>
+<tr>
+<td>Day 4</td>
+<td>Evaluate</td>
+<td>如何评估、调试与持续改进</td>
+</tr>
+<tr>
+<td>Day 5</td>
+<td>Production &#x2F; Multi-Agent</td>
+<td>如何把原型推进到真实系统</td>
+</tr>
+</tbody></table>
+<p>所以 Day 1 的价值，并不是“知识点最多”，而是它决定了你后面读 Day 2<br>到 Day 5 时，到底是在堆概念，还是在搭一套能自洽的系统观。</p>
+<hr>
+<h2 id="Day-1-先回答：什么才算-Agent"><a href="#Day-1-先回答：什么才算-Agent" class="headerlink" title="Day 1 先回答：什么才算 Agent"></a>Day 1 先回答：什么才算 Agent</h2><p>白皮书没有把 Agent 写成一个神秘的新物种。它给出的定义很务实：<br>Agent 是一个为了达成目标而运行的应用，它会观察环境、调用手头可用的<br>工具，并据此持续做出下一步决策。</p>
+<p>这个定义里，最关键的不是 “AI”，而是下面三个特征：</p>
+<ul>
+<li><strong>目标导向</strong>：它不是为了聊天而聊天，而是围绕明确目标推进</li>
+<li><strong>自主推进</strong>：拿到目标后，可以自己决定下一步需要做什么</li>
+<li><strong>主动行动</strong>：不只生成文本，还会在需要时去检索、调用 API 或改写计划</li>
+</ul>
+<p>这也是白皮书一开始就反复强调的原因：Agent 不是“更强一点的问答模型”，<br>而是一个把语言模型嵌进执行闭环里的系统。</p>
+<h3 id="Agent-和-Model-的边界，必须先分清"><a href="#Agent-和-Model-的边界，必须先分清" class="headerlink" title="Agent 和 Model 的边界，必须先分清"></a>Agent 和 Model 的边界，必须先分清</h3><p>很多人在讨论 Agent 时，容易把 “LLM 很强” 和 “系统很 agentic” 混为一谈。<br>Day 1 的一个核心贡献，就是把这条边界划得很清楚。</p>
+<table>
+<thead>
+<tr>
+<th>维度</th>
+<th>Model</th>
+<th>Agent</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>知识来源</td>
+<td>主要受限于训练数据</td>
+<td>可借助工具连接外部系统</td>
+</tr>
+<tr>
+<td>工作方式</td>
+<td>一次推理或一次回答</td>
+<td>多轮状态化循环</td>
+</tr>
+<tr>
+<td>上下文</td>
+<td>通常只关注当前输入</td>
+<td>持续管理会话、状态与历史</td>
+</tr>
+<tr>
+<td>行动能力</td>
+<td>生成文本或结构化输出</td>
+<td>选择工具、执行动作、读取结果</td>
+</tr>
+<tr>
+<td>系统形态</td>
+<td>推理引擎</td>
+<td>面向目标的完整应用</td>
+</tr>
+</tbody></table>
+<p>换句话说，Model 更像 “会推理的大脑”，而 Agent 更像 “带着大脑、<br>双手、记忆和调度系统的执行体”。</p>
+<p>这也是为什么开发 Agent 时，问题不只是 “我用哪个模型”，而是<br>“我准备给这个模型怎样的工具、记忆和控制流”。</p>
+<hr>
+<h2 id="把-Day-1-读成一张四层架构图"><a href="#把-Day-1-读成一张四层架构图" class="headerlink" title="把 Day 1 读成一张四层架构图"></a>把 Day 1 读成一张四层架构图</h2><p>白皮书在核心章节里强调了三个 essential components：<br><code>Model</code>、<code>Tools</code>、<code>Orchestration Layer</code>。但如果从工程视角去读，<br>我更建议把它整理成四层：</p>
+<ul>
+<li>Model：负责推理与生成</li>
+<li>Tools：负责连接外部世界</li>
+<li>Orchestration Layer：负责循环、状态与决策</li>
+<li>Runtime：负责把这一切放进可测试、可部署、可维护的运行环境</li>
+</ul>
+<p>这里需要说明一下：前面三层是白皮书正文明确展开的“核心组件”，而把<br><code>Runtime</code> 单独拎出来，是结合课程语境和生产化章节做的工程化归纳。<br>它不是在和白皮书唱反调，反而能帮助我们把 “原理” 和 “落地容器”<br>分开看清。</p>
+<pre class="mermaid">graph TD
+    A["Agent System"] --> B["Model<br/>推理与生成"]
+    A --> C["Tools<br/>连接外部世界"]
+    A --> D["Orchestration Layer<br/>循环与状态管理"]
+    A --> E["Runtime<br/>测试、部署、维护"]
+    C --> C1["Extensions"]
+    C --> C2["Functions"]
+    C --> C3["Data Stores"]
+    D --> D1["Reasoning"]
+    D --> D2["Planning"]
+    D --> D3["Memory / State"]
+
+    style A fill:#e3f2fd,stroke:#333,color:#000
+    style B fill:#e3f2fd,stroke:#333,color:#000
+    style C fill:#c8e6c9,stroke:#333,color:#000
+    style D fill:#ffccbc,stroke:#333,color:#000
+    style E fill:#c8e6c9,stroke:#333,color:#000</pre>
+
+<h3 id="Model：不是主角滤镜，而是中央决策器"><a href="#Model：不是主角滤镜，而是中央决策器" class="headerlink" title="Model：不是主角滤镜，而是中央决策器"></a>Model：不是主角滤镜，而是中央决策器</h3><p>在 Day 1 的定义里，Model 是 agent process 的 centralized decision maker。<br>它负责做推理、判断下一步行动、选择工具，以及综合 observation<br>生成最终回答。</p>
+<p>但白皮书也提醒了一点非常重要的现实感：模型本身通常并不知道<br>“你这个 Agent 的具体配置”。它不是天生就懂你的工具集合、<br>编排规则和业务边界，而是要通过 prompt、示例、工具描述和状态上下文，<br>被放到一个特定系统里工作。</p>
+<p>所以在 Agent 架构里，Model 很重要，但它从来不是全部。</p>
+<h3 id="Tools：让模型从“会说”变成“能做”"><a href="#Tools：让模型从“会说”变成“能做”" class="headerlink" title="Tools：让模型从“会说”变成“能做”"></a>Tools：让模型从“会说”变成“能做”</h3><p>没有工具的模型，知道很多；有工具的 Agent，才可能做到很多。</p>
+<p>Tools 的本质，是把语言模型从训练数据里拉出来，让它接触实时信息、<br>结构化数据和外部动作。白皮书里举的例子很典型：查航班、读数据库、<br>发邮件、完成交易。</p>
+<p>你会发现，Day 1 对工具的定义本身已经很清楚地指向生产环境了：<br>真正有用的 Agent，必须能和外部系统发生关系。</p>
+<h3 id="Orchestration-Layer：真正决定“像不像-Agent”的地方"><a href="#Orchestration-Layer：真正决定“像不像-Agent”的地方" class="headerlink" title="Orchestration Layer：真正决定“像不像 Agent”的地方"></a>Orchestration Layer：真正决定“像不像 Agent”的地方</h3><p>这一层常常被低估，但它其实才是 Agent 的“神经系统”。</p>
+<p>白皮书把它定义成一个循环式过程：Agent 接收信息，做内部推理，再根据<br>推理结果决定下一步行动；只要目标还没完成，这个循环就会继续。</p>
+<p>这意味着 Agent 的核心竞争力，不只是某次回答答得好不好，而是：</p>
+<ul>
+<li>什么时候该继续思考</li>
+<li>什么时候该调用工具</li>
+<li>工具结果回来后是否需要改写计划</li>
+<li>什么时候应该停止并给出最终答案</li>
+</ul>
+<h3 id="Runtime：白皮书没大讲，但落地一定绕不过去"><a href="#Runtime：白皮书没大讲，但落地一定绕不过去" class="headerlink" title="Runtime：白皮书没大讲，但落地一定绕不过去"></a>Runtime：白皮书没大讲，但落地一定绕不过去</h3><p>如果说前三层回答了 “Agent 是什么”，那么 Runtime 回答的是<br>“这东西怎么真正跑起来”。</p>
+<p>白皮书后半段讲到 LangChain &#x2F; LangGraph 原型，以及 Vertex AI<br>上的 production applications 时，实际上已经把 Runtime 的轮廓带出来了：</p>
+<ul>
+<li>谁来托管工具和模型调用</li>
+<li>谁来保存会话状态与中间结果</li>
+<li>谁来做测试、评估、调试和部署</li>
+<li>谁来处理维护成本，而不是让每个团队都手搓一套底层设施</li>
+</ul>
+<p>也正因为如此，我会把 Runtime 当作读 Day 1 时必须补上的第四层。</p>
+<hr>
+<h2 id="Agent-不是一次回答，而是一段循环"><a href="#Agent-不是一次回答，而是一段循环" class="headerlink" title="Agent 不是一次回答，而是一段循环"></a>Agent 不是一次回答，而是一段循环</h2><p>Day 1 最值得反复看的地方，是它把 Agent 描述为一个持续运行的认知循环，<br>而不是一次性生成。</p>
+<pre class="mermaid">graph LR
+    A["User Goal"] --> B["Think"]
+    B --> C["Choose Tool / Action"]
+    C --> D["Observe Result"]
+    D --> E{"Goal Reached?"}
+    E -->|No| B
+    E -->|Yes| F["Final Answer"]
+
+    style A fill:#e3f2fd,stroke:#333,color:#000
+    style B fill:#ffccbc,stroke:#333,color:#000
+    style C fill:#c8e6c9,stroke:#333,color:#000
+    style D fill:#e3f2fd,stroke:#333,color:#000
+    style F fill:#c8e6c9,stroke:#333,color:#000</pre>
+
+<p>这张图看起来简单，但它其实解释了为什么 Agent 天然适合多步任务。<br>因为很多真实问题，本来就不是“一次回答就结束”的：</p>
+<ul>
+<li>找资料之后，还要比对真伪</li>
+<li>选完工具之后，还要补参数</li>
+<li>执行一个动作之后，还要根据返回值决定下一步</li>
+</ul>
+<p>白皮书在这里引入的关键概念，是 <code>cognitive architectures</code>。它想表达的不是<br>“给模型一个 fancy 名词”，而是：如果你希望系统连续地观察、推理、<br>行动、修正，那么你就需要一套明确的控制框架。</p>
+<h3 id="ReAct、CoT、ToT-在这里分别扮演什么角色"><a href="#ReAct、CoT、ToT-在这里分别扮演什么角色" class="headerlink" title="ReAct、CoT、ToT 在这里分别扮演什么角色"></a>ReAct、CoT、ToT 在这里分别扮演什么角色</h3><p>Day 1 点到了三类常见 reasoning techniques：</p>
+<ul>
+<li><strong>ReAct</strong>：把 Reasoning 和 Acting 交织在一起，适合循环式 Agent</li>
+<li><strong>Chain-of-Thought</strong>：显式写出中间推理步骤，适合复杂推导</li>
+<li><strong>Tree-of-Thoughts</strong>：允许探索多条候选思路，更适合 lookahead 场景</li>
+</ul>
+<p>如果只从“提示词技巧”去看，这三者会显得像 Prompt Engineering 小节。<br>但放回 Agent 里看，它们其实决定的是 orchestration layer 的行为风格。</p>
+<p>也就是说，推理框架不是装饰品，而是控制流的一部分。</p>
+<h3 id="白皮书给出的-ReAct-序列很值得记住"><a href="#白皮书给出的-ReAct-序列很值得记住" class="headerlink" title="白皮书给出的 ReAct 序列很值得记住"></a>白皮书给出的 ReAct 序列很值得记住</h3><p>白皮书举了一个典型流程：</p>
+<ol>
+<li>用户发来问题</li>
+<li>Agent 进入 ReAct 序列</li>
+<li>模型生成 <code>Thought</code></li>
+<li>模型决定 <code>Action</code></li>
+<li>提供 <code>Action Input</code></li>
+<li>接收 <code>Observation</code></li>
+<li>若还未完成，则继续下一轮</li>
+<li>输出 <code>Final Answer</code></li>
+</ol>
+<p>只要把这 8 步记住，你再去看任何一个 Agent Framework，就更容易判断：<br>它到底是在帮你封装循环，还是只是在包一层聊天接口。</p>
+<hr>
+<h2 id="Tools-不是附件，而是-Agent-的能力边界"><a href="#Tools-不是附件，而是-Agent-的能力边界" class="headerlink" title="Tools 不是附件，而是 Agent 的能力边界"></a>Tools 不是附件，而是 Agent 的能力边界</h2><p>Day 1 对工具体系的拆分非常实用。它没有泛泛说 “Agent 可以接 API”，<br>而是明确分成三类：<code>Extensions</code>、<code>Functions</code>、<code>Data Stores</code>。</p>
+<table>
+<thead>
+<tr>
+<th>工具类型</th>
+<th>执行位置</th>
+<th>核心作用</th>
+<th>更适合的场景</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Extensions</td>
+<td>Agent 侧</td>
+<td>让 Agent 直接对接外部 API</td>
+<td>多步规划、连续调用、多跳任务</td>
+</tr>
+<tr>
+<td>Functions</td>
+<td>Client 侧</td>
+<td>由 Agent 产出参数，客户端执行</td>
+<td>权限敏感、需审批、顺序受控</td>
+</tr>
+<tr>
+<td>Data Stores</td>
+<td>Agent 侧</td>
+<td>给 Agent 提供检索式知识访问</td>
+<td>RAG、企业知识、私有数据访问</td>
+</tr>
+</tbody></table>
+<h3 id="Extensions：把-API-教会给-Agent"><a href="#Extensions：把-API-教会给-Agent" class="headerlink" title="Extensions：把 API 教会给 Agent"></a>Extensions：把 API 教会给 Agent</h3><p>白皮书对 Extensions 的解释很接地气。它指出，直接手写一堆胶水代码去解析<br>用户输入、拼接 API 参数，短期当然能跑，但会非常脆。</p>
+<p>Extension 更稳的地方在于，它不是把 API “硬接上去”，而是把<br>“这个 API 什么时候该用、需要哪些参数、怎样调用才像样” 一起教给<br>Agent。于是模型不仅会用工具，还更可能在多轮任务里选对工具。</p>
+<h3 id="Functions：把执行权收回到客户端"><a href="#Functions：把执行权收回到客户端" class="headerlink" title="Functions：把执行权收回到客户端"></a>Functions：把执行权收回到客户端</h3><p>Function Calling 的关键，不是“也能调工具”，而是执行权在谁手上。</p>
+<p>在这种模式下，Agent 会给出函数名和参数，但真正执行动作的是客户端或你<br>自己的后端。这样做的意义很大：</p>
+<ul>
+<li>可以插入鉴权与审计</li>
+<li>可以加入 <code>human-in-the-loop</code></li>
+<li>可以控制批处理或顺序执行</li>
+<li>可以连接不能直接暴露给外部系统的内部接口</li>
+</ul>
+<p>很多业务系统真正想要的，其实不是“Agent 直接替我干”，而是<br>“Agent 先把动作规划对，再由我决定是否执行”。</p>
+<h3 id="Data-Stores：解决的不是知识量，而是知识时效性"><a href="#Data-Stores：解决的不是知识量，而是知识时效性" class="headerlink" title="Data Stores：解决的不是知识量，而是知识时效性"></a>Data Stores：解决的不是知识量，而是知识时效性</h3><p>白皮书把 Data Stores 也归进工具体系，这是一个很好的提醒：<br>RAG 不是外挂，而是 Agent 访问世界的一种手段。</p>
+<p>当模型本身不知道组织内部文档、实时网页内容或企业数据库里的信息时，<br>Data Store 能把相关内容拉进当前上下文，让模型基于最新信息做决策。</p>
+<p>这也解释了为什么 Agent 和单纯的聊天模型有本质差别：<br>它不必只依赖“脑子里原来知道什么”，而是可以在需要时重新取证。</p>
+<hr>
+<h2 id="从-targeted-learning-到-AgentOps-雏形"><a href="#从-targeted-learning-到-AgentOps-雏形" class="headerlink" title="从 targeted learning 到 AgentOps 雏形"></a>从 targeted learning 到 AgentOps 雏形</h2><p>Day 1 的后半段很有意思。它没有直接大喊 “这里开始讲 AgentOps”，<br>但如果用今天更熟悉的术语去理解，这一段其实已经把生产化轮廓摆出来了。</p>
+<h3 id="三种-targeted-learning，本质是在教模型更会用工具"><a href="#三种-targeted-learning，本质是在教模型更会用工具" class="headerlink" title="三种 targeted learning，本质是在教模型更会用工具"></a>三种 targeted learning，本质是在教模型更会用工具</h3><p>白皮书给了三种增强模型表现的方法：</p>
+<ul>
+<li><strong>In-context learning</strong>：在推理时给 prompt、工具描述和 few-shot 示例</li>
+<li><strong>Retrieval-based in-context learning</strong>：从外部记忆里动态取回相关信息、<br>工具与示例</li>
+<li><strong>Fine-tuning based learning</strong>：提前用更大规模、特定任务的数据做训练</li>
+</ul>
+<p>它们解决的，不只是“模型知道得够不够多”，更重要的是<br>“模型会不会在正确的时候用正确的工具”。</p>
+<p>从工程视角看，这三种方式可以理解成三档能力建设：</p>
+<ul>
+<li>原型期，先靠 prompt 和示例把行为跑通</li>
+<li>进入复杂业务后，引入 retrieval 把知识与示例外置</li>
+<li>当模式足够稳定，再考虑 fine-tuning 做更深层定制</li>
+</ul>
+<h3 id="Vertex-AI-那一节，已经很接近今天说的-AgentOps"><a href="#Vertex-AI-那一节，已经很接近今天说的-AgentOps" class="headerlink" title="Vertex AI 那一节，已经很接近今天说的 AgentOps"></a>Vertex AI 那一节，已经很接近今天说的 AgentOps</h3><p>白皮书在 <code>Production applications with Vertex AI agents</code> 一节里提到，<br>生产级 Agent 不能只有模型和工具，还需要配套的：</p>
+<ul>
+<li>用户界面</li>
+<li>evaluation frameworks</li>
+<li>testing</li>
+<li>performance measurement</li>
+<li>debugging</li>
+<li>continuous improvement mechanisms</li>
+</ul>
+<p>这段话很重要，因为它把一个常见误区戳破了：<br>Agent 真正难的地方，往往不是第一版能不能跑，而是第二十版还能不能持续<br>迭代、定位问题、衡量效果。</p>
+<p>如果借用今天更常见的词汇，这已经是 AgentOps 的雏形了。只是白皮书没有<br>把它包装成单独的方法论名词，而是把它自然地放进了<br>“从 prototype 到 production” 的过渡里。</p>
+<hr>
+<h2 id="白皮书最后给了两个递进示例"><a href="#白皮书最后给了两个递进示例" class="headerlink" title="白皮书最后给了两个递进示例"></a>白皮书最后给了两个递进示例</h2><p>我很喜欢 Day 1 的收尾方式。它没有停在抽象架构图上，而是给了两个层次<br>不同、但互相衔接的示例。</p>
+<h3 id="示例一：LangChain-LangGraph-原型"><a href="#示例一：LangChain-LangGraph-原型" class="headerlink" title="示例一：LangChain &#x2F; LangGraph 原型"></a>示例一：LangChain &#x2F; LangGraph 原型</h3><p>白皮书先用一个小型 Agent 原型说明，什么叫<br><code>Model + Tools + Orchestration</code> 真正一起工作。</p>
+<p>它的场景很简单：先搜索一支球队上周和谁比赛，再根据结果继续查询对方主场<br>地址。这个问题之所以适合做演示，是因为它天然需要两跳：</p>
+<ol>
+<li>先搜出对手是谁</li>
+<li>再根据对手去查球场地址</li>
+</ol>
+<p>下面这个精简版代码，足够体现白皮书想表达的结构：</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> langgraph.prebuilt <span class="keyword">import</span> create_react_agent</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">search</span>(<span class="params">query: <span class="built_in">str</span></span>) -&gt; <span class="built_in">str</span>:</span><br><span class="line">    <span class="keyword">return</span> run_google_search(query)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">def</span> <span class="title function_">places</span>(<span class="params">query: <span class="built_in">str</span></span>) -&gt; <span class="built_in">str</span>:</span><br><span class="line">    <span class="keyword">return</span> run_places_lookup(query)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">model = load_vertex_model(<span class="string">&quot;gemini-2.0-flash-001&quot;</span>)</span><br><span class="line">tools = [search, places]</span><br><span class="line">agent = create_react_agent(model, tools)</span><br><span class="line"></span><br><span class="line">result = agent.invoke(</span><br><span class="line">    &#123;</span><br><span class="line">        <span class="string">&quot;messages&quot;</span>: [</span><br><span class="line">            (</span><br><span class="line">                <span class="string">&quot;human&quot;</span>,</span><br><span class="line">                <span class="string">&quot;Who did the Texas Longhorns play last week? &quot;</span></span><br><span class="line">                <span class="string">&quot;What is the address of the other team&#x27;s stadium?&quot;</span>,</span><br><span class="line">            )</span><br><span class="line">        ]</span><br><span class="line">    &#125;</span><br><span class="line">)</span><br></pre></td></tr></table></figure>
+
+<p>这段示例的重点，不是 LangGraph API 本身，而是它把 Agent 的最小闭环演示得<br>非常清楚：问题不是一次答完，而是先检索、再观察、再继续检索。</p>
+<h3 id="示例二：Vertex-AI-生产级架构"><a href="#示例二：Vertex-AI-生产级架构" class="headerlink" title="示例二：Vertex AI 生产级架构"></a>示例二：Vertex AI 生产级架构</h3><p>接着，白皮书把视角从开源原型推到托管平台，展示一个更完整的<br>end-to-end agent architecture。</p>
+<p>这一层的重点变成了：</p>
+<ul>
+<li>不是只有工具调用，还要有整体环境</li>
+<li>不是只有推理过程，还要有测试和评估</li>
+<li>不是只有“能跑”，还要考虑部署与维护</li>
+</ul>
+<p>也就是说，Google 想传达的未来形态并不是<br>“一个超级 Prompt 就够了”，而是一个由模型、工具、示例、子 Agent、<br>测试能力和托管基础设施共同组成的系统。</p>
+<p>从这个收尾顺序也能看出 Day 1 的写法很克制：<br>先讲原理，再给原型，最后再给生产化方向。</p>
+<hr>
+<h2 id="我从-Day-1-带走的-5-个认知锚点"><a href="#我从-Day-1-带走的-5-个认知锚点" class="headerlink" title="我从 Day 1 带走的 5 个认知锚点"></a>我从 Day 1 带走的 5 个认知锚点</h2><ol>
+<li>Agent 不是更强的聊天框，而是一个围绕目标运行的应用系统。</li>
+<li>Model 决定推理上限，但 Tools 和 Orchestration 才决定它能不能真的做事。</li>
+<li>Agent 的关键不是“会回答”，而是能在 <code>Think -&gt; Act -&gt; Observe</code> 循环里<br>持续修正。</li>
+<li><code>Extensions</code>、<code>Functions</code>、<code>Data Stores</code> 不是并列术语背诵题，而是三种<br>不同的控制权分配方式。</li>
+<li>白皮书虽然主要讲基础架构，但后半段已经明显指向 production：<br>评估、调试、性能测量和持续改进，迟早都会成为主战场。</li>
+</ol>
+<hr>
+<h2 id="Day-2-值得期待什么"><a href="#Day-2-值得期待什么" class="headerlink" title="Day 2 值得期待什么"></a>Day 2 值得期待什么</h2><p>如果 Day 1 解决的是 “Agent 是什么”，那么 Day 2 更值得看的，会是<br>“Agent 怎么持续拿到对的信息”。</p>
+<p>换句话说，读完 Day 1 之后，下一步最自然的问题就是：</p>
+<ul>
+<li>工具到底该怎么设计</li>
+<li>Memory 和 Context 到底怎么分工</li>
+<li>RAG 在 Agent 里究竟是知识库，还是决策增强器</li>
+</ul>
+<p>所以 Day 1 最好的阅读方式，不是把它当成一个已经完结的定义，而是把它当成<br>整套课程的总装图。</p>
+<hr>
+<h2 id="参考资料"><a href="#参考资料" class="headerlink" title="参考资料"></a>参考资料</h2><ul>
+<li><a target="_blank" rel="noopener" href="https://blog.google/innovation-and-ai/technology/developers-tools/ai-agents-intensive-recap/">5-Day AI Agents Intensive Course 官方回顾</a></li>
+<li><a target="_blank" rel="noopener" href="https://storage.googleapis.com/kagglesdsdata/datasets/7096349/11342329/22365_19_Agents_v8.pdf">Agents 白皮书 PDF（Google &#x2F; Kaggle 课程配套）</a></li>
+<li><a target="_blank" rel="noopener" href="https://docs.cloud.google.com/agent-builder/agent-engine/evaluate">Vertex AI Agent Evaluation 文档</a></li>
+</ul>
+<hr>
+<h2 id="更新记录"><a href="#更新记录" class="headerlink" title="更新记录"></a>更新记录</h2><table>
+<thead>
+<tr>
+<th>版本</th>
+<th>日期</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>v1.0</td>
+<td>2026-03-31</td>
+<td>初始版本</td>
+</tr>
+</tbody></table>
+</div>
+        </div>
+        
+        <footer class="kratos-entry-footer clearfix">
+            
+            
+            
+                <div class="post-actions text-center clearfix" id="post-actions">
+                
+                    <a class="donate" href="javascript:;" onclick="krOpenDonateModal()"><i class="fa fa-bitcoin"></i> 打赏</a>
+                
+                
+                </div>
+            
+            <div class="footer-tag clearfix">
+                <div class="pull-left">
+                <i class="fa fa-tags"></i>
+                    <a class="tag-none-link" href="/tags/AI-Agents/" rel="tag">AI-Agents</a>, <a class="tag-none-link" href="/tags/Agent/" rel="tag">Agent</a>, <a class="tag-none-link" href="/tags/Google/" rel="tag">Google</a>, <a class="tag-none-link" href="/tags/Kaggle/" rel="tag">Kaggle</a>, <a class="tag-none-link" href="/tags/%E7%99%BD%E7%9A%AE%E4%B9%A6%E7%B2%BE%E8%AF%BB/" rel="tag">白皮书精读</a>
+                </div>
+                <div class="pull-date">
+                    <time datetime="2026-04-04T07:39:20.332Z" itemprop="dateModified">最后编辑：2026-04-04</time>
+                </div>
+            </div>
+        </footer>
+    </div>
+    
+        <nav class="navigation post-navigation clearfix" role="navigation">
+            
+            <div class="nav-previous clearfix">
+                <a title=" Google × Kaggle Agent 白皮书精读：Day 1 — 从概念到工程的系统拆解" href="/2026/03/30/tech/ai/2026-03-31-kaggle-google-agent-whitepaper-day1/"><i class="fa fa-angle-left"></i> 上一篇</a>
+            </div>
+            
+            
+            <div class="nav-next clearfix">
+                <a title=" Python 环境认知的破与立：一个 Java 工程师的心智重构笔记" href="/2026/03/30/tech/tools/2026-03-31-python-env-setup-from-java-perspective/">下一篇 <i class="fa fa-angle-right"></i></a>
+            </div>
+            
+        </nav>
+    
+    
+</article>
+
+        
+
+            </section>
+
+            
+                
+
+<section id="kratos-widget-area" class="col-md-4 hidden-xs hidden-sm">
+    <!-- 文章和页面根据splitter来分割，没有的话就从头开始设置为sticky -->
+    
+    
+                <aside id="krw-about" class="widget widget-kratos-about clearfix">
+    <div class="photo-background"></div>
+    <div class="photo-wrapper clearfix">
+        <div class="photo-wrapper-tip text-center">
+            <img class="about-photo" src="/images/theme/Mamimi.JPG" alt="Mamimi" loading="lazy" decoding="auto" />
+        </div>
+    </div>
+    <div class="textwidget">
+        <p class="text-center"></p>
+    </div>
+    <div class="site-meta">
+        <a class="meta-item" href="/archives/">
+            <span class="title">
+                文章
+            </span>
+            <span class="count">
+                64
+            </span>
+        </a>
+        <a class="meta-item" href="/categories/">
+            <span class="title">
+                分类
+            </span>
+            <span class="count">
+                7
+            </span>
+        </a>
+        <a class="meta-item" href="/tags/">
+            <span class="title">
+                标签
+            </span>
+            <span class="count">
+                198
+            </span>
+        </a>
+    </div>
+</aside>
+            
+                    <div class="sticky-area">
+                
+                    <aside id="krw-toc" class="widget widget-kratos-toc clearfix toc-div-class" >
+    <div class="photo-background"></div>
+    <h4 class="widget-title no-after">
+        <i class="fa fa-compass"></i>
+        文章目录
+        <span class="toc-progress-bar" role="progressbar" aria-label="阅读进度："></span>
+    </h4>
+    <div class="textwidget">
+        <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%B8%BA%E4%BB%80%E4%B9%88-Day-1-%E5%80%BC%E5%BE%97%E7%B2%BE%E8%AF%BB"><span class="toc-number">1.</span> <span class="toc-text">为什么 Day 1 值得精读</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Day-1-%E5%85%88%E5%9B%9E%E7%AD%94%EF%BC%9A%E4%BB%80%E4%B9%88%E6%89%8D%E7%AE%97-Agent"><span class="toc-number">2.</span> <span class="toc-text">Day 1 先回答：什么才算 Agent</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#Agent-%E5%92%8C-Model-%E7%9A%84%E8%BE%B9%E7%95%8C%EF%BC%8C%E5%BF%85%E9%A1%BB%E5%85%88%E5%88%86%E6%B8%85"><span class="toc-number">2.1.</span> <span class="toc-text">Agent 和 Model 的边界，必须先分清</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%8A%8A-Day-1-%E8%AF%BB%E6%88%90%E4%B8%80%E5%BC%A0%E5%9B%9B%E5%B1%82%E6%9E%B6%E6%9E%84%E5%9B%BE"><span class="toc-number">3.</span> <span class="toc-text">把 Day 1 读成一张四层架构图</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#Model%EF%BC%9A%E4%B8%8D%E6%98%AF%E4%B8%BB%E8%A7%92%E6%BB%A4%E9%95%9C%EF%BC%8C%E8%80%8C%E6%98%AF%E4%B8%AD%E5%A4%AE%E5%86%B3%E7%AD%96%E5%99%A8"><span class="toc-number">3.1.</span> <span class="toc-text">Model：不是主角滤镜，而是中央决策器</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Tools%EF%BC%9A%E8%AE%A9%E6%A8%A1%E5%9E%8B%E4%BB%8E%E2%80%9C%E4%BC%9A%E8%AF%B4%E2%80%9D%E5%8F%98%E6%88%90%E2%80%9C%E8%83%BD%E5%81%9A%E2%80%9D"><span class="toc-number">3.2.</span> <span class="toc-text">Tools：让模型从“会说”变成“能做”</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Orchestration-Layer%EF%BC%9A%E7%9C%9F%E6%AD%A3%E5%86%B3%E5%AE%9A%E2%80%9C%E5%83%8F%E4%B8%8D%E5%83%8F-Agent%E2%80%9D%E7%9A%84%E5%9C%B0%E6%96%B9"><span class="toc-number">3.3.</span> <span class="toc-text">Orchestration Layer：真正决定“像不像 Agent”的地方</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Runtime%EF%BC%9A%E7%99%BD%E7%9A%AE%E4%B9%A6%E6%B2%A1%E5%A4%A7%E8%AE%B2%EF%BC%8C%E4%BD%86%E8%90%BD%E5%9C%B0%E4%B8%80%E5%AE%9A%E7%BB%95%E4%B8%8D%E8%BF%87%E5%8E%BB"><span class="toc-number">3.4.</span> <span class="toc-text">Runtime：白皮书没大讲，但落地一定绕不过去</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Agent-%E4%B8%8D%E6%98%AF%E4%B8%80%E6%AC%A1%E5%9B%9E%E7%AD%94%EF%BC%8C%E8%80%8C%E6%98%AF%E4%B8%80%E6%AE%B5%E5%BE%AA%E7%8E%AF"><span class="toc-number">4.</span> <span class="toc-text">Agent 不是一次回答，而是一段循环</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#ReAct%E3%80%81CoT%E3%80%81ToT-%E5%9C%A8%E8%BF%99%E9%87%8C%E5%88%86%E5%88%AB%E6%89%AE%E6%BC%94%E4%BB%80%E4%B9%88%E8%A7%92%E8%89%B2"><span class="toc-number">4.1.</span> <span class="toc-text">ReAct、CoT、ToT 在这里分别扮演什么角色</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%99%BD%E7%9A%AE%E4%B9%A6%E7%BB%99%E5%87%BA%E7%9A%84-ReAct-%E5%BA%8F%E5%88%97%E5%BE%88%E5%80%BC%E5%BE%97%E8%AE%B0%E4%BD%8F"><span class="toc-number">4.2.</span> <span class="toc-text">白皮书给出的 ReAct 序列很值得记住</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Tools-%E4%B8%8D%E6%98%AF%E9%99%84%E4%BB%B6%EF%BC%8C%E8%80%8C%E6%98%AF-Agent-%E7%9A%84%E8%83%BD%E5%8A%9B%E8%BE%B9%E7%95%8C"><span class="toc-number">5.</span> <span class="toc-text">Tools 不是附件，而是 Agent 的能力边界</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#Extensions%EF%BC%9A%E6%8A%8A-API-%E6%95%99%E4%BC%9A%E7%BB%99-Agent"><span class="toc-number">5.1.</span> <span class="toc-text">Extensions：把 API 教会给 Agent</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Functions%EF%BC%9A%E6%8A%8A%E6%89%A7%E8%A1%8C%E6%9D%83%E6%94%B6%E5%9B%9E%E5%88%B0%E5%AE%A2%E6%88%B7%E7%AB%AF"><span class="toc-number">5.2.</span> <span class="toc-text">Functions：把执行权收回到客户端</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Data-Stores%EF%BC%9A%E8%A7%A3%E5%86%B3%E7%9A%84%E4%B8%8D%E6%98%AF%E7%9F%A5%E8%AF%86%E9%87%8F%EF%BC%8C%E8%80%8C%E6%98%AF%E7%9F%A5%E8%AF%86%E6%97%B6%E6%95%88%E6%80%A7"><span class="toc-number">5.3.</span> <span class="toc-text">Data Stores：解决的不是知识量，而是知识时效性</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BB%8E-targeted-learning-%E5%88%B0-AgentOps-%E9%9B%8F%E5%BD%A2"><span class="toc-number">6.</span> <span class="toc-text">从 targeted learning 到 AgentOps 雏形</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%B8%89%E7%A7%8D-targeted-learning%EF%BC%8C%E6%9C%AC%E8%B4%A8%E6%98%AF%E5%9C%A8%E6%95%99%E6%A8%A1%E5%9E%8B%E6%9B%B4%E4%BC%9A%E7%94%A8%E5%B7%A5%E5%85%B7"><span class="toc-number">6.1.</span> <span class="toc-text">三种 targeted learning，本质是在教模型更会用工具</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Vertex-AI-%E9%82%A3%E4%B8%80%E8%8A%82%EF%BC%8C%E5%B7%B2%E7%BB%8F%E5%BE%88%E6%8E%A5%E8%BF%91%E4%BB%8A%E5%A4%A9%E8%AF%B4%E7%9A%84-AgentOps"><span class="toc-number">6.2.</span> <span class="toc-text">Vertex AI 那一节，已经很接近今天说的 AgentOps</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%99%BD%E7%9A%AE%E4%B9%A6%E6%9C%80%E5%90%8E%E7%BB%99%E4%BA%86%E4%B8%A4%E4%B8%AA%E9%80%92%E8%BF%9B%E7%A4%BA%E4%BE%8B"><span class="toc-number">7.</span> <span class="toc-text">白皮书最后给了两个递进示例</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%A4%BA%E4%BE%8B%E4%B8%80%EF%BC%9ALangChain-LangGraph-%E5%8E%9F%E5%9E%8B"><span class="toc-number">7.1.</span> <span class="toc-text">示例一：LangChain &#x2F; LangGraph 原型</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%A4%BA%E4%BE%8B%E4%BA%8C%EF%BC%9AVertex-AI-%E7%94%9F%E4%BA%A7%E7%BA%A7%E6%9E%B6%E6%9E%84"><span class="toc-number">7.2.</span> <span class="toc-text">示例二：Vertex AI 生产级架构</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%88%91%E4%BB%8E-Day-1-%E5%B8%A6%E8%B5%B0%E7%9A%84-5-%E4%B8%AA%E8%AE%A4%E7%9F%A5%E9%94%9A%E7%82%B9"><span class="toc-number">8.</span> <span class="toc-text">我从 Day 1 带走的 5 个认知锚点</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Day-2-%E5%80%BC%E5%BE%97%E6%9C%9F%E5%BE%85%E4%BB%80%E4%B9%88"><span class="toc-number">9.</span> <span class="toc-text">Day 2 值得期待什么</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%8F%82%E8%80%83%E8%B5%84%E6%96%99"><span class="toc-number">10.</span> <span class="toc-text">参考资料</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%9B%B4%E6%96%B0%E8%AE%B0%E5%BD%95"><span class="toc-number">11.</span> <span class="toc-text">更新记录</span></a></li></ol>
+    </div>
+</aside>
+                
+                
+  <aside id="krw-categories" class="widget widget-kratos-categories clearfix">
+    <h4 class="widget-title"><i class="fa fa-folder"></i>分类列表</h4>
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/gaming/">gaming</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/mindset/">mindset</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/tech/">tech</a><span class="category-list-count">48</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/tech/ai/">ai</a><span class="category-list-count">11</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/tech/backend/">backend</a><span class="category-list-count">27</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/tech/tools/">tools</a><span class="category-list-count">10</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/">设计模式</a><span class="category-list-count">12</span></li></ul>
+  </aside>
+
+
+            
+                
+  <aside id="krw-tags" class="widget widget-kratos-tags clearfix">
+    <h4 class="widget-title"><i class="fa fa-tags"></i>标签聚合</h4>
+      <div class="tag-clouds">
+        <a href="/tags/5W1H/" style="font-size: 0.6em;">5W1H</a> <a href="/tags/AI/" style="font-size: 0.6em;">AI</a> <a href="/tags/AI-Security/" style="font-size: 0.6em;">AI Security</a> <a href="/tags/AI-%E7%BC%96%E7%A8%8B/" style="font-size: 0.67em;">AI 编程</a> <a href="/tags/AI-Agents/" style="font-size: 0.67em;">AI-Agents</a> <a href="/tags/AI%E6%8E%A2%E7%B4%A2/" style="font-size: 0.6em;">AI探索</a> <a href="/tags/AI%E6%9E%B6%E6%9E%84/" style="font-size: 0.6em;">AI架构</a> <a href="/tags/AOP/" style="font-size: 0.6em;">AOP</a> <a href="/tags/API/" style="font-size: 0.6em;">API</a> <a href="/tags/Agent/" style="font-size: 0.73em;">Agent</a> <a href="/tags/Base64/" style="font-size: 0.6em;">Base64</a> <a href="/tags/CI-CD/" style="font-size: 0.6em;">CI-CD</a> <a href="/tags/CI-CD/" style="font-size: 0.67em;">CI/CD</a> <a href="/tags/CLI/" style="font-size: 0.73em;">CLI</a> <a href="/tags/CMS/" style="font-size: 0.6em;">CMS</a> <a href="/tags/Claude-Code/" style="font-size: 0.8em;">Claude Code</a> <a href="/tags/Codex/" style="font-size: 0.6em;">Codex</a> <a href="/tags/Commons-Pool/" style="font-size: 0.6em;">Commons Pool</a>
+      </div>
+  </aside>
+
+            
+                
+  <aside id="krw-posts" class="widget widget-kratos-posts">
+  <h4 class="widget-title"><i class="fa fa-file"></i>最新文章</h4>
+  <div class="tab-content">
+      <ul class="list-group">
+        
+        
+          
+          
+            <a class="list-group-item" href="/2026/04/01/tech/tools/2026-04-02-claude-code-powerups-practice-guide/"><i class="fa fa-book"></i> Claude Code Power-Ups 全解：10 个能力点的认知沉淀与实践路径</a>
+            
+          
+        
+          
+          
+            <a class="list-group-item" href="/2026/04/01/tech/ai/2026-04-02-claude-code-review-plugins-comparison/"><i class="fa fa-book"></i> Claude Code Code Review 插件对比：官方插件 vs codex-review</a>
+            
+          
+        
+          
+          
+            <a class="list-group-item" href="/2026/04/01/tech/tools/2026-04-02-gemini-cli-sandbox-and-ghostty-isolation/"><i class="fa fa-book"></i> AI 时代的安全边界：Gemini CLI Sandbox vs. Ghostty Sandbox 深度解析</a>
+            
+          
+        
+          
+          
+            <a class="list-group-item" href="/2026/03/31/tech/tools/2026-04-01-iterm2-to-ghostty-migration-guide/"><i class="fa fa-book"></i> 从 iTerm2 迁移到 Ghostty：配置、取舍与实践</a>
+            
+          
+        
+          
+          
+            <a class="list-group-item" href="/2026/03/31/tech/tools/2026-04-01-gcloud-cli-basics-and-multi-config/"><i class="fa fa-book"></i> gcloud CLI 入门与多配置管理：像切换 Spring Profile 一样管理 GCP 环境</a>
+            
+          
+        
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+      </ul>
+  </div>
+  </aside>
+
+            
+    </div>
+</section>
+            
+
+        
+
+                </div>
+    </div>
+</div>
+
+<footer>
+    <div id="footer">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-6 col-md-offset-3 footer-list text-center">
+                    <ul class="kratos-social-icons">
+                        
+                    </ul>
+                    <ul class="kratos-copyright">
+                        <div>
+                            <li>&copy; 2026 MamimiJa Nai 版权所有.</li>
+                            <li>本站已运行<span id="kr-since">Loading...</span></li>
+                        </div>
+                        <div>
+                            <li>自豪地使用 <a href="https://github.com/Candinya/Kratos-Rebirth" target="_blank">Kratos:Rebirth</a> 主题</li>
+                            <li>站点由 Mamimi 用 <i class="fa fa-heart" style="color:#d43f57"></i> 搭建</li>
+                        </div>
+                        <!-- 额外的追加注入项 -->
+                        
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <div class="kr-tool text-center">
+            <div class="tool">
+                <!-- 额外的追加注入项 -->
+                
+                
+                    <div class="box search-box">
+                        <a href="/search">
+                            <span class="fa fa-search"></span>
+                        </a>
+                    </div>
+                
+                <div class="box theme-box" id="theme-toggle">
+                    <span class="fa fa-adjust"></span>
+                </div>
+            </div>
+            <div id="gotop-box" class="box gotop-box">
+                <span class="fa fa-chevron-up"></span>
+            </div>
+        </div>
+    </div>
+</footer>
+</div>
+</div>
+
+
+    <div id="kr-donate-modal" class="kr-modal">
+    <div class="kr-modal-bg" onclick="krCloseDonateModal()"></div>
+    <div class="kr-modal-content">
+        <div class="kr-modal-header">
+            <div class="kr-modal-icon">
+                <i class="fa fa-bitcoin"></i>
+            </div>
+            <div class="kr-modal-title">打赏</div>
+            <button class="kr-modal-close" onclick="krCloseDonateModal()">
+                <i class="fa fa-times-circle"></i>
+            </button>
+        </div>
+        <div class="kr-modal-body">
+            <div class="kr-donate-message">打赏提示信息</div>
+            <div class="kr-donate-qr" id="kr-donate-qr">
+                
+            </div>
+            <div class="kr-donate-platforms">
+                
+                    
+                        <button class="kr-donate-platform-button" style="color: #00A0E9;" title="支付宝" onclick="krDonateModalShowPlatformQR('https://qr.alipay.com/fkx10074h80wdlc7rkhh73b', '#00A0E9')">
+                            <i class="fa fa-fa-alipay"></i>
+                        </button>
+                    
+                
+                    
+                        <button class="kr-donate-platform-button" style="color: #07C160;" title="微信" onclick="krDonateModalShowPlatformQR('wxp://f2f0UZPu3nG1PA01tt-I5EDw0wx_G5jA-uDkAw8PuRT9VZtUj-T9s0_Cw7IRYUpTLq7Z', '#07C160')">
+                            <i class="fa fa-fa-weixin"></i>
+                        </button>
+                    
+                
+            </div>
+        </div>
+    </div>
+</div>
+<script defer src="/js/kr-modal/donate.min.js"></script>
+
+
+
+
+
+<!-- 额外的追加注入项 -->
+
+
+        <script>
+    if (!window.kr) {
+        window.kr = {};
+    }
+    window.kr.notMobile = (!(navigator.userAgent.match(/(phone|pad|pod|iPhone|iPod|ios|iPad|Android|Mobile|BlackBerry|IEMobile|MQQBrowser|JUC|Fennec|wOSBrowser|BrowserNG|WebOS|Symbian|Windows Phone)/i)));
+    window.kr.siteRoot = "/";
+</script>
+
+
+  <script defer src="/vendors/nprogress@0.2.0/nprogress.js"></script>
+
+
+
+  <script defer src="/vendors/viewerjs@1.11.6/dist/viewer.min.js"></script>
+
+
+<script defer src="/js/kr-core.min.js"></script>
+
+
+  <script defer src="/js/kr-pjax.min.js"></script>
+
+
+<!-- 额外的追加注入项 -->
+
+
+    </body>
+</html>
