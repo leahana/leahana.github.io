@@ -1,0 +1,102 @@
+# git-cliff 配置文件
+# 文档: https://git-cliff.org/docs/configuration
+#
+# 版本策略: 日历版本 vYYYY.MM (例: v2026.04)
+# 从 v2026.04 tag 开始记录，此前历史不纳入 changelog。
+
+[changelog]
+header = """
+# Changelog\n
+所有重要变更均记录于此。\n
+"""
+body = """
+{% if version %}\
+## {{ version }} ({{ timestamp | date(format="%Y-%m-%d") }})
+{% else %}\
+## Unreleased
+{% endif %}\
+
+{% for group, commits in commits | group_by(attribute="group") %}
+### {{ group }}
+{% for commit in commits %}
+- {% if commit.scope %}**{{ commit.scope }}**: {% endif %}{{ commit.message | upper_first }} ([{{ commit.id | truncate(length=7, end="") }}](https://github.com/leahana/leahana.github.io/commit/{{ commit.id }}))\
+{% endfor %}
+{% endfor %}\n
+"""
+footer = """
+"""
+trim = true
+
+[git]
+conventional_commits = true
+filter_unconventional = false
+split_commits = false
+commit_preprocessors = [
+  # 去掉末尾的句点
+  { pattern = '\.$', replace = "" },
+]
+
+# commit_parsers 顺序即优先级，上面的先匹配
+commit_parsers = [
+  # 跳过噪音提交
+  { message = "^Merge",               skip = true },
+  { message = "^Site updated",        skip = true },
+  { message = "^First commit",        skip = true },
+  { message = "^wip",                 skip = true },
+  # 跳过 release 工作流自动生成的 changelog 提交
+  { message = "^chore\\(release\\):", skip = true },
+
+  # ── 文章区 ──────────────────────────────────────────────────
+  # 标准新格式: post:, post(scope):
+  { message = "^post",            group = "📝 新文章" },
+
+  # 兼容旧格式: feat(post): / feat(backend): / feat(tools): / feat(ai):
+  { message = "^feat\\(post\\)",   group = "📝 新文章" },
+  { message = "^feat\\(backend\\)", group = "📝 新文章" },
+  { message = "^feat\\(tools\\)",  group = "📝 新文章" },
+  { message = "^feat\\(ai\\)",     group = "📝 新文章" },
+
+  # 兼容旧格式: docs(ai): / docs(backend): / docs(tools): / docs(blog):
+  { message = "^docs\\(ai\\)",     group = "📝 新文章" },
+  { message = "^docs\\(backend\\)", group = "📝 新文章" },
+  { message = "^docs\\(tools\\)",  group = "📝 新文章" },
+  { message = "^docs\\(blog\\)",   group = "📝 新文章" },
+
+  # 文章内容更新: content:
+  { message = "^content",          group = "✏️ 内容更新" },
+  { message = "^update",           group = "✏️ 内容更新" },
+
+  # 新页面: page:
+  { message = "^page",             group = "📄 页面" },
+
+  # ── 基础设施区 ──────────────────────────────────────────────
+  # 基础设施新功能 (不带文章 scope 的 feat:)
+  { message = "^feat",             group = "🚀 新功能" },
+
+  # Bug 修复
+  { message = "^fix",              group = "🐛 Bug 修复" },
+
+  # CI/CD
+  { message = "^ci",               group = "⚙️ CI/CD" },
+
+  # 样式/主题
+  { message = "^style",            group = "🎨 样式" },
+
+  # 重构
+  { message = "^refactor",         group = "♻️ 重构" },
+
+  # 维护（chore / 项目文档 docs / config）
+  { message = "^chore",            group = "🔧 维护" },
+  { message = "^docs",             group = "🔧 维护" },
+  { message = "^config",           group = "🔧 维护" },
+
+  # 其余 commit 兜底归入维护
+  { message = ".*",                group = "🔧 维护" },
+]
+
+protect_breaking_commits = false
+filter_commits = false
+# 匹配日历版本 tag: v2026.04, v2026.04.1 等
+tag_pattern = "v[0-9]{4}\\.[0-9]+(\\.[0-9]+)?"
+topo_order = false
+sort_commits = "newest"
