@@ -100,6 +100,24 @@ source/_posts/
 
 **Note**: Do NOT use `hexo deploy`.
 
+### Commit Convention (IMPORTANT)
+
+Use the correct prefix — it determines changelog grouping (articles vs infrastructure):
+
+| Prefix | Use For | Example |
+|--------|---------|---------|
+| `post:` / `post(scope):` | New blog post | `post(ai): add Kaggle Agent day2 notes` |
+| `content:` | Edit existing post | `content: fix MCP heading typo` |
+| `page:` | New standalone page | `page: add about page` |
+| `feat:` | New infra capability | `feat: add security-review command` |
+| `fix:` | Bug fix | `fix: BSD grep regex` |
+| `ci:` | CI/CD changes | `ci: add dependabot` |
+| `style:` | CSS/theme visual | `style: mermaid background` |
+| `chore:` | Config/deps/cleanup | `chore: update submodule` |
+| `docs:` | Project docs only | `docs: update AGENTS.md` |
+
+**Do NOT** use `feat:` or `docs:` for new articles — use `post:` instead.
+
 ## Technology Stack
 
 - **Hexo**: 8.1.1

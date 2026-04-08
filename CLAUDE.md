@@ -109,6 +109,45 @@ Hooks are version-controlled in `.githooks/` and activated via `core.hooksPath`:
 pnpm hooks:install
 ```
 
+## Commit Convention & Release Process
+
+### Commit Prefix Rules
+
+Use the correct prefix to separate article content from infrastructure changes. This drives the auto-generated changelog grouping.
+
+| Prefix | Category | When to Use | Example |
+|--------|----------|-------------|---------|
+| `post:` / `post(scope):` | 📝 新文章 | Brand new blog post | `post(ai): add Kaggle Agent day2 notes` |
+| `content:` / `content(scope):` | ✏️ 内容更新 | Edit/improve existing post | `content: fix MCP heading typo` |
+| `page:` | 📄 页面 | New standalone page | `page: add about page` |
+| `feat:` | 🚀 新功能 | New infrastructure capability | `feat: add security-review command` |
+| `fix:` | 🐛 Bug 修复 | Fix broken functionality | `fix: BSD grep regex` |
+| `ci:` | ⚙️ CI/CD | Workflow/action changes | `ci: add dependabot monitoring` |
+| `style:` | 🎨 样式 | CSS/theme visual changes | `style: mermaid background` |
+| `refactor:` | ♻️ 重构 | Code restructure | `refactor: hooks migration` |
+| `chore:` | 🔧 维护 | Config/dependency/cleanup | `chore: update submodule` |
+| `docs:` | 🔧 维护 | Project docs (README, CLAUDE.md) | `docs: update AGENTS.md` |
+
+**Key rule**: Use `post:` (not `feat:` or `docs:`) for new articles. `docs:` is for project documentation only.
+
+### Release Process (Monthly)
+
+Releases use **calendar versioning**: `vYYYY.MM` (e.g., `v2026.04`). Multiple releases in one month: `v2026.04.1`.
+
+**To create a release:**
+1. Go to GitHub Actions → **"Create Release"** workflow
+2. Click **Run workflow**
+3. (Optional) Enter tag, e.g., `v2026.05`. Leave blank to auto-generate from current month.
+4. (Optional) Enable `dry_run` to preview changelog without publishing
+5. The workflow will: generate changelog → commit `CHANGELOG.md` → create git tag → create GitHub Release
+
+**To preview locally** (requires `brew install git-cliff`):
+```bash
+git cliff --config cliff.toml --unreleased
+```
+
+**Initial bootstrap tag**: `v2026.04` marks the starting point. Commits before this tag are not tracked.
+
 ## Content Management
 
 ### File Naming Convention
@@ -211,17 +250,17 @@ The `optimize-doc` workflow has three public companion docs under `source/docs/`
 
 | Document | Primary Use |
 |----------|-------------|
-| `2025-01-12-markdown-templates.md` | Template entry for starting a new article |
-| `2025-01-09-markdown-optimization-guide.md` | Method guide for restructuring and improving drafts |
-| `2025-01-09-markdown-format-check.md` | Rule sheet for final Markdown / frontmatter validation |
+| `markdown-templates.md` | Template entry for starting a new article |
+| `markdown-optimization-guide.md` | Method guide for restructuring and improving drafts |
+| `markdown-format-check.md` | Rule sheet for final Markdown / frontmatter validation |
 
 **Documentation Structure**:
 
 ```
 source/docs/
-├── 2025-01-12-markdown-templates.md          # Template companion doc
-├── 2025-01-09-markdown-optimization-guide.md # Method companion doc
-└── 2025-01-09-markdown-format-check.md       # Rule companion doc
+├── markdown-templates.md          # Template companion doc
+├── markdown-optimization-guide.md # Method companion doc
+└── markdown-format-check.md       # Rule companion doc
 ```
 
 **When to use each**:
@@ -255,7 +294,7 @@ This project includes custom Claude Code skills in `.claude/skills/`:
 
 | Skill | Description | Reference |
 |-------|-------------|-----------|
-| `optimize-doc` | 博客型 Markdown 优化工作流；结合模板、优化指南和格式规范使用 | `source/docs/2025-01-12-markdown-templates.md`, `source/docs/2025-01-09-markdown-optimization-guide.md`, `source/docs/2025-01-09-markdown-format-check.md` |
+| `optimize-doc` | 博客型 Markdown 优化工作流；结合模板、优化指南和格式规范使用 | `source/docs/markdown-templates.md`, `source/docs/markdown-optimization-guide.md`, `source/docs/markdown-format-check.md` |
 | `save` | 保存当前对话为 Markdown 文件进行存档 | - |
 
 ### Available Commands
