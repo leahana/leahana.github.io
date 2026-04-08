@@ -689,6 +689,181 @@ end
 
 **4. Reference as Specification**：references/ 目录的规范文档，不只是"供 Claude 查阅的参考"。凡是 Reference 中提到"支持 X 功能"而没有给出正确语法示例的地方，AI 就会用自身预训练知识去填充，结果可能正确也可能错误。正确做法是：一旦提到某种语法模式，必须同时给出 `✅ 正确写法` 和 `❌ 错误写法` 的示例对比。
 
+### 4.10 v2.6 迭代：SKILL.md 内联提醒缺失导致 MD036 复发
+
+#### 问题发现
+
+用 optimize-doc 生成 `2026-03-31-python-env-setup-from-java-perspective.md` 时，验证脚本在第 177 行报 MD036 错误：
+
+```text
+❌ 发现 1 个错误:
+  - 第 177 行: 禁止使用强调文本作为标题，请使用标准标题格式 (MD036)
+```
+
+违规行位于"选型结论"小节，AI 用一个独立 bold 行突出核心方案：
+
+```markdown
+### 5.1 选型结论
+
+**pyenv（版本管理） + Poetry（依赖管理） + in-project venv（隔离）**
+
+三者各司其职，无重叠也无冲突：
+```
+
+#### 与 4.8 节的区别
+
+4.8 节的根因是**模板污染**：`document-template.md` 本身含有 5 处独立 `**粗体**` 行，AI 复现了模板的写法。修复后模板已无 MD036 问题，当前 `document-template.md` 的子标题全部使用 `####`。
+
+这次模板和 `SKILL.md` 第 95 行的规则声明均正确，但 AI 在写"总结/结论"类段落时**自发**生成了独立 bold 行。两次问题的表现相同，机制不同。
+
+#### 根因分析：规则声明与触发点距离过远
+
+`SKILL.md` 的 MD036 规则位于"第 5 节：严格格式规范"（生成内容之前），与"步骤 4：重写内容"（AI 实际执行的地方）相距较远。AI 在生成长文时，容易在执行到具体写作步骤时遗忘前面章节声明的约束。
+
+按照 `skill-creator` 的设计规范，这类关键约束的标准做法是：
+
+1. **dedicated section 统一声明**（`SKILL.md` 第 95 行已有）
+2. **在相关 workflow step 内就近内联重复提醒**（之前缺失）
+
+只有第 1 步没有第 2 步，规则就只是"写了"而非"在用的时候被提醒到"。
+
+#### 修复方案
+
+三处改动，各在对应的职责层解决：
+
+##### 改动 1：`SKILL.md` 步骤 4 末尾增加一句话内联提醒
+
+```markdown
+<!-- 步骤 4 内容结构列表之后 -->
+**格式提醒（MD036）**：总结/结论段落中，禁止用独立 `**粗体**` 行突出核心结论，
+必须融入段落句子中。详见 `references/markdown-rules.md` 的结论场景示例。
+```
+
+提醒只有一句话，不重复 `references/` 中的详细内容——保持 SKILL.md 精简、references 作为详细规范的分层结构。
+
+##### 改动 2：`references/markdown-rules.md` 补充"总结/结论场景"正反例
+
+在 MD036 章节新增子节，展示 AI 最容易犯错的场景：
+
+```markdown
+<!-- ❌ 错误：独立 bold 行做结论 -->
+### 5.1 选型结论
+
+**pyenv + Poetry + venv**
+
+三者各司其职...
+```
+
+```markdown
+<!-- ✅ 正确：结论融入段落，行内加粗 -->
+### 5.1 选型结论
+
+推荐方案为 **pyenv + Poetry + venv**，三者各司其职...
+```
+
+##### 改动 3：公共格式文档 `source/docs/markdown-format-check.md` 补充 MD036
+
+该文档的 Markdownlint 规则表、检查清单、常见错误三处均未提及 MD036，与验证脚本的实际检测规则存在文档缺口，一并补齐。
+
+#### 修复验证
+
+```text
+✅ 文件格式验证通过！
+```
+
+#### Agent 可靠性原则补充
+
+在 4.9 节 Reference as Specification 基础上，补充：
+
+**5. Rule Proximity（规则就近原则）**：仅在 SKILL.md 开头或独立章节声明的规则，AI 在执行距离较远的 workflow step 时容易遗忘。关键规则必须在最可能触发违规的 step 处内联重复——不是复制详细说明，而是一句简短提醒 + 指向 references 文件的引用。
+
+这与 4.8 节的 Template as Specification 互补：Template as Specification 解决"AI 从模板学到错误示范"，Rule Proximity 解决"AI 执行时遗忘了正确规则"。两者都指向同一个核心问题——**规则能被写进 SKILL.md 不等于规则能被 AI 在执行时有效遵守**。
+
+### 4.11 v2.7 迭代：续行误判 MD032 假阳性 + Plan 模式下格式约束旁路
+
+#### 问题发现
+
+用 `/optimize-doc gcloud CLI 的基础用法，多 config 管理` 生成文章时（Opus 规划 + Sonnet 执行），验证脚本报了两个 MD032 错误：
+
+```text
+❌ 发现 2 个错误:
+  - 第 599 行: 列表后需要空行 (MD032)
+  - 第 600 行: 列表前需要空行 (MD032)
+```
+
+问题出在第 9 节总结的有序列表，第 1 条内容偏长被换行续写：
+
+```markdown
+1. gcloud configurations 是 GCP 版的 Spring Profiles——命名的、可切换的、
+   按环境隔离的属性集合
+2. `create / activate / list / delete` 是多配置管理的完整生命周期
+```
+
+#### 根因分析：两个独立问题
+
+这次暴露了两个性质不同的问题，需要分开处理。
+
+##### 问题 A：验证脚本的假阳性
+
+`check_lists()` 的 `is_list_item()` 只识别列表首行（`\d+\.` 或 `-*+` 开头），缩进续行不满足任何模式，被判定为"非列表项"，触发"列表结束"检测，导致两个连锁误报。
+
+这是脚本本身的 bug：MD032 规则允许列表项多行续写（缩进对齐即合法），但脚本比真实规范更严格。
+
+此外，`<details>...</details>` 块内的 Mermaid 图和表格行也没有被豁免，存在假阳性风险。
+
+##### 问题 B：Plan 模式下 SKILL.md 格式约束被旁路
+
+`/optimize-doc` 由 Opus 进入 Plan 模式（Explore → Plan agent → Sonnet 执行），而不是按 SKILL.md 设计的 Step 1–10 线性工作流执行。
+
+SKILL.md 的"列表项禁止多行换行续写"写在"核心优化原则"章节（描述性）。Plan agent 在设计文章结构时没有读 `references/markdown-rules.md`，这条限制在 Opus → Sonnet 的传递链中丢失了。Sonnet 写长列表项时自然换行续写，没有任何 write-time 检查点阻止它。
+
+与 4.10 节的 Rule Proximity 问题根因相同，但触发机制不同：4.10 节是"AI 在执行同一个工作流的晚期步骤时遗忘了早期章节的规则"，这里是"Plan 模式直接跳过了 skill 工作流，规则根本没有进入执行上下文"。
+
+#### 修复方案
+
+##### 改动 1：`validate_markdown.py` 新增续行识别
+
+新增 `is_list_continuation()` 方法：当前行以空白缩进开头且不是新列表项时，识别为续行，在 `check_lists()` 中直接跳过，不触发列表结束判定。
+
+```python
+def is_list_continuation(self, line: str, prev_in_list: bool) -> bool:
+    if not prev_in_list:
+        return False
+    if self.is_empty_line_str(line):
+        return False
+    return bool(re.match(r'^\s+\S', line)) and not self.is_list_item(line)
+```
+
+##### 改动 2：`validate_markdown.py` 新增 `<details>` 块豁免
+
+新增 `_build_html_block_map()` 预扫描 `<details>...</details>` 范围，`check_headings`、`check_lists`、`check_tables`、`check_horizontal_rules`、`check_emphasis_as_heading` 均跳过块内行，消除折叠区域的假阳性。
+
+##### 改动 3：`SKILL.md` 步骤 4 末尾增加 write-time checklist
+
+仅在"原则"章节描述不够，需要在 AI 实际执行写作的步骤处设置检查点：
+
+```markdown
+**写作时逐行自查（写完每个列表后立即检查）**：
+- [ ] 有序/无序列表的每一项都在单行内写完
+- [ ] 超过 80 字符的列表项已缩短表述或拆成子列表
+```
+
+#### 修复验证
+
+```text
+✅ 文件格式验证通过！
+```
+
+两篇文章（含大量 `<details>` 折叠块的现存文章）均通过。
+
+#### Agent 可靠性原则补充
+
+在 Rule Proximity 基础上，补充：
+
+**6. Execution Context Bypass（执行上下文旁路）**：当 skill 以 Plan 模式执行（Opus 规划 + Sonnet 执行）时，skill 的线性工作流步骤可能被完全旁路。Plan agent 只读 SKILL.md 摘要用于结构设计，Sonnet 直接调用 Write 工具，不会按步骤执行 write-time checklist。
+
+应对策略与 Rule Proximity 一致，但要求更高：**checklist 必须出现在 workflow step 正文中**（而非原则章节），因为原则章节在 Plan 模式下完全不进入 Sonnet 的执行上下文。如果某条规则不在 Plan agent 的设计输出里出现，它在执行阶段就不存在。
+
 ---
 
 ## 5. 实施建议
@@ -771,6 +946,8 @@ diff <(ls -lah ~/.claude/skills/your-skill/) \
 - **v2.3**（详见 4.7 节）：Frontmatter 区域识别，消除 `---` 误报
 - **v2.4**（详见 4.8 节）：修复 `document-template.md` 中 5 处 `**粗体**` 伪标题，消除 AI 生成文章时的 MD036 泛化违规
 - **v2.5**（详见 4.9 节）：在 `visualization-guide.md` 中新增 subgraph 语法规范，补充正确/错误示例对比，消除 Mermaid subgraph 连接语法错误
+- **v2.6**（详见 4.10 节）：步骤 4 增加 MD036 内联提醒，`references/markdown-rules.md` 补充结论场景示例，公共格式文档补齐 MD036 规则
+- **v2.7**（详见 4.11 节）：验证脚本新增续行识别（消除 MD032 假阳性）、`<details>` 块豁免；SKILL.md 步骤 4 增加 write-time 列表自查 checklist
 
 继续优化当前 skill 的局部迭代：
 
@@ -883,3 +1060,6 @@ diff <(ls -lah ~/.claude/skills/your-skill/) \
 | v1.4 | 2026-03-23 | 新增第 6 节，收束为 skill 边界与演化路径结论 |
 | v1.5 | 2026-03-23 | 新增 4.8 节：v2.4 模板 `**粗体**` 诱导 MD036 违规修复 + tags 格式矛盾修复；更新 5.3 |
 | v1.6 | 2026-03-24 | 新增 4.9 节：v2.5 visualization-guide.md 补充 subgraph 语法规范，提炼 Reference as Specification 原则 |
+| v1.7 | 2026-03-31 | 新增 4.10 节：v2.6 SKILL.md 内联提醒缺失导致 MD036 复发，提炼 Rule Proximity 原则；更新 5.3 |
+| v1.8 | 2026-04-01 | 新增 4.11 节：v2.7 续行误判 MD032 假阳性修复、`<details>` 块豁免、Plan 模式约束旁路分析，提炼 Execution Context Bypass 原则；更新 5.3 |
+| v1.9 | 2026-04-07 | 同步 `source/docs` 去日期前缀后的新文件路径引用 |

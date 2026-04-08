@@ -1,0 +1,103 @@
+name: Create Release
+
+on:
+  workflow_dispatch:
+    inputs:
+      tag:
+        description: 'Release tag，例: v2026.05。留空则自动生成当月版本 vYYYY.MM'
+        required: false
+        type: string
+      dry_run:
+        description: '预览模式：只生成 changelog，不创建 Release 和 tag'
+        required: false
+        type: boolean
+        default: false
+
+permissions:
+  contents: write
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout hexo branch
+        uses: actions/checkout@v4
+        with:
+          ref: hexo
+          fetch-depth: 0
+          fetch-tags: true
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Determine release tag
+        id: tag
+        env:
+          INPUT_TAG: ${{ inputs.tag }}
+        run: |
+          if [ -n "$INPUT_TAG" ]; then
+            TAG="$INPUT_TAG"
+          else
+            TAG="v$(date +'%Y.%m')"
+          fi
+          echo "tag=$TAG" >> "$GITHUB_OUTPUT"
+          echo "Release tag: $TAG"
+
+      - name: Generate changelog (dry run preview)
+        if: inputs.dry_run == true
+        uses: orhun/git-cliff-action@v4
+        with:
+          config: cliff.toml
+          args: --unreleased --tag ${{ steps.tag.outputs.tag }} --output /tmp/changelog_preview.md
+        env:
+          GITHUB_REPO: ${{ github.repository }}
+
+      - name: Display dry run preview
+        if: inputs.dry_run == true
+        run: cat /tmp/changelog_preview.md
+
+      - name: Generate changelog
+        if: inputs.dry_run == false
+        id: cliff
+        uses: orhun/git-cliff-action@v4
+        with:
+          config: cliff.toml
+          args: --unreleased --tag ${{ steps.tag.outputs.tag }}
+        env:
+          OUTPUT: RELEASE_NOTES.md
+          GITHUB_REPO: ${{ github.repository }}
+
+      - name: Prepend to CHANGELOG.md
+        if: inputs.dry_run == false
+        run: |
+          # 将本次 release notes 插入到 CHANGELOG.md 顶部（header 之后）
+          if [ -f CHANGELOG.md ]; then
+            awk 'NR==1{print; next} /^## /{if(!inserted){system("cat RELEASE_NOTES.md"); inserted=1}} {print}' CHANGELOG.md > CHANGELOG_NEW.md
+            mv CHANGELOG_NEW.md CHANGELOG.md
+          else
+            cat RELEASE_NOTES.md > CHANGELOG.md
+          fi
+
+      - name: Commit CHANGELOG.md and create tag
+        if: inputs.dry_run == false
+        env:
+          TAG: ${{ steps.tag.outputs.tag }}
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add CHANGELOG.md
+          # [skip ci] 可在此添加以跳过部署触发，当前暂不启用
+          # 后期如需避免无意义部署，可在 deploy.yml push trigger 中加 paths-ignore: [CHANGELOG.md, cliff.toml]
+          git commit -m "chore(release): update CHANGELOG.md for ${TAG}"
+          git tag -a "${TAG}" -m "Release ${TAG}"
+          # 单次 push 同时推送分支和 tag，避免两次 push 之间的竞争条件
+          git push origin hexo "${TAG}"
+
+      - name: Create GitHub Release
+        if: inputs.dry_run == false
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: ${{ steps.tag.outputs.tag }}
+          name: ${{ steps.tag.outputs.tag }}
+          body_path: RELEASE_NOTES.md
+          draft: false
+          prerelease: false

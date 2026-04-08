@@ -10,3 +10,9 @@ updates:
   # 忽略补丁版本更新，只更新次版本和主版本
   - dependency-name: "*"
     update-types: ["version-update:semver-patch"]
+
+- package-ecosystem: github-actions
+  directory: "/"
+  schedule:
+    interval: weekly
+    day: monday

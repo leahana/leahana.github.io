@@ -68,9 +68,9 @@ Java、Spring、数据库相关技术
 ### 📚 [内部文档](./docs/)
 `optimize-doc` 拆分出的公开配套文档
 
-- [Markdown 起稿模板](../docs/2025-01-12-markdown-templates.md) - `optimize-doc` 的模板入口
-- [Markdown 优化方法指南](../docs/2025-01-09-markdown-optimization-guide.md) - `optimize-doc` 的方法说明
-- [Markdown 格式检查规范](../docs/2025-01-09-markdown-format-check.md) - `optimize-doc` 的格式规则
+- [Markdown 起稿模板](./docs/markdown-templates.md) - `optimize-doc` 的模板入口
+- [Markdown 优化方法指南](./docs/markdown-optimization-guide.md) - `optimize-doc` 的方法说明
+- [Markdown 格式检查规范](./docs/markdown-format-check.md) - `optimize-doc` 的格式规则
 
 ---
 

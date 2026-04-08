@@ -23,4 +23,11 @@ npm-debug.log*
 coverage/
 
 .obsidian/
+.sisyphus/
+.pnpm-store/
+openspec/changes/
 *.code-workspace
+
+# OpenSpec auto-generated files (use .claude/ instead)
+.github/prompts/
+.github/skills/
