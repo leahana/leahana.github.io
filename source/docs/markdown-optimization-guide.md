@@ -23,9 +23,9 @@
 优先看本文档。
 
 - 如果你是从零开始写新文章，先看
-  [optimize-doc 配套：Markdown 起稿模板](./2025-01-12-markdown-templates.md)
+  [optimize-doc 配套：Markdown 起稿模板](./markdown-templates.md)
 - 如果你是发布前做格式校验，先看
-  [optimize-doc 配套：Markdown 格式检查规范](./2025-01-09-markdown-format-check.md)
+  [optimize-doc 配套：Markdown 格式检查规范](./markdown-format-check.md)
 
 ## 📋 目录
 
@@ -145,7 +145,7 @@
 
 本文档只给结构原则，不再内嵌完整模板正文。需要直接起稿时，
 请转到
-[optimize-doc 配套：Markdown 起稿模板](./2025-01-12-markdown-templates.md)。
+[optimize-doc 配套：Markdown 起稿模板](./markdown-templates.md)。
 
 ```markdown
 > 🎯 **一句话定位**：说明文章价值
@@ -517,8 +517,8 @@ graph TD
 
 ### 🔗 相关文档
 
-- [optimize-doc 配套：Markdown 起稿模板](./2025-01-12-markdown-templates.md) - 起稿与选模板时优先查看
-- [optimize-doc 配套：Markdown 格式检查规范](./2025-01-09-markdown-format-check.md) - 发布前做格式校验时查看
+- [optimize-doc 配套：Markdown 起稿模板](./markdown-templates.md) - 起稿与选模板时优先查看
+- [optimize-doc 配套：Markdown 格式检查规范](./markdown-format-check.md) - 发布前做格式校验时查看
 - [5W1H 思维模式](../mindset/2025-04-24-5w1h-ai-knowledge-base-methodology.md) - 方法论示例
 - [MCP 模型上下文协议](../tech/ai/2025-04-24-mcp-model-context-protocol.md) - 技术文章示例
 
@@ -661,3 +661,4 @@ public class Example {
 | v1.2 | 2025-01-12 | 添加新模板文档的交叉引用 |
 | v1.3 | 2026-03-23 | 收口职责边界，移除完整模板正文并重组导航 |
 | v1.4 | 2026-03-23 | 调整为 optimize-doc 配套方法文档 |
+| v1.5 | 2026-04-07 | 去掉文件名日期前缀，统一 `source/docs` 命名规范 |

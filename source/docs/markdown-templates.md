@@ -23,10 +23,10 @@
 从本文档开始。
 
 - 如果你已经有初稿，想增强结构、图示和成品质量，转到
-  [optimize-doc 配套：Markdown 优化方法指南](./2025-01-09-markdown-optimization-guide.md)
+  [optimize-doc 配套：Markdown 优化方法指南](./markdown-optimization-guide.md)
 - 如果你准备发布，想确认 Front Matter 和 Markdown 规范是否正确，
   转到
-  [optimize-doc 配套：Markdown 格式检查规范](./2025-01-09-markdown-format-check.md)
+  [optimize-doc 配套：Markdown 格式检查规范](./markdown-format-check.md)
 
 ## 📋 目录
 
@@ -773,3 +773,4 @@ Markdown 文档体系
 | v1.0 | 2025-01-12 | 初始版本，包含普通笔记模板和问题-方法型技术实战模板 |
 | v1.1 | 2026-03-23 | 新增适用时机说明，收口为新文章模板入口 |
 | v1.2 | 2026-03-23 | 调整为 optimize-doc 配套模板文档 |
+| v1.3 | 2026-04-07 | 去掉文件名日期前缀，统一 `source/docs` 命名规范 |
