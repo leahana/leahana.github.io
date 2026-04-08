@@ -3,6 +3,10 @@ name: Deploy to GitHub Pages
 on:
   push:
     branches: [hexo]
+    # 后期如需避免 CHANGELOG.md/cliff.toml 更新触发无意义部署，可取消下方注释：
+    # paths-ignore:
+    #   - 'CHANGELOG.md'
+    #   - 'cliff.toml'
 
 permissions:
   contents: write
