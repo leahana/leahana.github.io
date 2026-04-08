@@ -8,6 +8,7 @@ description: 基于 Claude Code v2.1.90 新增的 /powerup 命令，逐一拆解
 toc: true
 ---
 
+> 我有习惯查看应用近期update日志的习惯，2.1.90版本更新了/powerup 动画演示功能命令
 > **一句话定位**：这是一篇围绕 Claude Code `/powerup` 命令中 10 个交互演示的经验总结，帮你从"知道有这功能"到"在真实项目中用起来"。
 >
 > **核心理念**：工具的价值不在于功能数量，而在于你能把几个关键能力组合成自己的工作节奏。与其追求 10/10 全解锁，不如先把 3-4 个高频能力练成肌肉记忆。
@@ -94,6 +95,20 @@ graph LR
 - Plan 模式下 Claude 只能读不能写，适合"先让 Claude 看看，我再决定"的场景
 - Auto 模式虽然方便，但建议只在有 git 版本控制的目录下使用，保留回退能力
 
+**和 OpenSpec 的边界**：
+
+- Plan Mode 是**硬约束**：工具层直接禁止 Claude 写文件
+- OpenSpec 里的 `/opsx:explore` 更像**流程约束**：先把需求聊清楚，再进入
+  `propose -> apply -> archive`
+- 如果你只是想临时理清思路、做一次只读审计，Plan Mode 更轻
+- 如果你想把计划沉淀成 `proposal.md / design.md / tasks.md` 这类可跨会话
+  复用的文件，OpenSpec 更合适
+
+所以它们不是替代关系，而是两个层次：
+
+- Plan Mode 解决“先别误改代码”
+- OpenSpec 解决“把这次变更变成可持续推进的工程单”
+
 **实践路径**：
 
 ```bash
@@ -112,6 +127,15 @@ graph LR
 ```
 
 **经验总结**：Plan → Normal → Auto 是一个自然的信任度递进过程。复杂任务从 Plan 开始，验证思路后切 Normal 执行，重复性操作交给 Auto。
+
+如果你已经在项目里初始化了 OpenSpec，可以把这层分工记得更清楚一些：
+
+- Plan Mode：一次性的安全思考模式
+- OpenSpec：带状态的变更管理工作流
+
+更完整的 OpenSpec 实战路径，可以看这篇：
+
+- [OpenSpec 实战落地手册：把规格驱动开发塞进 Claude Code 工具链](../ai/2026-04-07-openspec-toolchain-integration-practice.md)
 
 ---
 
@@ -461,3 +485,4 @@ graph TD
 | 版本 | 日期 | 说明 |
 |------|------|------|
 | v1.0 | 2026-04-02 | 初始版本 |
+| v1.1 | 2026-04-07 | 补充 Plan Mode 与 OpenSpec 的边界说明，并增加相关实践文章跳转 |

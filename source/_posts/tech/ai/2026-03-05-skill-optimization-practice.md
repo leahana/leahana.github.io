@@ -761,7 +761,7 @@ end
 推荐方案为 **pyenv + Poetry + venv**，三者各司其职...
 ```
 
-##### 改动 3：公共格式文档 `source/docs/2025-01-09-markdown-format-check.md` 补充 MD036
+##### 改动 3：公共格式文档 `source/docs/markdown-format-check.md` 补充 MD036
 
 该文档的 Markdownlint 规则表、检查清单、常见错误三处均未提及 MD036，与验证脚本的实际检测规则存在文档缺口，一并补齐。
 
@@ -1062,3 +1062,4 @@ diff <(ls -lah ~/.claude/skills/your-skill/) \
 | v1.6 | 2026-03-24 | 新增 4.9 节：v2.5 visualization-guide.md 补充 subgraph 语法规范，提炼 Reference as Specification 原则 |
 | v1.7 | 2026-03-31 | 新增 4.10 节：v2.6 SKILL.md 内联提醒缺失导致 MD036 复发，提炼 Rule Proximity 原则；更新 5.3 |
 | v1.8 | 2026-04-01 | 新增 4.11 节：v2.7 续行误判 MD032 假阳性修复、`<details>` 块豁免、Plan 模式约束旁路分析，提炼 Execution Context Bypass 原则；更新 5.3 |
+| v1.9 | 2026-04-07 | 同步 `source/docs` 去日期前缀后的新文件路径引用 |

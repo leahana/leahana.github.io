@@ -653,6 +653,62 @@ shell 注入和核心行为项到底有没有被 Ghostty 真正吃进去。
 
 ---
 
+## 进阶：故障排查与效率工具
+
+在完成基础迁移后，你可能会遇到一些由于“环境隔离”带来的细节问题。以下是针对 Ghostty 特性的深度调优建议。
+
+### 1. 修复自定义 ZDOTDIR 下的“脏命令” (OSC 7 故障)
+
+在使用 `ZDOTDIR` 隔离方案时，Ghostty 的自动 Shell Integration 会失效。
+如果你手动补全了 `__ghostty_report_cwd` 但写法不严谨，可能会在新建分屏时
+看到类似 `: "$ claude --resume ...` 的脏字符进入输入行。
+
+这是因为 Ghostty 期望的 OSC 7 报告必须是标准的 URL 格式。如果路径中包含
+空格或 `${HOST}` 变量为空，解析就会出错。
+
+**稳健的修复方案**：
+
+```zsh
+# ~/.config/ghostty/shell/.zshrc
+__ghostty_report_cwd() {
+  # 对路径进行简单的 URL 编码处理（处理空格）
+  local pwd_path=$(printf "%s" "$PWD" | sed 's/ /%20/g')
+  # 使用 localhost 替代不确定的 $HOST，确保 URL 格式始终合法
+  printf '\e]7;file://localhost%s\e\\' "$pwd_path"
+}
+precmd_functions+=(__ghostty_report_cwd)
+chpwd_functions+=(__ghostty_report_cwd)
+```
+
+### 3. 增强版多屏 Git 审查流
+
+利用 Ghostty 的分屏能力，你可以在左侧窗口写代码，右侧上方放一个 `gwatch`，
+右侧下方放一个 `gdiff`，打造一个准实时的代码变更监控台：
+
+```zsh
+# gdiff: 自动选择最佳的分页器查看变更
+gdiff() {
+  local file="${1:-}"
+  if command -v delta &>/dev/null; then
+    git diff HEAD ${file:+-- "$file"} | delta --paging=always
+  else
+    git diff HEAD ${file:+-- "$file"}
+  fi
+}
+
+# gwatch: 持续监控变更（适合右侧窄分屏常驻）
+gwatch() {
+  local file="${1:-}"
+  if [[ -z "$file" ]]; then
+    watch -n 2 --color git diff --stat HEAD
+  else
+    watch -n 2 --color "git diff HEAD -- \"$file\" | head -80"
+  fi
+}
+```
+
+---
+
 ## 我的选择建议
 
 如果你和我一样，本质上是在做 macOS 本地开发，我会给出很务实的建议。
@@ -735,3 +791,4 @@ shell 注入和核心行为项到底有没有被 Ghostty 真正吃进去。
 | v1.4 | 2026-04-01 | 校准迁移叙述为 ZDOTDIR 隔离方案，并补充 `+show-config` 验证说明 |
 | v1.5 | 2026-04-02 | 在终端对比中补充 `Konsole` 的定位、优缺点与适用场景 |
 | v1.6 | 2026-04-02 | 补充 Ghostty 中 Claude Code 的 Option/Meta、Cmd+P 与 effort 规则 |
+| v1.7 | 2026-04-03 | 补充 OSC 7 路径编码修复及多屏 Git 审查辅助函数 |
