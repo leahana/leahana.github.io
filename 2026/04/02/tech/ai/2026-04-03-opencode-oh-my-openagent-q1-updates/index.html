@@ -1,0 +1,1110 @@
+<!DOCTYPE html>
+<html lang="zh">
+    <head>
+  <!-- 元数据 -->
+  <meta charset="utf-8">
+  
+  
+  <title>OpenCode 与 oh-my-openagent Q1 更新动态：AI 编程代理生态加速进化 | MamimiJa Nai</title>
+  <link rel="canonical" href="https://leahana.github.io/2026/04/02/tech/ai/2026-04-03-opencode-oh-my-openagent-q1-updates/">
+  <meta name="author" content="Mamimi" />
+  <meta http-equiv="Cache-Control" content="no-transform" />
+  <meta http-equiv="Cache-Control" content="no-siteapp" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="robots" content="index,follow" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
+  <meta name="format-detection" content="telphone=no, email=no" />
+  
+    <meta name="keywords" content="AI编程代理, CLI工具, OpenCode, oh-my-openagent, 更新分析" />
+  
+  <meta name="description" content="深入分析 OpenCode 与 oh-my-openagent 2026 年 Q1 的重大更新，精选最具影响力的特性，评估其实用价值。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="OpenCode 与 oh-my-openagent Q1 更新动态：AI 编程代理生态加速进化">
+<meta property="og:url" content="https://leahana.github.io/2026/04/02/tech/ai/2026-04-03-opencode-oh-my-openagent-q1-updates/index.html">
+<meta property="og:site_name" content="MamimiJa Nai">
+<meta property="og:description" content="深入分析 OpenCode 与 oh-my-openagent 2026 年 Q1 的重大更新，精选最具影响力的特性，评估其实用价值。">
+<meta property="og:locale">
+<meta property="article:published_time" content="2026-04-02T22:30:00.000Z">
+<meta property="article:modified_time" content="2026-04-10T08:16:48.874Z">
+<meta property="article:author" content="Mamimi">
+<meta property="article:tag" content="AI编程代理">
+<meta property="article:tag" content="CLI工具">
+<meta property="article:tag" content="OpenCode">
+<meta property="article:tag" content="oh-my-openagent">
+<meta property="article:tag" content="更新分析">
+<meta name="twitter:card" content="summary">
+  
+  <!-- JSON-LD 结构化数据 -->
+  
+  
+    <script type="application/ld+json">
+    {"@context":"https://schema.org","@type":"BlogPosting","headline":"OpenCode 与 oh-my-openagent Q1 更新动态：AI 编程代理生态加速进化","description":"深入分析 OpenCode 与 oh-my-openagent 2026 年 Q1 的重大更新，精选最具影响力的特性，评估其实用价值。","image":"https://leahana.github.io/images/theme/Mamimi.JPG","author":{"@type":"Person","name":"Mamimi"},"publisher":{"@type":"Organization","name":"MamimiJa Nai","logo":{"@type":"ImageObject","url":"https://leahana.github.io/images/theme/Mamimi.JPG"}},"datePublished":"2026-04-02T22:30:00.000Z","dateModified":"2026-04-10T08:16:48.874Z","mainEntityOfPage":{"@type":"WebPage","@id":"https://leahana.github.io/2026/04/02/tech/ai/2026-04-03-opencode-oh-my-openagent-q1-updates/"}}
+    </script>
+  
+  <!-- 关键 CSS 预加载 -->
+  <link rel="preload" href="/css/kr-core.min.css" as="style">
+  <link rel="preload" href="/css/kr-theme/light.min.css" as="style">
+  <link rel="preload" href="/css/kr-theme/dark.min.css" as="style">
+  <!-- 样式表文件 -->
+  <link rel="stylesheet" id="kratos-css" href="/css/kr-core.min.css" media="all">
+  <link rel="stylesheet" id="theme-light-css" href="/css/kr-theme/light.min.css" media="all">
+  <link rel="stylesheet" id="theme-dark-css" href="/css/kr-theme/dark.min.css" media="(prefers-color-scheme: dark)">
+  
+    <link rel="stylesheet"  id="highlight-css" href="/css/highlight/highlight.js/night-eighties.min.css" media="print" onload="this.media='all'" onerror="this.media='all'"><noscript><link rel="stylesheet" href="/css/highlight/highlight.js/night-eighties.min.css"></noscript>
+  
+  <script src="/js/kr-theme.min.js"></script>
+  <!-- Mermaid 图表库 + 初始化 -->
+  <script src="https://unpkg.com/mermaid@10.6.1/dist/mermaid.min.js"></script>
+  <script src="/others/mermaid.js"></script>
+  <link rel="stylesheet"  id="fontawe-css" href="/vendors/font-awesome@4.7.0/css/font-awesome.min.css" media="print" onload="this.media='all'" onerror="this.media='all'"><noscript><link rel="stylesheet" href="/vendors/font-awesome@4.7.0/css/font-awesome.min.css"></noscript>
+  
+    <link rel="stylesheet"  id="nprogress-css" href="/vendors/nprogress@0.2.0/nprogress.css" media="print" onload="this.media='all'" onerror="this.media='all'"><noscript><link rel="stylesheet" href="/vendors/nprogress@0.2.0/nprogress.css"></noscript>
+  
+  
+    <link rel="stylesheet"  href="/vendors/viewerjs@1.11.6/dist/viewer.min.css" media="print" onload="this.media='all'" onerror="this.media='all'"><noscript><link rel="stylesheet" href="/vendors/viewerjs@1.11.6/dist/viewer.min.css"></noscript>
+  
+  <!-- 预先加载的JS文件 -->
+  
+    <script src="/vendors/qr-code-styling@1.6.0-rc.1/lib/qr-code-styling.js"></script>
+  
+  <!-- 自定义站点横幅和背景 -->
+  <style>
+    
+      .kratos-cover.kratos-cover-2 {
+        background-image: url('');
+      }
+      html[data-theme="dark"] .kratos-cover.kratos-cover-2 {
+        background-image: url('');
+      }
+    
+    
+      @media(min-width:768px) {
+        body.custom-background {
+          background-image: url('/images/theme/background.jpg');
+        }
+        html[data-theme="dark"] body.custom-background {
+          background-image: url('/images/theme/background.jpg');
+        }
+      }
+    
+    
+      .widget-kratos-about .photo-background {
+        background-image: url('/images/theme/avatar-bg.jpg');
+      }
+      html[data-theme="dark"] .widget-kratos-about .photo-background {
+        background-image: url('/images/theme/avatar-bg.jpg');
+      }
+    
+  </style>
+
+  <!-- 额外的追加注入项 -->
+  
+    <style>body.custom-background{background-image:url('/images/theme/background.jpg')!important;background-attachment:fixed!important;background-size:cover!important;background-position:center!important;}#kratos-widget-area .widget-kratos-about .photo-background{background-image:url('/images/theme/avatar-bg.jpg')!important;background-size:cover!important;background-position:35% 35%!important;background-repeat:no-repeat!important;}</style><link rel="stylesheet" href="/css/custom.css">
+  
+<meta name="generator" content="Hexo 8.1.1"></head>
+
+    <body class="custom-background">
+        <div id="kratos-wrapper">
+    <div id="kratos-page">
+        <div id="kratos-header">
+            <header id="kratos-desktop-topnav" class="kratos-topnav">
+                <div class="container">
+                    <div class="nav-header">
+                        <nav id="kratos-menu-wrap">
+                            <ul id="kratos-primary-menu" class="sf-menu">
+                                
+                                    <li>
+                                        
+                                            <a href="/">
+                                        
+                                            
+                                                <i class="fa fa-fa-home"></i>
+                                            
+                                            首页
+                                        </a>
+                                        
+                                    </li>
+                                
+                                    <li>
+                                        
+                                            <a href="/archives">
+                                        
+                                            
+                                                <i class="fa fa-fa-archive"></i>
+                                            
+                                            归档
+                                        </a>
+                                        
+                                    </li>
+                                
+                                    <li>
+                                        
+                                            <a href="/categories">
+                                        
+                                            
+                                                <i class="fa fa-fa-folder-open"></i>
+                                            
+                                            分类
+                                        </a>
+                                        
+                                    </li>
+                                
+                                    <li>
+                                        
+                                            <a href="/tags">
+                                        
+                                            
+                                                <i class="fa fa-fa-tags"></i>
+                                            
+                                            标签
+                                        </a>
+                                        
+                                    </li>
+                                
+                                    <li>
+                                        
+                                            <a href="/search">
+                                        
+                                            
+                                                <i class="fa fa-fa-search"></i>
+                                            
+                                            搜索
+                                        </a>
+                                        
+                                    </li>
+                                
+                                    <li>
+                                        
+                                            <a>
+                                        
+                                            
+                                                <i class="fa fa-fa-th-list"></i>
+                                            
+                                            更多
+                                        </a>
+                                        
+                                            <ul class="sub-menu">
+                                                
+                                                    <li>
+                                                        <a href="/about">
+                                                            
+                                                                <i class="fa fa-fa-user"></i>
+                                                            
+                                                            关于我
+                                                        </a>
+                                                    </li>
+                                                
+                                                    <li>
+                                                        <a href="/links">
+                                                            
+                                                                <i class="fa fa-fa-link"></i>
+                                                            
+                                                            友情链接
+                                                        </a>
+                                                    </li>
+                                                
+                                            </ul>
+                                        
+                                    </li>
+                                
+                            </ul>
+                        </nav>
+                    </div>
+                </div>
+            </header>
+            <header id="kratos-mobile-topnav" class="kratos-topnav">
+                <div class="container">
+                    <div class="color-logo"><a href="/">MamimiJa Nai</a></div>
+                    <div id="kratos-nav-toggle-wrapper" class="nav-toggle">
+                        <a id="kratos-nav-toggle" class="kratos-nav-toggle">
+                            <i></i>
+                        </a>
+                    </div>
+                </div>
+            </header>
+        </div>
+        <div class="kratos-start kratos-hero-2">
+            <!-- <div class="kratos-overlay"></div> -->
+            <div class="kratos-cover kratos-cover-2 text-center">
+                <div class="desc desc2 animate-box">
+                    <a href="/">
+                        <h2>MamimiJa Nai</h2> <br />
+                        <span></span>
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <div id="kratos-blog-post">
+            <div class="container">
+                <div id="main" class="row">
+
+
+        
+
+            
+
+            <section class="kr-main-col col-md-8">
+
+        
+
+            <article itemscope itemtype="https://schema.org/Article">
+    <link itemprop="mainEntityOfPage" href="https://leahana.github.io/2026/04/02/tech/ai/2026-04-03-opencode-oh-my-openagent-q1-updates/">
+    <div class="kratos-hentry kratos-page-inner clearfix">
+        <header class="kratos-page-header">
+            
+                <h1 class="kratos-page-title text-center" itemprop="name headline">OpenCode 与 oh-my-openagent Q1 更新动态：AI 编程代理生态加速进化</h1>
+            
+            <ul class="kratos-page-meta text-center">
+                <li><time datetime="2026-04-02T22:30:00.000Z" itemprop="datePublished"><i class="fa fa-calendar"></i> 2026-04-03</time></li>
+                <li itemprop="author" itemscope itemtype="https://schema.org/Person">
+                    <i class="fa fa-user"></i> 作者 <span itemprop="name">Mamimi</span>
+                </li>
+                
+                    <li>
+                        <i class="fa fa-edit"></i> 
+                        
+                        
+                            ~9.37K
+                        
+                        字
+                    </li>
+                
+                
+                
+            </ul>
+        </header>
+        <div class="kratos-page-content kr-post">
+            
+            
+            
+                <div class="kratos-post-inner-toc toc-div-class" >
+                    <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%F0%9F%93%96-3-%E5%88%86%E9%92%9F%E9%80%9F%E8%A7%88%E7%89%88"><span class="toc-number">1.</span> <span class="toc-text">📖 3 分钟速览版</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#OpenCode-Q1-%E7%B2%BE%E9%80%89%EF%BC%88%E6%88%AA%E8%87%B3-2026-04-03%EF%BC%8C136k-stars%EF%BC%89"><span class="toc-number">1.1.</span> <span class="toc-text">OpenCode Q1 精选（截至 2026-04-03，136k stars）</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#oh-my-openagent-Q1-%E7%B2%BE%E9%80%89%EF%BC%88%E6%88%AA%E8%87%B3-2026-04-03%EF%BC%8C47-4k-stars%EF%BC%89"><span class="toc-number">1.2.</span> <span class="toc-text">oh-my-openagent Q1 精选（截至 2026-04-03，47.4k stars）</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%A1%8C%E5%8A%A8%E5%BB%BA%E8%AE%AE"><span class="toc-number">1.3.</span> <span class="toc-text">行动建议</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%AC%AC%E4%B8%80%E9%83%A8%E5%88%86%EF%BC%9AOpenCode%EF%BC%8C%E4%BB%8E%E5%BA%95%E5%B1%82%E6%9E%B6%E6%9E%84%E5%88%B0%E4%BC%81%E4%B8%9A%E7%BA%A7%E9%9B%86%E6%88%90"><span class="toc-number">2.</span> <span class="toc-text">第一部分：OpenCode，从底层架构到企业级集成</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#SQLite-%E6%95%B0%E6%8D%AE%E5%BA%93%E8%BF%81%E7%A7%BB%EF%BC%88v1-2-0%EF%BC%89"><span class="toc-number">2.1.</span> <span class="toc-text">SQLite 数据库迁移（v1.2.0）</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Effect-%E6%9E%B6%E6%9E%84%E9%87%8D%E6%9E%84%EF%BC%88v1-3-4%EF%BC%89"><span class="toc-number">2.2.</span> <span class="toc-text">Effect 架构重构（v1.3.4）</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#GitLab-Agent-Platform-%E9%9B%86%E6%88%90%EF%BC%88v1-3-0%EF%BC%89"><span class="toc-number">2.3.</span> <span class="toc-text">GitLab Agent Platform 集成（v1.3.0）</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Node-js-Runtime-%E6%94%AF%E6%8C%81%EF%BC%88v1-3-0%EF%BC%89"><span class="toc-number">2.4.</span> <span class="toc-text">Node.js Runtime 支持（v1.3.0）</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%85%B6%E4%BB%96%E5%80%BC%E5%BE%97%E5%85%B3%E6%B3%A8%E7%9A%84%E6%9B%B4%E6%96%B0"><span class="toc-number">2.5.</span> <span class="toc-text">其他值得关注的更新</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%AC%AC%E4%BA%8C%E9%83%A8%E5%88%86%EF%BC%9Aoh-my-openagent%EF%BC%8C%E4%BB%8E%E6%8F%92%E4%BB%B6%E5%88%B0%E6%9E%B6%E6%9E%84%E7%9A%84%E8%BF%9B%E5%8C%96"><span class="toc-number">3.</span> <span class="toc-text">第二部分：oh-my-openagent，从插件到架构的进化</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E2%80%9CAtlas-Trusts-No-One%E2%80%9D-%E5%A4%A7%E6%8B%86%E5%88%86%EF%BC%88v3-5-0%EF%BC%89"><span class="toc-number">3.1.</span> <span class="toc-text">“Atlas Trusts No One” 大拆分（v3.5.0）</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Hash-Anchored-Edits%EF%BC%9A10-%E5%80%8D%E5%87%86%E7%A1%AE%E7%8E%87%E6%8F%90%E5%8D%87"><span class="toc-number">3.2.</span> <span class="toc-text">Hash-Anchored Edits：10 倍准确率提升</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%A4%9A%E6%A8%A1%E5%9E%8B%E7%BC%96%E6%8E%92%E5%BC%95%E6%93%8E"><span class="toc-number">3.3.</span> <span class="toc-text">多模型编排引擎</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#8-Agent-%E5%8D%8F%E4%BD%9C%E7%B3%BB%E7%BB%9F"><span class="toc-number">3.4.</span> <span class="toc-text">8 Agent 协作系统</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%93%81%E7%89%8C%E9%87%8D%E5%A1%91%EF%BC%9A%E4%BB%8E%E6%8F%92%E4%BB%B6%E5%88%B0%E5%B9%B3%E5%8F%B0"><span class="toc-number">3.5.</span> <span class="toc-text">品牌重塑：从插件到平台</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%AC%AC%E4%B8%89%E9%83%A8%E5%88%86%EF%BC%9A%E7%BB%BC%E5%90%88%E5%88%86%E6%9E%90%E4%B8%8E%E8%A1%8C%E5%8A%A8%E5%BB%BA%E8%AE%AE"><span class="toc-number">4.</span> <span class="toc-text">第三部分：综合分析与行动建议</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%8F%91%E5%B1%95%E8%BD%A8%E8%BF%B9%E5%AF%B9%E6%AF%94"><span class="toc-number">4.1.</span> <span class="toc-text">发展轨迹对比</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%85%B1%E5%90%8C%E8%B6%8B%E5%8A%BF"><span class="toc-number">4.2.</span> <span class="toc-text">共同趋势</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%BD%B1%E5%93%8D%E5%8A%9B%E8%AF%84%E4%BC%B0"><span class="toc-number">4.3.</span> <span class="toc-text">影响力评估</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%A1%8C%E5%8A%A8%E5%BB%BA%E8%AE%AE-1"><span class="toc-number">4.4.</span> <span class="toc-text">行动建议</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%F0%9F%93%85-2026-04-07-%E5%A2%9E%E9%87%8F%E6%9B%B4%E6%96%B0%EF%BC%9AOpenCode"><span class="toc-number">5.</span> <span class="toc-text">📅 [2026-04-07] 增量更新：OpenCode</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%F0%9F%9A%80-%E6%A0%B8%E5%BF%83%E6%96%B0%E7%89%B9%E6%80%A7-%E5%BF%AB%E9%80%9F%E6%8E%8C%E6%8F%A1"><span class="toc-number">5.1.</span> <span class="toc-text">🚀 核心新特性 (快速掌握)</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%F0%9F%94%A7-%E4%BC%98%E5%8C%96%E4%B8%8E%E4%BF%AE%E5%A4%8D-%E8%AE%A4%E7%9F%A5%E5%90%8C%E6%AD%A5"><span class="toc-number">5.2.</span> <span class="toc-text">🔧 优化与修复 (认知同步)</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E2%9A%A0%EF%B8%8F-%E6%9E%B6%E6%9E%84%E5%8F%98%E6%9B%B4%E4%B8%8E%E9%A3%8E%E9%99%A9%E6%8F%90%E9%86%92"><span class="toc-number">5.3.</span> <span class="toc-text">⚠️ 架构变更与风险提醒</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%F0%9F%93%85-2026-04-07-%E5%A2%9E%E9%87%8F%E6%9B%B4%E6%96%B0%EF%BC%9Aoh-my-openagent"><span class="toc-number">6.</span> <span class="toc-text">📅 [2026-04-07] 增量更新：oh-my-openagent</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%F0%9F%9A%80-%E6%A0%B8%E5%BF%83%E6%96%B0%E7%89%B9%E6%80%A7-%E5%BF%AB%E9%80%9F%E6%8E%8C%E6%8F%A1-1"><span class="toc-number">6.1.</span> <span class="toc-text">🚀 核心新特性 (快速掌握)</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%F0%9F%94%A7-%E4%BC%98%E5%8C%96%E4%B8%8E%E4%BF%AE%E5%A4%8D-%E8%AE%A4%E7%9F%A5%E5%90%8C%E6%AD%A5-1"><span class="toc-number">6.2.</span> <span class="toc-text">🔧 优化与修复 (认知同步)</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E2%9A%A0%EF%B8%8F-%E6%9E%B6%E6%9E%84%E5%8F%98%E6%9B%B4%E4%B8%8E%E9%A3%8E%E9%99%A9%E6%8F%90%E9%86%92-1"><span class="toc-number">6.3.</span> <span class="toc-text">⚠️ 架构变更与风险提醒</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%9B%B4%E6%96%B0%E8%AE%B0%E5%BD%95"><span class="toc-number">7.</span> <span class="toc-text">更新记录</span></a></li></ol>
+                </div>
+            
+            <hr />
+            <div itemprop="articleBody"><blockquote>
+<p>🎯 <strong>一句话定位</strong>：OpenCode 与 oh-my-openagent 在 2026 年 Q1<br>经历了爆发式增长，从架构重构到品牌重塑，从单模型到多模型编排。</p>
+<p>💡 <strong>核心理念</strong>：AI 编程代理的竞争已经从”谁的模型更强”<br>转向”谁的架构更聪明”，而这两个项目正在定义新的标准。</p>
+</blockquote>
+<hr>
+<h2 id="📖-3-分钟速览版"><a href="#📖-3-分钟速览版" class="headerlink" title="📖 3 分钟速览版"></a>📖 3 分钟速览版</h2><details>
+<summary>📊 点击展开：Q1 精选特性速览 + 行动建议</summary>
+
+<h3 id="OpenCode-Q1-精选（截至-2026-04-03，136k-stars）"><a href="#OpenCode-Q1-精选（截至-2026-04-03，136k-stars）" class="headerlink" title="OpenCode Q1 精选（截至 2026-04-03，136k stars）"></a>OpenCode Q1 精选（截至 2026-04-03，136k stars）</h3><table>
+<thead>
+<tr>
+<th>特性</th>
+<th>一句话价值</th>
+<th>适合谁</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Effect 架构重构</td>
+<td>服务层解耦，插件稳定性质的飞跃</td>
+<td>插件开发者</td>
+</tr>
+<tr>
+<td>SQLite 数据库迁移</td>
+<td>会话管理从文件系统升级到数据库</td>
+<td>重度用户</td>
+</tr>
+<tr>
+<td>GitLab Agent Platform</td>
+<td>企业级 CI&#x2F;CD 工作流集成</td>
+<td>企业团队</td>
+</tr>
+<tr>
+<td>Node.js Runtime</td>
+<td>不再绑定 Bun，生态兼容性大增</td>
+<td>Node 用户</td>
+</tr>
+<tr>
+<td>Git-backed Session Review</td>
+<td>代码审查可视化，分支对比清晰</td>
+<td>团队协作者</td>
+</tr>
+<tr>
+<td>AI SDK v6 + 多模型支持</td>
+<td>灵活切换模型，跟进最新能力</td>
+<td>所有用户</td>
+</tr>
+<tr>
+<td>社区贡献爆发</td>
+<td>v1.3.0 单版本 16 位贡献者</td>
+<td>开源爱好者</td>
+</tr>
+</tbody></table>
+<h3 id="oh-my-openagent-Q1-精选（截至-2026-04-03，47-4k-stars）"><a href="#oh-my-openagent-Q1-精选（截至-2026-04-03，47-4k-stars）" class="headerlink" title="oh-my-openagent Q1 精选（截至 2026-04-03，47.4k stars）"></a>oh-my-openagent Q1 精选（截至 2026-04-03，47.4k stars）</h3><table>
+<thead>
+<tr>
+<th>特性</th>
+<th>一句话价值</th>
+<th>适合谁</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>“Atlas Trusts No One” 大拆分</td>
+<td>645 文件重构，200 LOC 硬限制</td>
+<td>架构关注者</td>
+</tr>
+<tr>
+<td>品牌重塑为 oh-my-openagent</td>
+<td>定位从”插件”升级为”平台”</td>
+<td>所有人</td>
+</tr>
+<tr>
+<td>Hash-Anchored Edits</td>
+<td>编辑准确率 6.7% → 68.3% (10x)</td>
+<td>所有用户</td>
+</tr>
+<tr>
+<td>多模型编排引擎</td>
+<td>按任务类型自动路由最优模型</td>
+<td>效率追求者</td>
+</tr>
+<tr>
+<td>8 Agent 协作系统</td>
+<td>Sisyphus 编排 + 7 专家 Agent</td>
+<td>复杂项目</td>
+</tr>
+<tr>
+<td>GPT-5.4 原生支持</td>
+<td>第一时间跟进最强模型</td>
+<td>前沿用户</td>
+</tr>
+</tbody></table>
+<h3 id="行动建议"><a href="#行动建议" class="headerlink" title="行动建议"></a>行动建议</h3><ul>
+<li><strong>OpenCode 重度用户</strong>：升级到 v1.3.13+，体验 Effect 架构</li>
+<li><strong>oh-my-openagent 用户</strong>：确认已升级到 v3.14.1 获取兼容层</li>
+<li><strong>企业团队</strong>：关注 OpenCode GitLab 集成 + oh-my-openagent<br>企业采用案例（Google、Microsoft、Indent 已在生产环境使用）</li>
+<li><strong>新用户</strong>：先试 OpenCode 入门 CLI Agent，再用<br>oh-my-openagent 体验多 Agent 协作</li>
+</ul>
+</details>
+
+<hr>
+<h2 id="第一部分：OpenCode，从底层架构到企业级集成"><a href="#第一部分：OpenCode，从底层架构到企业级集成" class="headerlink" title="第一部分：OpenCode，从底层架构到企业级集成"></a>第一部分：OpenCode，从底层架构到企业级集成</h2><p>OpenCode 在 Q1 完成了从 v1.1.65 到 v1.3.13 的跨越式迭代。<br>仅 3 月份就发布了 10 个版本，社区贡献者从个位数飙升到<br>单版本 16 人。这种节奏背后是两个关键决策：底层架构彻底重构，<br>以及企业级功能的大步推进。</p>
+<h3 id="SQLite-数据库迁移（v1-2-0）"><a href="#SQLite-数据库迁移（v1-2-0）" class="headerlink" title="SQLite 数据库迁移（v1.2.0）"></a>SQLite 数据库迁移（v1.2.0）</h3><p><strong>变了什么</strong>：OpenCode 把会话存储从文件系统迁移到了 SQLite<br>数据库。用户需要删除 <code>~/.local/share/opencode/opencode.db*</code><br>才能触发重新迁移。</p>
+<p><strong>为什么重要</strong>：文件系统存储在会话量大时性能退化严重。SQLite<br>不仅解决了这个问题，还为后续的会话搜索、跨会话引用、<br>统计分析等功能提供了结构化查询基础。</p>
+<p><strong>实际价值</strong>：如果你有上百个历史会话，升级后启动速度和<br>会话切换的响应速度会有明显提升。代价是一次性的迁移操作。</p>
+<h3 id="Effect-架构重构（v1-3-4）"><a href="#Effect-架构重构（v1-3-4）" class="headerlink" title="Effect 架构重构（v1.3.4）"></a>Effect 架构重构（v1.3.4）</h3><p><strong>变了什么</strong>：这是 Q1 最大的架构变更。Session、Config、<br>Plugin、LSP、Skill 五大核心服务全部用 Effect 框架重写。<br>底层依赖升级到 Effect 4.0.0-beta.42，同时引入了<br>AI SDK v6 支持。</p>
+<p><strong>为什么重要</strong>：Effect 是 TypeScript 生态中处理副作用和<br>错误传播的框架。用它重写意味着每个服务都有统一的错误处理、<br>依赖注入和资源管理。这对插件开发者尤其关键，因为插件不再<br>需要关心宿主服务的生命周期管理。</p>
+<p><strong>实际价值</strong>：从用户角度看，最直接的感受是插件崩溃不再<br>拖垮整个应用。从开发者角度看，新插件的开发门槛降低，<br>因为 Effect 的类型系统能在编译期捕获大部分错误。</p>
+<h3 id="GitLab-Agent-Platform-集成（v1-3-0）"><a href="#GitLab-Agent-Platform-集成（v1-3-0）" class="headerlink" title="GitLab Agent Platform 集成（v1.3.0）"></a>GitLab Agent Platform 集成（v1.3.0）</h3><p><strong>变了什么</strong>：OpenCode 现在可以发现 GitLab 的 workflow 模型，<br>并通过 WebSocket 访问工具。这意味着 OpenCode 可以直接<br>参与 CI&#x2F;CD 流水线的编排和调试。</p>
+<p><strong>为什么重要</strong>：此前 OpenCode 的企业集成主要围绕 GitHub。<br>GitLab 在欧洲和大型企业中有大量用户，这个集成填补了<br>一个重要的市场空白。WebSocket 工具访问意味着 Agent<br>可以实时监听流水线状态并做出响应。</p>
+<p><strong>实际价值</strong>：使用 GitLab 的团队可以直接让 OpenCode<br>在 MR 提交时自动审查代码、建议修复、甚至触发回滚。<br>不再是”AI 写代码 + 人手动触发 CI”，而是端到端的自动化。</p>
+<h3 id="Node-js-Runtime-支持（v1-3-0）"><a href="#Node-js-Runtime-支持（v1-3-0）" class="headerlink" title="Node.js Runtime 支持（v1.3.0）"></a>Node.js Runtime 支持（v1.3.0）</h3><p><strong>变了什么</strong>：OpenCode 此前只支持 Bun 运行时。v1.3.0<br>正式加入 Node.js 支持，用户可以自由选择运行环境。</p>
+<p><strong>为什么重要</strong>：Bun 虽然性能出色，但生态兼容性一直是痛点。<br>很多企业环境的 Node.js 工具链（nvm、pkg、Docker 镜像）<br>无法直接迁移到 Bun。Node.js 支持消除了这个采纳障碍。</p>
+<p><strong>实际价值</strong>：如果你所在的企业有标准化的 Node.js 环境，<br>现在可以直接用 <code>node</code> 运行 OpenCode，无需额外安装 Bun。</p>
+<h3 id="其他值得关注的更新"><a href="#其他值得关注的更新" class="headerlink" title="其他值得关注的更新"></a>其他值得关注的更新</h3><p><strong>交互式升级流程（v1.3.0）</strong>：升级前弹出确认对话框，<br>避免意外破坏现有环境。小功能，但对生产环境至关重要。</p>
+<p><strong>多步认证（v1.3.0）</strong>：支持 GitHub Copilot Enterprise<br>的多步 OAuth 流程，企业 SSO 用户终于可以无缝接入。</p>
+<p><strong>语法高亮扩展（v1.3.0）</strong>：新增 Kotlin、HCL（Terraform）、<br>Lua、TOML 的语法高亮。覆盖了更多 DevOps 和游戏开发场景。</p>
+<p><strong>TUI 插件系统（v1.3.4）</strong>：终端 UI 现在支持插件注入<br>自定义 prompt slot，意味着插件可以在对话流程中插入<br>自己的指令。这为工作流自动化打开了新大门。</p>
+<p><strong>插件版本锁定（v1.3.8-10）</strong>：新增插件版本 pinning 功能，<br>防止自动更新引入不兼容变更。结合交互式升级流程，<br>企业用户对环境稳定性的控制力进一步增强。</p>
+<p><strong>Catppuccin 主题支持（v1.3.8-10）</strong>：引入 Catppuccin<br>配色方案，终端 UI 的视觉体验得到改善。虽然是外观更新，<br>但 CLI 工具的”颜值”对长时间使用体验有实际影响。</p>
+<pre class="mermaid">graph TD
+    A["OpenCode Q1 时间线"] --> B["1月: 工具钩子<br/>插件体系初成型"]
+    A --> C["2月: SQLite 迁移<br/>数据层升级"]
+    A --> D["3月上: v1.3.0 大版本<br/>16 位社区贡献者"]
+    A --> E["3月下: Effect 重构<br/>架构质变"]
+    A --> F["3月底-4月初<br/>快速迭代收尾"]
+
+    style D fill:#c8e6c9,stroke:#333,color:#000
+    style E fill:#bbdefb,stroke:#333,color:#000</pre>
+
+<hr>
+<h2 id="第二部分：oh-my-openagent，从插件到架构的进化"><a href="#第二部分：oh-my-openagent，从插件到架构的进化" class="headerlink" title="第二部分：oh-my-openagent，从插件到架构的进化"></a>第二部分：oh-my-openagent，从插件到架构的进化</h2><p>oh-my-openagent 在 Q1 经历了身份和架构的双重转变。从项目名<br>“oh-my-opencode”变为”oh-my-openagent”，不仅仅是品牌重塑，<br>更是从”OpenCode 的增强插件”到”独立 Agent 平台”的定位跃迁。</p>
+<h3 id="“Atlas-Trusts-No-One”-大拆分（v3-5-0）"><a href="#“Atlas-Trusts-No-One”-大拆分（v3-5-0）" class="headerlink" title="“Atlas Trusts No One” 大拆分（v3.5.0）"></a>“Atlas Trusts No One” 大拆分（v3.5.0）</h3><p><strong>变了什么</strong>：645 个文件被拆分重构，代码变更量达到<br>+34,507&#x2F;-21,492 行。引入 200 行 LOC 硬限制，所有模块<br>必须拆分到 200 行以内。而且没有引入任何破坏性变更。</p>
+<p><strong>为什么重要</strong>：这个拆分的名字”Atlas Trusts No One”<br>暗示了核心设计哲学：没有模块可以无限膨胀。200 行限制<br>强制每个模块保持单一职责，同时通过零破坏性变更证明了<br>拆分可以在不影响用户体验的前提下完成。</p>
+<p><strong>实际价值</strong>：对用户而言，这意味着 oh-my-openagent 的<br>稳定性会显著提升。代码量可控的模块更容易测试、更容易<br>debug。对贡献者而言，阅读和修改代码的成本大幅降低。</p>
+<h3 id="Hash-Anchored-Edits：10-倍准确率提升"><a href="#Hash-Anchored-Edits：10-倍准确率提升" class="headerlink" title="Hash-Anchored Edits：10 倍准确率提升"></a>Hash-Anchored Edits：10 倍准确率提升</h3><p><strong>变了什么</strong>：引入了基于行哈希的编辑验证机制。每次编辑<br>操作都会验证 <code>LINE#ID</code> 格式的内容哈希，确保编辑目标<br>与实际文件内容匹配。</p>
+<p><strong>为什么重要</strong>：AI 编程代理最头疼的问题之一就是”编辑错位”，<br>模型想修改第 50 行，实际改了第 48 行。这种错误在大文件<br>中尤其常见。哈希锚定让每次编辑都有 cryptographic 级别的<br>位置校验。</p>
+<p><strong>实际价值</strong>：编辑成功率从 6.7% 飙升到 68.3%，10 倍提升。<br>这不是渐进式优化，而是从”经常出错”到”大部分时候能对”<br>的质变。对于频繁使用 AI 编辑功能的用户，这意味着大幅<br>减少手动修正的时间。</p>
+<h3 id="多模型编排引擎"><a href="#多模型编排引擎" class="headerlink" title="多模型编排引擎"></a>多模型编排引擎</h3><p><strong>变了什么</strong>：引入了按任务类型自动路由到不同模型的机制：</p>
+<table>
+<thead>
+<tr>
+<th>任务类别</th>
+<th>路由模型</th>
+<th>适用场景</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>visual-engineering</td>
+<td>Gemini</td>
+<td>UI&#x2F;UX、前端可视化</td>
+</tr>
+<tr>
+<td>ultrabrain</td>
+<td>GPT-5.4</td>
+<td>复杂推理、架构设计</td>
+</tr>
+<tr>
+<td>quick</td>
+<td>GPT-5.4 Mini</td>
+<td>快速修复、简单问答</td>
+</tr>
+<tr>
+<td>deep</td>
+<td>GPT-5.3-codex</td>
+<td>深度编码、大规模重构</td>
+</tr>
+</tbody></table>
+<p><strong>为什么重要</strong>：单一模型无法在所有场景下都表现最优。<br>视觉任务需要多模态能力（Gemini），深度编码需要代码专精<br>（GPT-5.3-codex），简单任务用轻量模型即可（GPT-5.4 Mini）。<br>自动路由让用户不需要手动选择模型。</p>
+<p><strong>实际价值</strong>：实际使用中，你会发现 Agent 自动在<br>不同任务间切换模型，而每次切换都匹配到最适合的能力。<br>这比手动选模型省心，也比固定用一个模型高效。</p>
+<h3 id="8-Agent-协作系统"><a href="#8-Agent-协作系统" class="headerlink" title="8 Agent 协作系统"></a>8 Agent 协作系统</h3><p><strong>变了什么</strong>：oh-my-openagent 构建了 8 个专业化 Agent<br>的协作网络。Sisyphus 作为编排者协调 7 个专家 Agent：</p>
+<table>
+<thead>
+<tr>
+<th>Agent</th>
+<th>职责</th>
+<th>类比</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Sisyphus</td>
+<td>编排调度</td>
+<td>项目经理</td>
+</tr>
+<tr>
+<td>Hephaestus</td>
+<td>深度执行</td>
+<td>高级工程师</td>
+</tr>
+<tr>
+<td>Prometheus</td>
+<td>计划制定</td>
+<td>架构师</td>
+</tr>
+<tr>
+<td>Atlas</td>
+<td>任务执行</td>
+<td>开发者</td>
+</tr>
+<tr>
+<td>Oracle</td>
+<td>咨询回答</td>
+<td>顾问</td>
+</tr>
+<tr>
+<td>Librarian</td>
+<td>知识检索</td>
+<td>资料员</td>
+</tr>
+<tr>
+<td>Explore</td>
+<td>代码搜索</td>
+<td>侦查员</td>
+</tr>
+<tr>
+<td>Looker</td>
+<td>视觉理解</td>
+<td>设计师</td>
+</tr>
+</tbody></table>
+<p><strong>为什么重要</strong>：单 Agent 架构的问题是”万能即无能”。<br>一个 Agent 同时负责规划、搜索、编码、审查，必然顾此失彼。<br>专业 Agent 各司其职，通过 Sisyphus 编排器协作，<br>类似微服务架构在 AI Agent 领域的应用。</p>
+<p><strong>实际价值</strong>：在复杂项目中（比如跨多个文件的重构），<br>你会感受到任务拆解更合理、执行更并行、最终质量更高。</p>
+<h3 id="品牌重塑：从插件到平台"><a href="#品牌重塑：从插件到平台" class="headerlink" title="品牌重塑：从插件到平台"></a>品牌重塑：从插件到平台</h3><p><strong>变了什么</strong>：项目从 “oh-my-opencode” 更名为<br>“oh-my-openagent”（v3.11.0），同步更新了 GitHub<br>仓库名和包名。v3.14.0 提供了包名兼容层确保平滑过渡。</p>
+<p><strong>为什么重要</strong>：改名说明了一件事：oh-my-openagent<br>不再把自己定位为 OpenCode 的附属插件。创始人的原话是<br>“OmO and Sisyphus is about the whole architecture，<br>not just a plugin”。这是一个战略信号。</p>
+<p><strong>实际价值</strong>：对现有用户来说，兼容层确保升级无痛。<br>对新用户来说，项目定位更清晰，不会把它和<br>“OpenCode 插件”画等号。</p>
+<pre class="mermaid">graph LR
+    subgraph "oh-my-openagent 多 Agent 架构"
+        S["Sisyphus<br/>编排器"]
+        S --> H["Hephaestus<br/>深度执行"]
+        S --> P["Prometheus<br/>规划"]
+        S --> A["Atlas<br/>执行"]
+        S --> O["Oracle<br/>咨询"]
+        S --> L["Librarian<br/>检索"]
+        S --> E["Explore<br/>搜索"]
+        S --> K["Looker<br/>视觉"]
+    end
+
+    subgraph "多模型路由"
+        M1["Gemini<br/>visual-engineering"]
+        M2["GPT-5.4<br/>ultrabrain"]
+        M3["GPT-5.4 Mini<br/>quick"]
+        M4["GPT-5.3-codex<br/>deep"]
+    end
+
+    H -.-> M4
+    P -.-> M2
+    A -.-> M3
+    K -.-> M1
+
+    style S fill:#ffecb3,stroke:#333,color:#000
+    style M2 fill:#c8e6c9,stroke:#333,color:#000</pre>
+
+<hr>
+<h2 id="第三部分：综合分析与行动建议"><a href="#第三部分：综合分析与行动建议" class="headerlink" title="第三部分：综合分析与行动建议"></a>第三部分：综合分析与行动建议</h2><h3 id="发展轨迹对比"><a href="#发展轨迹对比" class="headerlink" title="发展轨迹对比"></a>发展轨迹对比</h3><p>两个项目在 Q1 走了不同的路线：</p>
+<p><strong>OpenCode</strong> 选择了”底层先行”策略。先用 Effect 框架<br>重构架构，再在稳固基础上叠加企业功能（GitLab、多步认证、<br>交互式升级）。这是一条”磨刀不误砍柴工”的路线。</p>
+<p><strong>oh-my-openagent</strong> 选择了”体验先行”策略。先用大拆分<br>解决技术债，再通过多模型编排和多 Agent 协作拉高用户体验。<br>这是一条”边跑边换轮胎”的路线。</p>
+<p>两种策略没有高下之分，但反映了对目标用户的不同理解。<br>OpenCode 更看重企业稳定性，oh-my-openagent 更看重<br>开发者体验的极致化。</p>
+<h3 id="共同趋势"><a href="#共同趋势" class="headerlink" title="共同趋势"></a>共同趋势</h3><p>两个项目在 Q1 都在做三件相同的事：</p>
+<ol>
+<li><p><strong>架构拆分</strong>：OpenCode 用 Effect 重构五大服务，<br>oh-my-openagent 用 200 LOC 限制拆分 645 文件。<br>背后的共识是，AI Agent 的代码量正在失控，<br>必须在爆炸前建立模块化纪律。</p>
+</li>
+<li><p><strong>多模型支持</strong>：OpenCode 接入了 xAI、Poe、Azure、<br>Vertex Anthropic 等多个模型提供商。oh-my-openagent<br>直接实现了按任务类型的自动路由。趋势很明确：<br>单一模型绑定正在成为历史。</p>
+</li>
+<li><p><strong>社区驱动</strong>：OpenCode v1.3.0 有 16 位社区贡献者，<br>oh-my-openagent v3.11.0 合并了 17 个社区 PR。<br>两个项目都在从”创始人驱动”转向”社区驱动”。</p>
+</li>
+</ol>
+<h3 id="影响力评估"><a href="#影响力评估" class="headerlink" title="影响力评估"></a>影响力评估</h3><p>截至 2026-04-03：</p>
+<ul>
+<li><p><strong>OpenCode</strong>：136k stars，v1.3.4 的 Effect 架构重构<br>可能是全年最重要的变更，为后续的插件生态和稳定性<br>打下了决定性基础。</p>
+</li>
+<li><p><strong>oh-my-openagent</strong>：47.4k stars，Hash-Anchored Edits<br>的 10 倍准确率提升是最具用户感知力的改进。Discord<br>社区 20k+ 成员，已有用户表示”让我退掉了 Cursor 订阅”。<br>Google、Microsoft、Indent 已在生产环境使用。</p>
+</li>
+</ul>
+<h3 id="行动建议-1"><a href="#行动建议-1" class="headerlink" title="行动建议"></a>行动建议</h3><table>
+<thead>
+<tr>
+<th>你是谁</th>
+<th>建议动作</th>
+<th>优先级</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>OpenCode 老用户</td>
+<td>升级到 v1.3.13，删除旧数据库触发迁移</td>
+<td>高</td>
+</tr>
+<tr>
+<td>oh-my-openagent 老用户</td>
+<td>升级到 v3.14.1，确认兼容层正常</td>
+<td>高</td>
+</tr>
+<tr>
+<td>企业评估者</td>
+<td>用 OpenCode GitLab 集成做 PoC</td>
+<td>中</td>
+</tr>
+<tr>
+<td>个人开发者</td>
+<td>两个都试，OpenCode 做日常编码，oh-my-openagent 做复杂项目</td>
+<td>中</td>
+</tr>
+<tr>
+<td>插件开发者</td>
+<td>基于 OpenCode Effect 架构开发新插件</td>
+<td>低</td>
+</tr>
+</tbody></table>
+<hr>
+<h2 id="📅-2026-04-07-增量更新：OpenCode"><a href="#📅-2026-04-07-增量更新：OpenCode" class="headerlink" title="📅 [2026-04-07] 增量更新：OpenCode"></a>📅 [2026-04-07] 增量更新：OpenCode</h2><p><strong>同步版本区间</strong>: <code>[v1.3.13]</code> -&gt; <code>[v1.3.17]</code></p>
+<h3 id="🚀-核心新特性-快速掌握"><a href="#🚀-核心新特性-快速掌握" class="headerlink" title="🚀 核心新特性 (快速掌握)"></a>🚀 核心新特性 (快速掌握)</h3><table>
+<thead>
+<tr>
+<th align="left">特性</th>
+<th align="left">价值点</th>
+<th align="left">💡 使用案例 (Quick Start)</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left"><strong>git-backed review 恢复</strong></td>
+<td align="left">重新打通未提交改动与分支 diff 审查，长分支 review 更连贯</td>
+<td align="left"><code>git diff main...HEAD</code><br/><code># 在 OpenCode 中继续按分支差异审查当前改动</code></td>
+</tr>
+<tr>
+<td align="left"><strong>Provider &#x2F; 配置能力增强</strong></td>
+<td align="left">Azure 同时兼容 chat &#x2F; responses，ACP 会话暴露 model &#x2F; mode，Cloudflare 缺参报错更直接</td>
+<td align="left"><code>{&quot;model&quot;:&quot;azure/gpt-5.4&quot;}</code><br/><code># 在 ACP 客户端里按会话切换 build / plan</code></td>
+</tr>
+<tr>
+<td align="left"><strong>安装与插件兼容性修复</strong></td>
+<td align="left">npm 安装、<code>node-gyp</code> 路径与插件解析更稳，减少环境差异踩坑</td>
+<td align="left"><code>npm install -g opencode-ai</code><br/><code>&quot;plugin&quot;: [&quot;@my-org/custom-plugin&quot;]</code></td>
+</tr>
+</tbody></table>
+<h3 id="🔧-优化与修复-认知同步"><a href="#🔧-优化与修复-认知同步" class="headerlink" title="🔧 优化与修复 (认知同步)"></a>🔧 优化与修复 (认知同步)</h3><ul>
+<li><strong>[Review Workflow]</strong>: 恢复 git-backed review，并修复 revert chain<br>之后的 snapshot 恢复问题。</li>
+<li><strong>💡 认知</strong>: 以前分支对比和多次回退后，<br>审查上下文容易断掉；<br>现在 review 状态能跟着 git diff 和 snapshot 一起恢复。<br>建议：经常审查长分支的团队可以直接升级。</li>
+<li><strong>[Provider Stability]</strong>: 修复 OpenAI-compatible provider 在工具调用后<br>session 卡住的问题，并为 Cloudflare Workers AI &#x2F; AI Gateway<br>缺参场景补上明确提示。</li>
+<li><strong>💡 认知</strong>: 以前 provider 配错时，<br>常表现为“调用后无响应”或模糊失败；<br>现在错误更容易定位。<br>建议：Cloudflare 用户升级后先核对必填字段。</li>
+<li><strong>[Cross-platform UX]</strong>: TUI 支持禁用鼠标捕获，Windows 上 <code>Ctrl+Z</code><br>改为 undo，kitty 键盘输入处理更稳。</li>
+<li><strong>💡 认知</strong>: 以前不同终端环境的<br>快捷键和输入行为不一致；<br>现在跨平台体验更接近统一。<br>建议：Windows &#x2F; kitty 用户优先升级。</li>
+</ul>
+<h3 id="⚠️-架构变更与风险提醒"><a href="#⚠️-架构变更与风险提醒" class="headerlink" title="⚠️ 架构变更与风险提醒"></a>⚠️ 架构变更与风险提醒</h3><ul>
+<li><strong>底层变动</strong>: 本轮没有新的 Effect 级重构，主轴转向 provider<br>兼容、插件安装和 review 工作流的可用性打磨。</li>
+<li><strong>手动干预</strong>: 无。若你使用 Cloudflare Workers AI 或 AI Gateway，<br>升级后请顺手核对必填配置是否完整。</li>
+</ul>
+<hr>
+<h2 id="📅-2026-04-07-增量更新：oh-my-openagent"><a href="#📅-2026-04-07-增量更新：oh-my-openagent" class="headerlink" title="📅 [2026-04-07] 增量更新：oh-my-openagent"></a>📅 [2026-04-07] 增量更新：oh-my-openagent</h2><p><strong>同步版本区间</strong>: <code>[v3.14.1]</code> -&gt; <code>[v3.15.3]</code></p>
+<h3 id="🚀-核心新特性-快速掌握-1"><a href="#🚀-核心新特性-快速掌握-1" class="headerlink" title="🚀 核心新特性 (快速掌握)"></a>🚀 核心新特性 (快速掌握)</h3><table>
+<thead>
+<tr>
+<th align="left">特性</th>
+<th align="left">价值点</th>
+<th align="left">💡 使用案例 (Quick Start)</th>
+</tr>
+</thead>
+<tbody><tr>
+<td align="left"><strong>重命名兼容层继续收口</strong></td>
+<td align="left">自动更新、发布和包名识别继续兼容新旧名称，降低迁移尾部成本</td>
+<td align="left">&#96;rg -n “oh-my-opencode</td>
+</tr>
+<tr>
+<td align="left"><strong>lineage-aware continuation</strong></td>
+<td align="left"><code>session_origins</code>、background launch tracking 与 continuation state 更完整，后台续跑更可靠</td>
+<td align="left"><code>{&quot;description&quot;:&quot;continue refactor&quot;,&quot;run_in_background&quot;:true}</code><br/><code># 后台任务结束后继续沿同一 lineage 接力</code></td>
+</tr>
+<tr>
+<td align="left"><strong>delegate-task 契约补强</strong></td>
+<td align="left">参数校验、可调用 agent 模式限制和通知默认值更一致，多 Agent 调度更稳</td>
+<td align="left"><code>{&quot;description&quot;:&quot;scan repo&quot;,&quot;run_in_background&quot;:true}</code><br/><code># 显式传参，避免隐式默认行为</code></td>
+</tr>
+</tbody></table>
+<h3 id="🔧-优化与修复-认知同步-1"><a href="#🔧-优化与修复-认知同步-1" class="headerlink" title="🔧 优化与修复 (认知同步)"></a>🔧 优化与修复 (认知同步)</h3><ul>
+<li><strong>[Session Reliability]</strong>: SDK 不可用时可回退到文件存储，<br>并补上<br><code>session-last-agent</code> 排序、background task session tracking<br>等会话连续性能力。</li>
+<li><strong>💡 认知</strong>: 以前后台任务或续跑链路<br>可能因状态缺口中断；<br>现在 session lineage 和 fallback storage 让接力更连续。<br>建议：长任务、后台任务用户优先升级。</li>
+<li><strong>[Migration Safety]</strong>: legacy config path 迁移、原子写配置、<br>auto-update&#x2F;config path 对齐，以及发布流程兼容性继续补强。</li>
+<li><strong>💡 认知</strong>: 以前重命名后的旧路径和更新流程<br>容易留下兼容坑；<br>现在迁移收尾更平滑。建议：检查自定义脚本和 CI<br>是否仍引用旧包名。</li>
+<li><strong>[Security Hardening]</strong>: tar 预检改为 fail-closed，MCP<br>环境变量清理时会屏蔽云凭证。</li>
+<li><strong>💡 认知</strong>: 以前安装包或外部环境变量异常时，<br>更容易“带着风险继续执行”；<br>现在默认更保守。<br>建议：依赖 MCP &#x2F; 云凭证的团队回归一次自动化。</li>
+</ul>
+<h3 id="⚠️-架构变更与风险提醒-1"><a href="#⚠️-架构变更与风险提醒-1" class="headerlink" title="⚠️ 架构变更与风险提醒"></a>⚠️ 架构变更与风险提醒</h3><ul>
+<li><strong>底层变动</strong>: 本轮没有新的品牌或架构级重构，<br>重点是重命名迁移收尾，以及多 Agent 会话、<br>后台任务链路的可靠性补强。</li>
+<li><strong>手动干预</strong>: 若你的脚本、CI、shell alias 或配置目录仍引用<br><code>oh-my-opencode</code> 旧包名或旧路径，升级后请统一切到<br><code>oh-my-openagent</code>；其余场景无强制手动步骤。</li>
+</ul>
+<hr>
+<h2 id="更新记录"><a href="#更新记录" class="headerlink" title="更新记录"></a>更新记录</h2><table>
+<thead>
+<tr>
+<th>版本</th>
+<th>日期</th>
+<th>说明</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>v1.0</td>
+<td>2026-04-03</td>
+<td>初始版本</td>
+</tr>
+<tr>
+<td>v1.1</td>
+<td>2026-04-07</td>
+<td>追加 OpenCode v1.3.14-v1.3.17 与 oh-my-openagent v3.15.x 增量更新</td>
+</tr>
+</tbody></table>
+</div>
+        </div>
+        
+        <footer class="kratos-entry-footer clearfix">
+            
+            
+            
+                <div class="post-actions text-center clearfix" id="post-actions">
+                
+                    <a class="donate" href="javascript:;" onclick="krOpenDonateModal()"><i class="fa fa-bitcoin"></i> 打赏</a>
+                
+                
+                </div>
+            
+            <div class="footer-tag clearfix">
+                <div class="pull-left">
+                <i class="fa fa-tags"></i>
+                    <a class="tag-none-link" href="/tags/AI%E7%BC%96%E7%A8%8B%E4%BB%A3%E7%90%86/" rel="tag">AI编程代理</a>, <a class="tag-none-link" href="/tags/CLI%E5%B7%A5%E5%85%B7/" rel="tag">CLI工具</a>, <a class="tag-none-link" href="/tags/OpenCode/" rel="tag">OpenCode</a>, <a class="tag-none-link" href="/tags/oh-my-openagent/" rel="tag">oh-my-openagent</a>, <a class="tag-none-link" href="/tags/%E6%9B%B4%E6%96%B0%E5%88%86%E6%9E%90/" rel="tag">更新分析</a>
+                </div>
+                <div class="pull-date">
+                    <time datetime="2026-04-10T08:16:48.874Z" itemprop="dateModified">最后编辑：2026-04-10</time>
+                </div>
+            </div>
+        </footer>
+    </div>
+    
+        <nav class="navigation post-navigation clearfix" role="navigation">
+            
+            <div class="nav-previous clearfix">
+                <a title=" Vertex AI 本地鉴权与预算治理实践" href="/2026/04/02/tech/ai/2026-04-03-vertex-ai-adc-service-account-budget-practice/"><i class="fa fa-angle-left"></i> 上一篇</a>
+            </div>
+            
+            
+            <div class="nav-next clearfix">
+                <a title=" GitHub Actions CI 最小落地方案：从计划到可实施门禁" href="/2026/04/03/tech/tools/2026-04-04-github-actions-ci-minimal-implementation-guide/">下一篇 <i class="fa fa-angle-right"></i></a>
+            </div>
+            
+        </nav>
+    
+    
+</article>
+
+        
+
+            </section>
+
+            
+                
+
+<section id="kratos-widget-area" class="col-md-4 hidden-xs hidden-sm">
+    <!-- 文章和页面根据splitter来分割，没有的话就从头开始设置为sticky -->
+    
+    
+                <aside id="krw-about" class="widget widget-kratos-about clearfix">
+    <div class="photo-background"></div>
+    <div class="photo-wrapper clearfix">
+        <div class="photo-wrapper-tip text-center">
+            <img class="about-photo" src="/images/theme/Mamimi.JPG" alt="Mamimi" loading="lazy" decoding="auto" />
+        </div>
+    </div>
+    <div class="textwidget">
+        <p class="text-center"></p>
+    </div>
+    <div class="site-meta">
+        <a class="meta-item" href="/archives/">
+            <span class="title">
+                文章
+            </span>
+            <span class="count">
+                70
+            </span>
+        </a>
+        <a class="meta-item" href="/categories/">
+            <span class="title">
+                分类
+            </span>
+            <span class="count">
+                7
+            </span>
+        </a>
+        <a class="meta-item" href="/tags/">
+            <span class="title">
+                标签
+            </span>
+            <span class="count">
+                222
+            </span>
+        </a>
+    </div>
+</aside>
+            
+                    <div class="sticky-area">
+                
+                    <aside id="krw-toc" class="widget widget-kratos-toc clearfix toc-div-class" >
+    <div class="photo-background"></div>
+    <h4 class="widget-title no-after">
+        <i class="fa fa-compass"></i>
+        文章目录
+        <span class="toc-progress-bar" role="progressbar" aria-label="阅读进度："></span>
+    </h4>
+    <div class="textwidget">
+        <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%F0%9F%93%96-3-%E5%88%86%E9%92%9F%E9%80%9F%E8%A7%88%E7%89%88"><span class="toc-number">1.</span> <span class="toc-text">📖 3 分钟速览版</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#OpenCode-Q1-%E7%B2%BE%E9%80%89%EF%BC%88%E6%88%AA%E8%87%B3-2026-04-03%EF%BC%8C136k-stars%EF%BC%89"><span class="toc-number">1.1.</span> <span class="toc-text">OpenCode Q1 精选（截至 2026-04-03，136k stars）</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#oh-my-openagent-Q1-%E7%B2%BE%E9%80%89%EF%BC%88%E6%88%AA%E8%87%B3-2026-04-03%EF%BC%8C47-4k-stars%EF%BC%89"><span class="toc-number">1.2.</span> <span class="toc-text">oh-my-openagent Q1 精选（截至 2026-04-03，47.4k stars）</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%A1%8C%E5%8A%A8%E5%BB%BA%E8%AE%AE"><span class="toc-number">1.3.</span> <span class="toc-text">行动建议</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%AC%AC%E4%B8%80%E9%83%A8%E5%88%86%EF%BC%9AOpenCode%EF%BC%8C%E4%BB%8E%E5%BA%95%E5%B1%82%E6%9E%B6%E6%9E%84%E5%88%B0%E4%BC%81%E4%B8%9A%E7%BA%A7%E9%9B%86%E6%88%90"><span class="toc-number">2.</span> <span class="toc-text">第一部分：OpenCode，从底层架构到企业级集成</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#SQLite-%E6%95%B0%E6%8D%AE%E5%BA%93%E8%BF%81%E7%A7%BB%EF%BC%88v1-2-0%EF%BC%89"><span class="toc-number">2.1.</span> <span class="toc-text">SQLite 数据库迁移（v1.2.0）</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Effect-%E6%9E%B6%E6%9E%84%E9%87%8D%E6%9E%84%EF%BC%88v1-3-4%EF%BC%89"><span class="toc-number">2.2.</span> <span class="toc-text">Effect 架构重构（v1.3.4）</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#GitLab-Agent-Platform-%E9%9B%86%E6%88%90%EF%BC%88v1-3-0%EF%BC%89"><span class="toc-number">2.3.</span> <span class="toc-text">GitLab Agent Platform 集成（v1.3.0）</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Node-js-Runtime-%E6%94%AF%E6%8C%81%EF%BC%88v1-3-0%EF%BC%89"><span class="toc-number">2.4.</span> <span class="toc-text">Node.js Runtime 支持（v1.3.0）</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%85%B6%E4%BB%96%E5%80%BC%E5%BE%97%E5%85%B3%E6%B3%A8%E7%9A%84%E6%9B%B4%E6%96%B0"><span class="toc-number">2.5.</span> <span class="toc-text">其他值得关注的更新</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%AC%AC%E4%BA%8C%E9%83%A8%E5%88%86%EF%BC%9Aoh-my-openagent%EF%BC%8C%E4%BB%8E%E6%8F%92%E4%BB%B6%E5%88%B0%E6%9E%B6%E6%9E%84%E7%9A%84%E8%BF%9B%E5%8C%96"><span class="toc-number">3.</span> <span class="toc-text">第二部分：oh-my-openagent，从插件到架构的进化</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E2%80%9CAtlas-Trusts-No-One%E2%80%9D-%E5%A4%A7%E6%8B%86%E5%88%86%EF%BC%88v3-5-0%EF%BC%89"><span class="toc-number">3.1.</span> <span class="toc-text">“Atlas Trusts No One” 大拆分（v3.5.0）</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#Hash-Anchored-Edits%EF%BC%9A10-%E5%80%8D%E5%87%86%E7%A1%AE%E7%8E%87%E6%8F%90%E5%8D%87"><span class="toc-number">3.2.</span> <span class="toc-text">Hash-Anchored Edits：10 倍准确率提升</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%A4%9A%E6%A8%A1%E5%9E%8B%E7%BC%96%E6%8E%92%E5%BC%95%E6%93%8E"><span class="toc-number">3.3.</span> <span class="toc-text">多模型编排引擎</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#8-Agent-%E5%8D%8F%E4%BD%9C%E7%B3%BB%E7%BB%9F"><span class="toc-number">3.4.</span> <span class="toc-text">8 Agent 协作系统</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%93%81%E7%89%8C%E9%87%8D%E5%A1%91%EF%BC%9A%E4%BB%8E%E6%8F%92%E4%BB%B6%E5%88%B0%E5%B9%B3%E5%8F%B0"><span class="toc-number">3.5.</span> <span class="toc-text">品牌重塑：从插件到平台</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%AC%AC%E4%B8%89%E9%83%A8%E5%88%86%EF%BC%9A%E7%BB%BC%E5%90%88%E5%88%86%E6%9E%90%E4%B8%8E%E8%A1%8C%E5%8A%A8%E5%BB%BA%E8%AE%AE"><span class="toc-number">4.</span> <span class="toc-text">第三部分：综合分析与行动建议</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%8F%91%E5%B1%95%E8%BD%A8%E8%BF%B9%E5%AF%B9%E6%AF%94"><span class="toc-number">4.1.</span> <span class="toc-text">发展轨迹对比</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%85%B1%E5%90%8C%E8%B6%8B%E5%8A%BF"><span class="toc-number">4.2.</span> <span class="toc-text">共同趋势</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%BD%B1%E5%93%8D%E5%8A%9B%E8%AF%84%E4%BC%B0"><span class="toc-number">4.3.</span> <span class="toc-text">影响力评估</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%A1%8C%E5%8A%A8%E5%BB%BA%E8%AE%AE-1"><span class="toc-number">4.4.</span> <span class="toc-text">行动建议</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%F0%9F%93%85-2026-04-07-%E5%A2%9E%E9%87%8F%E6%9B%B4%E6%96%B0%EF%BC%9AOpenCode"><span class="toc-number">5.</span> <span class="toc-text">📅 [2026-04-07] 增量更新：OpenCode</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%F0%9F%9A%80-%E6%A0%B8%E5%BF%83%E6%96%B0%E7%89%B9%E6%80%A7-%E5%BF%AB%E9%80%9F%E6%8E%8C%E6%8F%A1"><span class="toc-number">5.1.</span> <span class="toc-text">🚀 核心新特性 (快速掌握)</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%F0%9F%94%A7-%E4%BC%98%E5%8C%96%E4%B8%8E%E4%BF%AE%E5%A4%8D-%E8%AE%A4%E7%9F%A5%E5%90%8C%E6%AD%A5"><span class="toc-number">5.2.</span> <span class="toc-text">🔧 优化与修复 (认知同步)</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E2%9A%A0%EF%B8%8F-%E6%9E%B6%E6%9E%84%E5%8F%98%E6%9B%B4%E4%B8%8E%E9%A3%8E%E9%99%A9%E6%8F%90%E9%86%92"><span class="toc-number">5.3.</span> <span class="toc-text">⚠️ 架构变更与风险提醒</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%F0%9F%93%85-2026-04-07-%E5%A2%9E%E9%87%8F%E6%9B%B4%E6%96%B0%EF%BC%9Aoh-my-openagent"><span class="toc-number">6.</span> <span class="toc-text">📅 [2026-04-07] 增量更新：oh-my-openagent</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%F0%9F%9A%80-%E6%A0%B8%E5%BF%83%E6%96%B0%E7%89%B9%E6%80%A7-%E5%BF%AB%E9%80%9F%E6%8E%8C%E6%8F%A1-1"><span class="toc-number">6.1.</span> <span class="toc-text">🚀 核心新特性 (快速掌握)</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%F0%9F%94%A7-%E4%BC%98%E5%8C%96%E4%B8%8E%E4%BF%AE%E5%A4%8D-%E8%AE%A4%E7%9F%A5%E5%90%8C%E6%AD%A5-1"><span class="toc-number">6.2.</span> <span class="toc-text">🔧 优化与修复 (认知同步)</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E2%9A%A0%EF%B8%8F-%E6%9E%B6%E6%9E%84%E5%8F%98%E6%9B%B4%E4%B8%8E%E9%A3%8E%E9%99%A9%E6%8F%90%E9%86%92-1"><span class="toc-number">6.3.</span> <span class="toc-text">⚠️ 架构变更与风险提醒</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%9B%B4%E6%96%B0%E8%AE%B0%E5%BD%95"><span class="toc-number">7.</span> <span class="toc-text">更新记录</span></a></li></ol>
+    </div>
+</aside>
+                
+                
+  <aside id="krw-categories" class="widget widget-kratos-categories clearfix">
+    <h4 class="widget-title"><i class="fa fa-folder"></i>分类列表</h4>
+      <ul class="category-list"><li class="category-list-item"><a class="category-list-link" href="/categories/gaming/">gaming</a><span class="category-list-count">2</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/mindset/">mindset</a><span class="category-list-count">1</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/tech/">tech</a><span class="category-list-count">54</span><ul class="category-list-child"><li class="category-list-item"><a class="category-list-link" href="/categories/tech/ai/">ai</a><span class="category-list-count">16</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/tech/backend/">backend</a><span class="category-list-count">27</span></li><li class="category-list-item"><a class="category-list-link" href="/categories/tech/tools/">tools</a><span class="category-list-count">11</span></li></ul></li><li class="category-list-item"><a class="category-list-link" href="/categories/%E8%AE%BE%E8%AE%A1%E6%A8%A1%E5%BC%8F/">设计模式</a><span class="category-list-count">12</span></li></ul>
+  </aside>
+
+
+            
+                
+  <aside id="krw-tags" class="widget widget-kratos-tags clearfix">
+    <h4 class="widget-title"><i class="fa fa-tags"></i>标签聚合</h4>
+      <div class="tag-clouds">
+        <a href="/tags/5W1H/" style="font-size: 0.6em;">5W1H</a> <a href="/tags/ADC/" style="font-size: 0.6em;">ADC</a> <a href="/tags/ADK/" style="font-size: 0.6em;">ADK</a> <a href="/tags/AI/" style="font-size: 0.6em;">AI</a> <a href="/tags/AI-Security/" style="font-size: 0.6em;">AI Security</a> <a href="/tags/AI-%E7%BC%96%E7%A8%8B/" style="font-size: 0.67em;">AI 编程</a> <a href="/tags/AI-Agents/" style="font-size: 0.6em;">AI-Agents</a> <a href="/tags/AI%E6%8E%A2%E7%B4%A2/" style="font-size: 0.6em;">AI探索</a> <a href="/tags/AI%E6%9E%B6%E6%9E%84/" style="font-size: 0.6em;">AI架构</a> <a href="/tags/AI%E7%BC%96%E7%A8%8B%E4%BB%A3%E7%90%86/" style="font-size: 0.6em;">AI编程代理</a> <a href="/tags/AOP/" style="font-size: 0.6em;">AOP</a> <a href="/tags/API/" style="font-size: 0.6em;">API</a> <a href="/tags/Agent/" style="font-size: 0.8em;">Agent</a> <a href="/tags/Base64/" style="font-size: 0.6em;">Base64</a> <a href="/tags/CI/" style="font-size: 0.6em;">CI</a> <a href="/tags/CI-CD/" style="font-size: 0.6em;">CI-CD</a> <a href="/tags/CI-CD/" style="font-size: 0.67em;">CI/CD</a> <a href="/tags/CLI/" style="font-size: 0.73em;">CLI</a>
+      </div>
+  </aside>
+
+            
+                
+  <aside id="krw-posts" class="widget widget-kratos-posts">
+  <h4 class="widget-title"><i class="fa fa-file"></i>最新文章</h4>
+  <div class="tab-content">
+      <ul class="list-group">
+        
+        
+          
+          
+            <a class="list-group-item" href="/2026/04/08/tech/ai/2026-04-09-codex-recent-updates-model-provider/"><i class="fa fa-book"></i> Codex 最近更新速记：模型与 Provider</a>
+            
+          
+        
+          
+          
+            <a class="list-group-item" href="/2026/04/07/tech/ai/2026-04-07-openspec-toolchain-integration-practice/"><i class="fa fa-book"></i> OpenSpec 实战落地手册：把规格驱动开发塞进 Claude Code 工具链</a>
+            
+          
+        
+          
+          
+            <a class="list-group-item" href="/2026/04/06/tech/ai/2026-04-07-codex-plugin-claude-code-commands/"><i class="fa fa-book"></i> Codex Plugin 实战工作流：在 Claude Code 里调用 Codex 做审查与任务委派</a>
+            
+          
+        
+          
+          
+            <a class="list-group-item" href="/2026/04/03/tech/tools/2026-04-04-github-actions-ci-minimal-implementation-guide/"><i class="fa fa-book"></i> GitHub Actions CI 最小落地方案：从计划到可实施门禁</a>
+            
+          
+        
+          
+          
+            <a class="list-group-item" href="/2026/04/02/tech/ai/2026-04-03-opencode-oh-my-openagent-q1-updates/"><i class="fa fa-book"></i> OpenCode 与 oh-my-openagent Q1 更新动态：AI 编程代理生态加速进化</a>
+            
+          
+        
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+          
+            
+      </ul>
+  </div>
+  </aside>
+
+            
+    </div>
+</section>
+            
+
+        
+
+                </div>
+    </div>
+</div>
+
+<footer>
+    <div id="footer">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-6 col-md-offset-3 footer-list text-center">
+                    <ul class="kratos-social-icons">
+                        
+                    </ul>
+                    <ul class="kratos-copyright">
+                        <div>
+                            <li>&copy; 2026 MamimiJa Nai 版权所有.</li>
+                            <li>本站已运行<span id="kr-since">Loading...</span></li>
+                        </div>
+                        <div>
+                            <li>自豪地使用 <a href="https://github.com/Candinya/Kratos-Rebirth" target="_blank">Kratos:Rebirth</a> 主题</li>
+                            <li>站点由 Mamimi 用 <i class="fa fa-heart" style="color:#d43f57"></i> 搭建</li>
+                        </div>
+                        <!-- 额外的追加注入项 -->
+                        
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <div class="kr-tool text-center">
+            <div class="tool">
+                <!-- 额外的追加注入项 -->
+                
+                
+                    <div class="box search-box">
+                        <a href="/search">
+                            <span class="fa fa-search"></span>
+                        </a>
+                    </div>
+                
+                <div class="box theme-box" id="theme-toggle">
+                    <span class="fa fa-adjust"></span>
+                </div>
+            </div>
+            <div id="gotop-box" class="box gotop-box">
+                <span class="fa fa-chevron-up"></span>
+            </div>
+        </div>
+    </div>
+</footer>
+</div>
+</div>
+
+
+    <div id="kr-donate-modal" class="kr-modal">
+    <div class="kr-modal-bg" onclick="krCloseDonateModal()"></div>
+    <div class="kr-modal-content">
+        <div class="kr-modal-header">
+            <div class="kr-modal-icon">
+                <i class="fa fa-bitcoin"></i>
+            </div>
+            <div class="kr-modal-title">打赏</div>
+            <button class="kr-modal-close" onclick="krCloseDonateModal()">
+                <i class="fa fa-times-circle"></i>
+            </button>
+        </div>
+        <div class="kr-modal-body">
+            <div class="kr-donate-message">打赏提示信息</div>
+            <div class="kr-donate-qr" id="kr-donate-qr">
+                
+            </div>
+            <div class="kr-donate-platforms">
+                
+                    
+                        <button class="kr-donate-platform-button" style="color: #00A0E9;" title="支付宝" onclick="krDonateModalShowPlatformQR('https://qr.alipay.com/fkx10074h80wdlc7rkhh73b', '#00A0E9')">
+                            <img src="/images/donate/jibao.png" alt="支付宝">
+                        </button>
+                    
+                
+                    
+                        <button class="kr-donate-platform-button" style="color: #07C160;" title="微信" onclick="krDonateModalShowPlatformQR('wxp://f2f0UZPu3nG1PA01tt-I5EDw0wx_G5jA-uDkAw8PuRT9VZtUj-T9s0_Cw7IRYUpTLq7Z', '#07C160')">
+                            <img src="/images/donate/liewbao.png" alt="微信">
+                        </button>
+                    
+                
+            </div>
+        </div>
+    </div>
+</div>
+<script defer src="/js/kr-modal/donate.min.js"></script>
+
+
+
+
+
+<!-- 额外的追加注入项 -->
+
+
+        <script>
+    if (!window.kr) {
+        window.kr = {};
+    }
+    window.kr.notMobile = (!(navigator.userAgent.match(/(phone|pad|pod|iPhone|iPod|ios|iPad|Android|Mobile|BlackBerry|IEMobile|MQQBrowser|JUC|Fennec|wOSBrowser|BrowserNG|WebOS|Symbian|Windows Phone)/i)));
+    window.kr.siteRoot = "/";
+</script>
+
+
+  <script defer src="/vendors/nprogress@0.2.0/nprogress.js"></script>
+
+
+
+  <script defer src="/vendors/viewerjs@1.11.6/dist/viewer.min.js"></script>
+
+
+<script defer src="/js/kr-core.min.js"></script>
+
+
+  <script defer src="/js/kr-pjax.min.js"></script>
+
+
+<!-- 额外的追加注入项 -->
+
+
+    </body>
+</html>
