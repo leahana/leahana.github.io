@@ -20,7 +20,7 @@ toc: true
 
 ### 核心关系
 
-![三概念核心关系](https://cdn.jsdelivr.net/gh/leahana/blog-images@dev/tech/ai/2026-03-30-prompt-context-harness-engineering/core-relationship.png)
+![三概念核心关系](https://cdn.jsdmirror.com/gh/leahana/blog-images@dev/tech/ai/2026-03-30-prompt-context-harness-engineering/core-relationship.png)
 
 ```mermaid
 graph LR
@@ -44,7 +44,7 @@ graph LR
 
 ### 何时需要升级
 
-![LLM工程决策路线](https://cdn.jsdelivr.net/gh/leahana/blog-images@dev/tech/ai/2026-03-30-prompt-context-harness-engineering/decision-roadmap.png)
+![LLM工程决策路线](https://cdn.jsdmirror.com/gh/leahana/blog-images@dev/tech/ai/2026-03-30-prompt-context-harness-engineering/decision-roadmap.png)
 
 ```mermaid
 graph TD
@@ -236,7 +236,7 @@ Prompt 可以减少这些问题，但不能根治它们。
 
 当任务进入真实工作流之后，你还需要把 agent 放进可运行、可验证、可接管的闭环里。
 
-![Bug修复完整流程](https://cdn.jsdelivr.net/gh/leahana/blog-images@dev/tech/ai/2026-03-30-prompt-context-harness-engineering/bug-fix-workflow.png)
+![Bug修复完整流程](https://cdn.jsdmirror.com/gh/leahana/blog-images@dev/tech/ai/2026-03-30-prompt-context-harness-engineering/bug-fix-workflow.png)
 
 ```mermaid
 sequenceDiagram
