@@ -177,11 +177,11 @@ donate:
   qrcode_placeholder: "" # 对应平台的二维码出现前的占位图片
   platforms: # 可以用于打赏的平台
     - name: "支付宝"
-      icon: '<img src="/images/donate/jibao.png" alt="支付宝">'
+      icon: "fa fa-alipay"
       color: "#00A0E9"
       qrcode: "https://qr.alipay.com/fkx10074h80wdlc7rkhh73b"
     - name: "微信"
-      icon: '<img src="/images/donate/liewbao.png" alt="微信">'
+      icon: "fa fa-wechat"
       color: "#07C160"
       qrcode: "wxp://f2f0UZPu3nG1PA01tt-I5EDw0wx_G5jA-uDkAw8PuRT9VZtUj-T9s0_Cw7IRYUpTLq7Z"
   # - name: ""
