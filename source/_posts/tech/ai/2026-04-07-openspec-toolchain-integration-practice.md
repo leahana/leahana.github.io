@@ -240,6 +240,27 @@ openspec --version
   规格文档即代码，每次变更都有记录。
 - 规格进度随 Git 流动，换机器 / 切编辑器只需 `git pull` 即可恢复上下文。
 
+### OpenSpec 目录与文件清单
+
+理解 `opsx` 命令背后操作了哪些文件，有助于你更好地掌控变更状态。初始化后，你的项目根目录会多出一个 `openspec/` 文件夹：
+
+| 目录/文件 | 作用 | 存续周期 |
+|----------|------|---------|
+| **`openspec/changes/`** | **变更中（In-flight）**。存放当前正在进行、尚未归档的任务。 | 临时 |
+| └─ `<change-id>/` | 每一个独立的变更需求都会拥有一个以 ID 命名的文件夹。 | 任务期间 |
+| 　 ├─ `proposal.md` | **核心方案建议书**。包含用户故事、API 规格、数据模型等。 | 任务期间 |
+| 　 ├─ `tasks.md` | **任务清单**。由方案拆解出的原子化执行步骤。 | 任务期间 |
+| 　 ├─ `design.md` | （可选）更详细的架构图、UI 设计或技术细节说明。 | 任务期间 |
+| 　 └─ `.openspec.yaml` | 变更单的元数据（标题、作者、关联 spec 等）。 | 任务期间 |
+| **`openspec/specs/`** | **长期规格（Stable）**。存放已收敛、作为长期文档维护的特性规格。 | 长期 |
+| └─ `<feature>.md` | 某个模块或特性的完整说明，是所有 AI 工具读取的“单一事实来源”。 | 长期 |
+| **`openspec/archive/`** | **归档库（Archive）**。存放已完成并执行了 `archive` 命令的历史任务文件夹。 | 永久 |
+
+**核心逻辑**：
+1. `propose` 时，AI 在 `changes/` 下创建新文件夹和 `proposal.md`。
+2. `apply` 时，AI 根据 `proposal.md` 里的 Tasks 逐项修改代码。
+3. `archive` 时，相关的 Task 可能会更新到 `specs/` 下的长期文档中，然后整个变更文件夹会被移动到 `archive/`。
+
 ### 工具链分工架构
 
 四个工具各司其职，形成"AI 架构师 + AI 程序员"的双层协作：
@@ -469,48 +490,4 @@ OpenSpec 写入它，oh-my-openagent 的各 Agent 读取它。两边都不需要
 | v1.4 | 2026-04-07 | 前置规格产物示例，压缩生态对比并突出 OpenSpec 主流程 |
 | v1.5 | 2026-04-07 | 补充真实安装踩坑、`/opsx:` 命令边界与 OpenSpec 和 Plan Mode 的分工认知 |
 | v1.6 | 2026-04-07 | 补充概念澄清：对比 OpenSpec 与 Alibaba/AgentScope 的定位差异 |
-在
-  Claude Code、OpenCode、Gemini CLI 里重复输入相同的背景信息，
-  既省 token 又保持代码风格一致。
-- **规格文档提交 Git**：`opsx propose` 生成的 `specs/*.md` 和 `tasks.md`
-  应该和业务代码一起提交，方便日后追溯"当初为什么这样设计"。
-
----
-
-## ✨ 总结
-
-### 核心要点
-
-1. **工程化协议层**：OpenSpec 不是提示词工程，它是在 AI 和需求之间插入的一层
-   结构化契约，强制把"要做什么"和"怎么验收"显式化。
-2. **单一事实来源**：`openspec/specs/` 目录是所有 AI 工具的共享上下文，
-   解决多工具协作时的漂移问题。
-3. **双层分工**：OpenSpec 做架构师（规格制定），Claude Code / OpenCode 做程序员
-   （代码执行），分工明确后各工具的输出质量都会提升。
-
-### 适用场景
-
-- 需求边界模糊、容易被 AI"自由发挥"的中大型功能
-- 多个 AI 工具协作（Claude Code + OpenCode + Gemini CLI）的复杂项目
-- 需要长期维护、要求"当初为什么这样设计"可追溯的模块
-- 团队协作场景，需要统一 AI 执行的规格口径
-
-### 注意事项
-
-- 安装依赖 Node.js ≥ 20.19.0，无需 API Key 或外部服务账号
-- `propose` 阶段的追问决定规格质量，不要跳过
-- 规格文件要纳入 Git 版本管理，`openspec/` 目录不应加入 `.gitignore`
-- 原子级任务拆分是 OpenCode 自动执行成功率的关键前提
-
----
-
-## 更新记录
-
-| 版本 | 日期 | 说明 |
-|------|------|------|
-| v1.0 | 2026-04-07 | 初始版本 |
-| v1.1 | 2026-04-07 | 方案对比扩展：补充 Claude Code Plan Mode、Cursor Plan Mode、oh-my-openagent 多 Agent；新增使用时机判断决策树 |
-| v1.2 | 2026-04-07 | 修复决策树逻辑（两层判断）；章节名精准化；Python 依赖补说明；流程 A 标出可选路径；新增流程 C（OpenSpec + oh-my-openagent 串联）；Step 4 prompt 与 bash 分离 |
-| v1.3 | 2026-04-07 | 修正幻觉内容：移除虚构的 Supabase 依赖、OpenAI API Key、Python 依赖及 git clone 安装方式；更正为官方实际安装方式（npm install -g）及正确的 Node.js 版本要求（≥20.19.0） |
-| v1.4 | 2026-04-07 | 前置规格产物示例，压缩生态对比并突出 OpenSpec 主流程 |
-| v1.5 | 2026-04-07 | 补充真实安装踩坑、`/opsx:` 命令边界与 OpenSpec 和 Plan Mode 的分工认知 |
+| v1.7 | 2026-04-13 | 补充 OpenSpec 目录与文件清单小节，明确 `changes/`, `specs/`, `archive/` 职责 |
