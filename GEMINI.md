@@ -76,7 +76,7 @@ When modifying content, **NEVER rename the file**. Append a row to the "更新�
 
 All images are hosted in a separate repository: `leahana/blog-images` and served via jsDelivr CDN.
 
-- **CDN URL Format**: `https://cdn.jsdelivr.net/gh/leahana/blog-images@dev/{IMAGE_PATH}`
+- **CDN URL Format**: `https:// cdn.jsdelivr.net/gh/leahana/blog-images@dev/{path}`
 - **Verification**: `bin/check-images.sh` (triggered by pre-push hook) verifies CDN URLs. 404s block push.
 
 ## Security & Integrity
