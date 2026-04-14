@@ -29,8 +29,8 @@ while IFS= read -r file; do
         continue
     fi
 
-    # 提取所有cdn.jsdelivr.net图片URL，格式: ![...](https://cdn.jsdelivr.net/...)
-    URLS=$(grep -oE "https://cdn\.jsdelivr\.net/gh/[^)\"' ]+" "$file" 2>/dev/null || true)
+    # 提取所有CDN图片URL（兼容 jsdelivr 和 jsdmirror 镜像）
+    URLS=$(grep -oE "https://cdn\.(jsdelivr\.net|jsdmirror\.com)/gh/[^)\"' ]+" "$file" 2>/dev/null || true)
 
     if [ -z "$URLS" ]; then
         continue
