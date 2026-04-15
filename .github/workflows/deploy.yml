@@ -49,8 +49,8 @@ jobs:
             'packages:' \
             '  - .' \
             '' \
-            'onlyBuiltDependencies:' \
-            '  - esbuild' > pnpm-workspace.yaml
+            'allowBuilds:' \
+            '  esbuild: true' > pnpm-workspace.yaml
           HUSKY=0 pnpm install
           pnpm run build
 

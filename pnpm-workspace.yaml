@@ -1,5 +1,5 @@
 packages:
   - .
 
-onlyBuiltDependencies:
-  - hexo-util
+allowBuilds:
+  hexo-util: true
