@@ -9,7 +9,7 @@ toc: true
 ---
 
 > 持续追加型文档，每次工具更新后由 AI 代理追加新批次。
-> 主文章参见：[Claude Code Vibecoding 指南](../../ai/2026-03-13-claude-code-cli-vibecoding-guide.md)
+> 主文章参见：{% post_link tech/ai/2026-03-13-claude-code-cli-vibecoding-guide 'Claude Code Vibecoding 指南' %}
 
 ---
 
