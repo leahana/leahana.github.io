@@ -64,6 +64,19 @@
 | `version_scheme` | `semver` |
 | `package` | — |
 
+### Google Gemini CLI
+
+| 字段 | 值 |
+|------|-----|
+| `name` | Google Gemini CLI |
+| `tracking_file` | `2026-04-15-gemini-cli-update-tracking.md` |
+| `repo` | `google/gemini-cli` |
+| `changelog` | GitHub Releases |
+| `release_notes` | `https://geminicli.com/changelog` |
+| `docs` | `https://geminicli.com/docs` |
+| `version_scheme` | `semver` |
+| `package` | `@google/gemini-cli` |
+
 ---
 
 ## §4 执行流水线 (SOP)
@@ -189,7 +202,7 @@
 
 ## §5 输出模板
 
-```markdown
+````markdown
 #### {YYYY-MM} | {版本描述}
 
 **信息截止**：YYYY-MM-DD | **最新 Release**：{版本/更新标识}
@@ -204,12 +217,12 @@
 
   ```bash
   # 最小可用示例
-```
+  ```
 
 ##### 关键 fix
 
 - **修复标题**：修了什么，影响谁
-```
+````
 
 ---
 
