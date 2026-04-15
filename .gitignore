@@ -25,9 +25,16 @@ coverage/
 .obsidian/
 .sisyphus/
 .pnpm-store/
-openspec/changes/
+openspec/
 *.code-workspace
 
 # OpenSpec auto-generated files (use .claude/ instead)
 .github/prompts/
 .github/skills/
+
+# Local planning & TODO drafts (not for publishing)
+todo/
+
+# Local AI tool config files (read locally, not for sharing)
+GEMINI.md
+CLAUDE.md

@@ -231,8 +231,68 @@ split-preserve-zoom = navigation
 ghostty +list-keybinds --default
 ```
 
-这一步很有价值，因为 `Ghostty` 的最佳实践往往不是“背默认快捷键”，
+这一步很有价值，因为 `Ghostty` 的最佳实践往往不是”背默认快捷键”，
 而是先确认有哪些可用动作，再把它们整理成你自己的工作流。
+
+### Cmd+D 分屏目录继承：两层机制协同
+
+`Ghostty` 里 `Cmd+D` 新建分屏时自动进入当前工作目录，不是单一配置项
+开关的结果，而是**两层机制缺一不可**：
+
+**第一层：Ghostty 原生层**
+
+在 `behavior.ghostty` 里启用 `split-inherit-working-directory`：
+
+```ini
+# behavior.ghostty
+# 只让分屏继承工作目录（新窗口和新 tab 仍从 home 开始）
+split-inherit-working-directory = true
+window-inherit-working-directory = false
+tab-inherit-working-directory = false
+```
+
+`split/window/tab` 三个配置彼此独立，分别控制”新建分屏”、”新建窗口”、
+“新建 Tab”时的目录继承行为。只开 split 是最常见的选择：既保留分屏
+目录跟随的体感，又让新窗口始终从干净状态启动。
+
+**第二层：Shell 层（OSC 7 路径报告）**
+
+光有第一层还不够。Ghostty 需要实时知道当前 pane 停在哪个目录，才能在
+新建分屏时拿到正确路径。这依赖 shell 主动上报 OSC 7 信号。
+
+在 `shell/.zshrc` 里注册两个 hook：
+
+```zsh
+# ~/.config/ghostty/shell/.zshrc
+__ghostty_report_cwd() {
+  # ESC ] 7 ; file://localhost/PATH BEL
+  printf “\x1b]7;file://localhost%s\a” “$PWD”
+}
+
+autoload -Uz add-zsh-hook
+add-zsh-hook precmd __ghostty_report_cwd   # 每次命令执行后
+add-zsh-hook chpwd  __ghostty_report_cwd   # 每次 cd 后
+
+# 启动时立即报告一次，确保第一个分屏就能拿到正确目录
+__ghostty_report_cwd
+```
+
+- `precmd`：每次执行完命令回到提示符时触发，覆盖通过脚本跳转目录的情况
+- `chpwd`：每次 `cd` / `pushd` / `popd` 时立即触发，响应更快
+- `add-zsh-hook` 比直接操作 `precmd_functions` 数组更稳健，不会意外覆盖
+  其他已注册的 hook
+
+**为什么两层缺一不可**
+
+| 缺少哪层 | 现象 |
+|--------|------|
+| 只有 OSC 7，没有 `split-inherit-working-directory = true` | 分屏仍然从 home 目录启动，OSC 7 上报无人消费 |
+| 只有 Ghostty 配置，没有 OSC 7 hook | Ghostty 拿不到当前目录信息，分屏目录随机或退化为 home |
+| 两层都有 | `Cmd+D` 新建分屏直接落到当前目录 ✅ |
+
+如果你用了自定义 `ZDOTDIR`（即 Ghostty 独立 shell 入口），Ghostty 的
+自动 Shell Integration 会失效，OSC 7 hook 就必须手动在
+`shell/.zshrc` 里补上。两层都到位后，`Cmd+D` 分屏目录继承就会始终正常。
 
 ### 如果你在 Ghostty 里高频使用 Claude Code
 
@@ -569,6 +629,11 @@ window-height = 40
 quick-terminal-position = top
 quick-terminal-screen = main
 quick-terminal-autohide = true
+
+# 分屏继承当前目录；新窗口和新 tab 保持干净启动
+split-inherit-working-directory = true
+window-inherit-working-directory = false
+tab-inherit-working-directory = false
 ```
 
 ```ini
@@ -671,14 +736,22 @@ shell 注入和核心行为项到底有没有被 Ghostty 真正吃进去。
 ```zsh
 # ~/.config/ghostty/shell/.zshrc
 __ghostty_report_cwd() {
-  # 对路径进行简单的 URL 编码处理（处理空格）
-  local pwd_path=$(printf "%s" "$PWD" | sed 's/ /%20/g')
-  # 使用 localhost 替代不确定的 $HOST，确保 URL 格式始终合法
-  printf '\e]7;file://localhost%s\e\\' "$pwd_path"
+  # 格式: ESC ] 7 ; file://localhost/PATH BEL
+  printf "\x1b]7;file://localhost%s\a" "$PWD"
 }
-precmd_functions+=(__ghostty_report_cwd)
-chpwd_functions+=(__ghostty_report_cwd)
+
+# 用 add-zsh-hook 注册，比直接操作数组更稳健（不会覆盖其他已注册 hook）
+autoload -Uz add-zsh-hook
+add-zsh-hook precmd __ghostty_report_cwd
+add-zsh-hook chpwd  __ghostty_report_cwd
+
+# 启动时立即报告一次，确保第一个分屏就能拿到正确目录
+__ghostty_report_cwd
 ```
+
+> 路径中若含空格，Ghostty 在解析 `file://localhost/path` 时一般能正常处理；
+> 若遇到极端情况（路径含特殊字符导致报告失效），可在 `printf` 前加一行
+> `local pwd_path=$(printf "%s" "$PWD" | sed 's/ /%20/g')` 并改用 `$pwd_path`。
 
 ### 3. 增强版多屏 Git 审查流
 
@@ -792,3 +865,4 @@ gwatch() {
 | v1.5 | 2026-04-02 | 在终端对比中补充 `Konsole` 的定位、优缺点与适用场景 |
 | v1.6 | 2026-04-02 | 补充 Ghostty 中 Claude Code 的 Option/Meta、Cmd+P 与 effort 规则 |
 | v1.7 | 2026-04-03 | 补充 OSC 7 路径编码修复及多屏 Git 审查辅助函数 |
+| v1.8 | 2026-04-15 | 新增"Cmd+D 分屏目录继承"完整机制说明（Ghostty 原生层 + OSC 7 Shell 层），补全 behavior.ghostty 中 split-inherit-working-directory 配置组，统一 OSC 7 实现为 add-zsh-hook 写法 |

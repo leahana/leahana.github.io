@@ -12,8 +12,8 @@ NC='\033[0m' # No Color
 
 echo -e "${YELLOW}🖼️  检查图片URL...${NC}"
 
-# 获取所有被git追踪的markdown文件（排除 CLAUDE.md，其中含示例 URL）
-MD_FILES=$(git ls-files | grep -E "\.md$" | grep -v "^CLAUDE\.md$" || true)
+# 获取所有被git追踪的markdown文件（排除 CLAUDE.md / AGENTS.md，其中含示例 URL）
+MD_FILES=$(git ls-files | grep -E "\.md$" | grep -v "^CLAUDE\.md$" | grep -v "^AGENTS\.md$" || true)
 
 if [ -z "$MD_FILES" ]; then
     echo -e "${GREEN}✅ 没有需要检查的markdown文件${NC}"
@@ -29,8 +29,8 @@ while IFS= read -r file; do
         continue
     fi
 
-    # 提取所有cdn.jsdelivr.net图片URL，格式: ![...](https://cdn.jsdelivr.net/...)
-    URLS=$(grep -oE "https://cdn\.jsdelivr\.net/gh/[^)\"' ]+" "$file" 2>/dev/null || true)
+    # 提取所有CDN图片URL（兼容 jsdelivr 和 jsdmirror 镜像）
+    URLS=$(grep -oE "https://cdn\.(jsdelivr\.net|jsdmirror\.com)/gh/[^)\"' ]+" "$file" 2>/dev/null || true)
 
     if [ -z "$URLS" ]; then
         continue

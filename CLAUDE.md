@@ -150,6 +150,38 @@ git cliff --config cliff.toml --unreleased
 
 ## Content Management
 
+### Posts Directory Structure
+
+```
+source/_posts/
+├── tech/
+│   ├── ai/          # AI / Agent / Prompt 技术文章
+│   ├── backend/     # 后端技术文章
+│   └── tools/       # 工具使用与实践
+│       └── tracking/    # 工具更新追踪（持续追加型）
+├── design_patterns/ # 设计模式
+├── gaming/          # 游戏相关
+├── mindset/         # 思考随笔
+└── docs/            # Meta 文档
+```
+
+### Tracking 文章（工具更新日志）
+
+`source/_posts/tech/tools/tracking/` 存放持续追加型工具更新日志，每个工具一篇。
+
+**现有 tracking 文章**：
+- `2026-04-13-claude-code-update-tracking.md` — Claude Code CLI
+- `2026-04-13-opencode-update-tracking.md` — OpenCode + oh-my-openagent
+- `2026-04-13-codex-update-tracking.md` — Codex
+
+**追加规则**（AI 代理必须遵守）：
+- 已有工具的 tracking 文章：只追加新批次，不新建文件
+- 批次标题格式：`#### {YYYY-MM} | {版本描述}`（semver 工具用 `vA.B.C ~ vX.Y.Z`，非 semver 工具用与其 `version_scheme` 匹配的自然描述）
+- `version_scheme` 取值：`semver` / `build-number` / `date-based` / `feature-name`，决定版本速览表列名和增量锚点策略
+- 层级：`## YYYY 年` > `### Qx（月份范围）` > `#### 批次`
+- 每个批次固定三段：版本速览表 + `##### 新特性用法` + `##### 关键 fix`
+- `categories` 必须为 `[tech, tools, tracking]`
+
 ### File Naming Convention
 
 - **Format**: `YYYY-MM-DD-{kebab-title}.md`

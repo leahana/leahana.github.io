@@ -25,7 +25,8 @@ jobs:
       - name: Setup pnpm
         uses: pnpm/action-setup@v6
         with:
-          version: 9
+          version: 10.27.0
+          standalone: true
 
       - name: Setup Node.js
         uses: actions/setup-node@v6
@@ -33,13 +34,24 @@ jobs:
           node-version: '20'
           cache: 'pnpm'
 
+      - name: Show tool versions
+        run: |
+          node --version
+          pnpm --version
+
       - name: Install dependencies
-        run: pnpm install
+        run: pnpm install --no-frozen-lockfile
 
       - name: Build theme assets
         run: |
           cd themes/kratos-rebirth
-          pnpm install
+          printf '%s\n' \
+            'packages:' \
+            '  - .' \
+            '' \
+            'allowBuilds:' \
+            '  esbuild: true' > pnpm-workspace.yaml
+          HUSKY=0 pnpm install
           pnpm run build
 
       - name: Security check - scan for secrets

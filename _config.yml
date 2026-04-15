@@ -130,4 +130,4 @@ mermaid:
   enable: true
   version: 'latest'
   theme: default
-  cdn: https://cdn.jsdelivr.net/npm/mermaid@latest/dist/
+  cdn: https://cdn.jsdmirror.com/npm/mermaid@latest/dist/

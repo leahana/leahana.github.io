@@ -5,6 +5,7 @@ updates:
   schedule:
     interval: weekly
     day: monday
+  target-branch: hexo
   open-pull-requests-limit: 5
   ignore:
   # 忽略补丁版本更新，只更新次版本和主版本
@@ -16,3 +17,4 @@ updates:
   schedule:
     interval: weekly
     day: monday
+  target-branch: hexo
