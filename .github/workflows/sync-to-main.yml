@@ -1,0 +1,68 @@
+name: Sync hexo to main
+
+on:
+  schedule:
+    - cron: '0 0 * * 1'  # 每周一 00:00 UTC（北京时间 08:00）
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pull-requests: write
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v6
+        with:
+          fetch-depth: 0
+
+      - name: Check if sync needed
+        id: check
+        run: |
+          AHEAD=$(git rev-list --count origin/main..origin/hexo)
+          echo "ahead=$AHEAD" >> "$GITHUB_OUTPUT"
+          if [ "$AHEAD" -eq 0 ]; then
+            echo "hexo 与 main 已同步，无需操作。"
+          else
+            echo "hexo 领先 main ${AHEAD} 个提交。"
+          fi
+
+      - name: Check for existing open PR
+        if: steps.check.outputs.ahead != '0'
+        id: existing
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          COUNT=$(gh pr list --base main --head hexo --state open --json number --jq 'length')
+          echo "open_prs=$COUNT" >> "$GITHUB_OUTPUT"
+          if [ "$COUNT" -gt 0 ]; then
+            PR_NUM=$(gh pr list --base main --head hexo --state open --json number --jq '.[0].number')
+            echo "已有开放 PR #${PR_NUM}，跳过创建。"
+          fi
+
+      - name: Create sync PR
+        if: steps.check.outputs.ahead != '0' && steps.existing.outputs.open_prs == '0'
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          AHEAD=${{ steps.check.outputs.ahead }}
+          DATE=$(date +'%Y-%m-%d')
+          gh pr create \
+            --base main \
+            --head hexo \
+            --title "chore: sync hexo → main (${DATE})" \
+            --body "## Automated Sync
+
+          同步 **hexo** → **main**（领先 ${AHEAD} 个提交）。
+
+          此 PR 由 GitHub Actions 自动创建，用于保持 \`main\` 分支与 \`hexo\` 同步作为备份。
+
+          - **源分支**: \`hexo\`（开发主分支）
+          - **目标分支**: \`main\`（备份存档分支）
+          - **部署不受影响**: \`gh-pages\` 由 \`hexo\` 分支独立触发
+
+          ---
+          *Created by [sync-to-main](${{ github.server_url }}/${{ github.repository }}/actions/workflows/sync-to-main.yml)*"
