@@ -9,7 +9,7 @@ toc: true
 ---
 
 > 持续追加型文档，每次工具更新后由 AI 代理追加新批次。
-> 主文章参见：{% post_link tech/tools/2026-04-02-gemini-cli-sandbox-and-ghostty-isolation.md 'Gemini CLI Sandbox vs. Ghostty' %}
+> 主文章参见：{% post_link tech/tools/2026-04-02-gemini-cli-sandbox-and-ghostty-isolation 'Gemini CLI Sandbox vs. Ghostty' %}
 
 ---
 
@@ -60,3 +60,4 @@ toc: true
 | 版本 | 日期 | 说明 |
 |------|------|------|
 | v1.0 | 2026-04-15 | 初始版本，记录 2026-04 核心更新内容 |
+| v1.1 | 2026-04-15 | 修复主文章 `post_link` 链接解析失败问题 |
