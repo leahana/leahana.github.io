@@ -22,16 +22,21 @@ jobs:
           fetch-depth: 0
           submodules: true
 
-      - name: Setup pnpm
-        uses: pnpm/action-setup@v6
-        with:
-          version: 9
-
       - name: Setup Node.js
         uses: actions/setup-node@v6
         with:
           node-version: '20'
           cache: 'pnpm'
+
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v6
+        with:
+          version: 10.27.0
+
+      - name: Show tool versions
+        run: |
+          node --version
+          pnpm --version
 
       - name: Install dependencies
         run: pnpm install --no-frozen-lockfile
@@ -39,7 +44,13 @@ jobs:
       - name: Build theme assets
         run: |
           cd themes/kratos-rebirth
-          pnpm install
+          printf '%s\n' \
+            'packages:' \
+            '  - .' \
+            '' \
+            'onlyBuiltDependencies:' \
+            '  - esbuild' > pnpm-workspace.yaml
+          HUSKY=0 pnpm install
           pnpm run build
 
       - name: Security check - scan for secrets
