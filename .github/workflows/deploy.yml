@@ -22,16 +22,17 @@ jobs:
           fetch-depth: 0
           submodules: true
 
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v6
+        with:
+          version: 10.27.0
+          standalone: true
+
       - name: Setup Node.js
         uses: actions/setup-node@v6
         with:
           node-version: '20'
           cache: 'pnpm'
-
-      - name: Setup pnpm
-        uses: pnpm/action-setup@v6
-        with:
-          version: 10.27.0
 
       - name: Show tool versions
         run: |
