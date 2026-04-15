@@ -158,3 +158,50 @@ Use the correct prefix — it determines changelog grouping (articles vs infrast
 2. **Skipping theme build**: Actions fail → Build locally first
 3. **Security hooks**: Commits blocked → Run `pnpm check:secrets` to fix
 4. **Changing dates**: Alters permalinks → Keep original date
+
+## Image Management
+
+All images are hosted in a separate repository: `leahana/blog-images`,
+served via jsDelivr CDN.
+
+- **CDN URL format**: `https://cdn.jsdelivr.net/gh/leahana/blog-images@dev/{path}`
+- **Folder name**: matches post filename (without `.md`)
+- **Image names**: `overview.png`, `problem.png`, `solution.png`, `step-N.png`
+- **Verification**: `bin/check-images.sh` (triggered by pre-push hook) — 404s
+  block push, timeouts are warnings only
+
+**Branch strategy**:
+- `dev` branch: daily uploads (use `@dev` in CDN URLs)
+- `main` branch: archive only — merge via PR + tag periodically
+
+## Release Process
+
+Releases use **calendar versioning**: `vYYYY.MM` (e.g., `v2026.04`).
+Multiple releases in one month: `v2026.04.1`.
+
+**To create a release:**
+1. Go to GitHub Actions → **"Create Release"** workflow
+2. Click **Run workflow**
+3. (Optional) Enter tag, e.g. `v2026.05`. Leave blank to auto-generate.
+4. (Optional) Enable `dry_run` to preview changelog without publishing.
+
+**To preview locally** (requires `brew install git-cliff`):
+```bash
+git cliff --config cliff.toml --unreleased
+```
+
+## Project Skills & Commands
+
+Custom skills in `.claude/skills/` (Claude Code) — also informational for
+other agents:
+
+| Skill / Command | Description |
+|-----------------|-------------|
+| `optimize-doc` | 博客型 Markdown 优化工作流，结合模板、优化指南和格式规范使用 |
+| `save` | 保存当前对话为 Markdown 文件存档 |
+| `/security-review` | AI 驱动安全审查，扫描密钥泄露、配置风险、脚本注入等 |
+
+Reference docs in `source/docs/`:
+- `markdown-templates.md` — 起稿模板
+- `markdown-optimization-guide.md` — 优化方法
+- `markdown-format-check.md` — 格式校验规则
