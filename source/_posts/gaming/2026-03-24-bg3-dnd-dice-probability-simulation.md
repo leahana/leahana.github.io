@@ -35,6 +35,8 @@ graph TD
     style G fill:#ffcdd2,stroke:#333,color:#000
 ```
 
+![攻击判定流程](https://cdn.jsdelivr.net/gh/leahana/blog-images@dev/gaming/2026-03-24-bg3-dnd-dice-probability-simulation/attack-flow.png)
+
 ### 命中概率速查表
 
 | 攻击修正 | AC 12 | AC 14 | AC 16 | AC 18 | AC 20 |
@@ -142,6 +144,8 @@ graph LR
     style F fill:#c8e6c9,stroke:#333,color:#000
     style G fill:#ffcdd2,stroke:#333,color:#000
 ```
+
+![优势劣势概率对比](https://cdn.jsdelivr.net/gh/leahana/blog-images@dev/gaming/2026-03-24-bg3-dnd-dice-probability-simulation/advantage-comparison.png)
 
 ---
 
@@ -327,6 +331,8 @@ graph TD
     style H fill:#c8e6c9,stroke:#333,color:#000
 ```
 
+![优势选择时机](https://cdn.jsdelivr.net/gh/leahana/blog-images@dev/gaming/2026-03-24-bg3-dnd-dice-probability-simulation/advantage-timing.png)
+
 ### 关键战术原则
 
 **优势 vs 伤害加成的选择**：
@@ -401,3 +407,4 @@ A：不完全一样。标准 RAW 5e 中，普通豁免检定并不强制"自然 
 |------|------|------|
 | v1.0 | 2026-03-24 | 初始版本 |
 | v1.1 | 2026-03-24 | 补充暴击阈值可配置说明，更新 simulate_attacks 支持 crit_threshold 参数；添加仓库联动引用 |
+| v1.2 | 2026-04-15 | 为三张流程图追加 Chiikawa 风格插图（m2c-pipeline 生成） |
