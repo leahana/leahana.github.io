@@ -1,19 +1,15 @@
-<div align="center">
-
 # 🐱 MamimiJa Nai
 
 **记录技术思考与探索 · [oiiai.top](https://oiiai.top)**
 
 ---
 
-### 👤 [查看完整个人信息 →](https://github.com/leahana)
+👤 [查看完整个人信息 →](https://github.com/leahana)
 
 [![Deploy](https://img.shields.io/badge/Deploy-Success-7aa2f7?style=flat-square&logo=githubactions&logoColor=white)](https://github.com/leahana/leahana.github.io/actions/workflows/deploy.yml)
 [![Hexo](https://img.shields.io/badge/Hexo-8.1.1-7aa2f7?style=flat-square&logo=hexo&logoColor=white)](https://hexo.io/)
 [![Theme](https://img.shields.io/badge/Theme-Kratos--Rebirth-7aa2f7?style=flat-square)](https://github.com/kratos-rebirth/kratos-rebirth)
 [![License](https://img.shields.io/badge/License-CC%20BY--SA%204.0-7aa2f7?style=flat-square)](https://creativecommons.org/licenses/by-sa/4.0/)
-
-</div>
 
 ---
 
@@ -45,16 +41,23 @@ hexo server  # http://localhost:4000
 ## 🛠️ 技术信息
 
 ### 项目结构
-```
+
+```text
 source/_posts/          # 博客文章
-├── tech/              # 技术文章
+├── tech/
+│   ├── ai/            # AI / Agent / Prompt
+│   ├── backend/       # 后端技术
+│   └── tools/         # 工具使用与实践
+│       └── tracking/  # 工具更新追踪
 ├── design_patterns/   # 设计模式
 ├── gaming/            # 游戏相关
-└── mindset/           # 思考随笔
+├── mindset/           # 思考随笔
+└── docs/              # 内部文档
 themes/kratos-rebirth/ # 主题子模块
 ```
 
 ### 命令速查
+
 ```bash
 hexo server             # 本地开发
 hexo generate           # 生成静态站点
@@ -63,25 +66,23 @@ hexo new post <title>   # 新建文章
 ```
 
 ### 部署流程
-```
+
+```text
 hexo 分支 → GitHub Actions → GitHub Pages
 ```
 
 ### 技术栈
+
 | 组件 | 版本 |
 |:-----|:-----|
 | Hexo | 8.1.1 |
 | Theme | Kratos-Rebirth |
-| Runtime | Node.js 20 / pnpm 9+ |
+| Runtime | Node.js 20 / pnpm 10 |
 | Diagrams | Mermaid |
 | CDN | jsDelivr |
 
 ---
 
-<div align="center">
-
 **[← 回到 GitHub Profile](https://github.com/leahana)**
 
 博客内容采用 [CC BY-SA 4.0](https://creativecommons.org/licenses/by-sa/4.0/) 许可协议
-
-</div>
