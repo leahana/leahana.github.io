@@ -45,6 +45,13 @@ graph LR
     style C fill:#fff3e0,stroke:#333,color:#000
 ```
 
+<details>
+<summary>**🖼️ 插图版（2026-04-17 增量补充）**</summary>
+
+![分钟速览版图解："基础操作、#1 #2 #3 #10"](https://cdn.jsdelivr.net/gh/leahana/blog-images@dev/tech/tools/2026-04-02-claude-code-powerups-practice-guide/diagram_20260417_084054_00.webp)
+
+</details>
+
 建议学习顺序：先打好基础操作的底子，再把项目配置做扎实，最后探索进阶协作能力。下面按这个顺序展开。
 
 ---
@@ -476,6 +483,13 @@ graph TD
     style I fill:#fff3e0,stroke:#333,color:#000
 ```
 
+<details>
+<summary>**🖼️ 插图版（2026-04-17 增量补充）**</summary>
+
+![组合工作流：一次真实的博客写作过程图解："#2 Plan 模式、规划文章结构"](https://cdn.jsdelivr.net/gh/leahana/blog-images@dev/tech/tools/2026-04-02-claude-code-powerups-practice-guide/diagram_20260417_084158_01.webp)
+
+</details>
+
 一次工作流串联了 #1、#2、#6、#7 四个 Power-Up。不需要刻意使用所有能力，而是让它们在需要的时候自然出现。
 
 ---
@@ -486,3 +500,4 @@ graph TD
 |------|------|------|
 | v1.0 | 2026-04-02 | 初始版本 |
 | v1.1 | 2026-04-07 | 补充 Plan Mode 与 OpenSpec 的边界说明，并增加相关实践文章跳转 |
+| v1.2 | 2026-04-17 | 为 2 个 Mermaid 图表追加 Chiikawa 风格插图（m2c-pipeline 生成） |

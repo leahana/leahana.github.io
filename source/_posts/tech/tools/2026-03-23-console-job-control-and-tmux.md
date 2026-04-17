@@ -32,6 +32,13 @@ graph TD
     G --> H[断线后仍可重连]
 ```
 
+<details>
+<summary>**🖼️ 插图版（2026-04-17 增量补充）**</summary>
+
+![核心概念图解：前台运行 command、终止进程、挂起进程](https://cdn.jsdelivr.net/gh/leahana/blog-images@dev/tech/tools/2026-03-23-console-job-control-and-tmux/diagram_20260417_075344_00.webp)
+
+</details>
+
 `Ctrl+C` 的目标是停掉任务，`Ctrl+Z` 的目标是先暂停任务，`bg` 的目标是让已暂停任务在后台继续跑。真正解决“关掉终端后还能继续”的，通常不是 `bg`，而是 `nohup`、`disown` 或 `tmux`。
 
 ### 一张表看懂差异
@@ -55,6 +62,13 @@ graph TD
     D -->|是| E[nohup command &]
     D -->|否| F[tmux 或服务管理器]
 ```
+
+<details>
+<summary>**🖼️ 插图版（2026-04-17 增量补充）**</summary>
+
+![选择建议对比图：命令要跑很久、优先用 tmux、nohup command &](https://cdn.jsdelivr.net/gh/leahana/blog-images@dev/tech/tools/2026-03-23-console-job-control-and-tmux/diagram_20260417_075353_01.webp)
+
+</details>
 
 ### 先记住这 4 句话
 
@@ -568,3 +582,4 @@ tmux attach -t work
 | 版本 | 日期 | 说明 |
 |------|------|------|
 | v1.0 | 2026-03-23 | 初版，整理 `Ctrl+C`、`Ctrl+Z`、`bg`、`nohup`、`disown` 和 `tmux` 的选择逻辑 |
+| v1.1 | 2026-04-17 | 为 2 个 Mermaid 图表追加 Chiikawa 风格插图（m2c-pipeline 生成） |

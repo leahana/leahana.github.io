@@ -40,6 +40,13 @@ graph LR
     style H fill:#c8e6c9
 ```
 
+<details>
+<summary>**🖼️ 插图版（2026-04-17 增量补充）**</summary>
+
+![11 类命名模式总览图解：Java 命名模式、资源管理、数据传播](https://cdn.jsdelivr.net/gh/leahana/blog-images@dev/tech/backend/2023-03-03-java-naming-conventions/diagram_20260417_075551_00.webp)
+
+</details>
+
 ### 💎 命名速查表
 
 | 你想表达的意思 | 推荐后缀 | 典型示例 |
@@ -716,3 +723,4 @@ ApplicationContextInitializer
 |------|------|------|
 | v1.0 | 2023-03-03 | 初始版本 |
 | v1.1 | 2026-03-11 | 优化文档结构，添加速查表、对比分析和 FAQ |
+| v1.2 | 2026-04-17 | 为 1 个 Mermaid 图表追加 Chiikawa 风格插图（m2c-pipeline 生成） |

@@ -37,6 +37,13 @@ sequenceDiagram
     S-->>U: 8. 返回业务数据
 ```
 
+<details>
+<summary>**🖼️ 插图版（2026-04-17 增量补充）**</summary>
+
+![JWT 认证流程](https://cdn.jsdelivr.net/gh/leahana/blog-images@dev/tech/backend/2023-06-12-microservice-auth-passing/diagram_20260417_081809_00.webp)
+
+</details>
+
 ### 💎 方案对比
 
 | 特性 | JWT | OAuth2 | Session |
@@ -97,6 +104,13 @@ graph TD
     style ServiceB fill:#f3e5f5
     style ServiceC fill:#f3e5f5
 ```
+
+<details>
+<summary>**🖼️ 插图版（2026-04-17 增量补充）**</summary>
+
+![微服务认证架构总览：客户端、API 网关、认证服务](https://cdn.jsdelivr.net/gh/leahana/blog-images@dev/tech/backend/2023-06-12-microservice-auth-passing/diagram_20260417_082011_01.webp)
+
+</details>
 
 在这个架构中，**API 网关**负责统一的认证鉴权，业务服务只需关注自身逻辑。认证服务集中管理用户信息和令牌发放。
 
@@ -184,6 +198,13 @@ sequenceDiagram
     Biz->>Biz: 8. 检查用户权限
     Biz-->>C: 9. 返回业务数据
 ```
+
+<details>
+<summary>**🖼️ 插图版（2026-04-17 增量补充）**</summary>
+
+![JWT 认证完整流程：Authorization: Bearer <JWT>](https://cdn.jsdelivr.net/gh/leahana/blog-images@dev/tech/backend/2023-06-12-microservice-auth-passing/diagram_20260417_082234_02.webp)
+
+</details>
 
 当微服务收到请求时，会读取并验证 JWT。由于 JWT 在被创建时使用了密钥签名，所以微服务可以验证 JWT 的完整性和有效性，然后从中读取出用户的权限，决定是否允许用户进行相应的操作。
 
@@ -382,6 +403,13 @@ sequenceDiagram
     C->>G: 7. 使用新 Token 重新请求
     G-->>C: 8. 返回业务数据
 ```
+
+<details>
+<summary>**🖼️ 插图版（2026-04-17 增量补充）**</summary>
+
+![刷新流程](https://cdn.jsdelivr.net/gh/leahana/blog-images@dev/tech/backend/2023-06-12-microservice-auth-passing/diagram_20260417_082353_03.webp)
+
+</details>
 
 ### 3.3 刷新接口实现
 
@@ -762,3 +790,4 @@ public class TokenBlacklistService {
 |------|------|------|
 | v1.0 | 2023-06-12 | 初始版本 |
 | v2.0 | 2026-03-11 | 优化文档结构，大幅扩充内容，添加代码示例和 FAQ |
+| v2.1 | 2026-04-17 | 为 4 个 Mermaid 图表追加 Chiikawa 风格插图（m2c-pipeline 生成） |

@@ -35,6 +35,13 @@ graph LR
     style D fill:#ffccbc,stroke:#333,color:#000
 ```
 
+<details>
+<summary>**🖼️ 插图版（2026-04-17 增量补充）**</summary>
+
+![TypeHandler 调用链流程图：Java 对象、LocalDateTime](https://cdn.jsdelivr.net/gh/leahana/blog-images@dev/tech/backend/2026-03-23-mybatis-localdatetime-typehandler-register/diagram_20260417_092555_00.webp)
+
+</details>
+
 ### 💎 核心代码（最精简版）
 
 ```java
@@ -511,3 +518,4 @@ SET GLOBAL time_zone = '+08:00';
 | 版本 | 日期 | 说明 |
 |------|------|------|
 | v1.0 | 2026-03-23 | 初始版本 |
+| v1.1 | 2026-04-17 | 为 1 个 Mermaid 图表追加 Chiikawa 风格插图（m2c-pipeline 生成） |

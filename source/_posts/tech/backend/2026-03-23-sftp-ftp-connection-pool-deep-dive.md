@@ -37,6 +37,13 @@ graph TD
     style E fill:#ffccbc,stroke:#333,color:#000
 ```
 
+<details>
+<summary>**🖼️ 插图版（2026-04-17 增量补充）**</summary>
+
+![连接池生命周期图解："应用请求连接"、池中有空闲连接?、"取出并验证有效性"](https://cdn.jsdelivr.net/gh/leahana/blog-images@dev/tech/backend/2026-03-23-sftp-ftp-connection-pool-deep-dive/diagram_20260417_092810_00.webp)
+
+</details>
+
 ### 方案选型速查
 
 | 方案 | 实现复杂度 | 连接验证 | 空闲回收 | 泄漏检测 | 监控 | 推荐场景 |
@@ -127,6 +134,13 @@ graph LR
     style D fill:#bbdefb,stroke:#333,color:#000
     style E fill:#ffccbc,stroke:#333,color:#000
 ```
+
+<details>
+<summary>**🖼️ 插图版（2026-04-17 增量补充）**</summary>
+
+![设计思路图解："业务代码"、borrowConnection](https://cdn.jsdelivr.net/gh/leahana/blog-images@dev/tech/backend/2026-03-23-sftp-ftp-connection-pool-deep-dive/diagram_20260417_092943_01.webp)
+
+</details>
 
 核心设计：
 
@@ -388,6 +402,13 @@ graph TD
     style H fill:#ffccbc,stroke:#333,color:#000
 ```
 
+<details>
+<summary>**🖼️ 插图版（2026-04-17 增量补充）**</summary>
+
+![配置和使用 GenericObjectPool图解："borrowObject()"、池中有空闲对象?](https://cdn.jsdelivr.net/gh/leahana/blog-images@dev/tech/backend/2026-03-23-sftp-ftp-connection-pool-deep-dive/diagram_20260417_093049_02.webp)
+
+</details>
+
 ```java
 import com.jcraft.jsch.ChannelSftp;
 import org.apache.commons.pool2.impl.GenericObjectPool;
@@ -609,3 +630,4 @@ Spring 的 prototype scope 每次注入都创建新实例，但**不负责销毁
 | 版本 | 日期 | 说明 |
 |------|------|------|
 | v1.0 | 2026-03-23 | 初始版本 |
+| v1.1 | 2026-04-17 | 为 3 个 Mermaid 图表追加 Chiikawa 风格插图（m2c-pipeline 生成） |

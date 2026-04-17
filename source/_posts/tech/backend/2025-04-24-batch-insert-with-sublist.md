@@ -36,6 +36,13 @@ graph LR
     style E fill:#f3e5f5
 ```
 
+<details>
+<summary>**🖼️ 插图版（2026-04-17 增量补充）**</summary>
+
+![核心概念图解：大数据量、subList分片、批量入库](https://cdn.jsdelivr.net/gh/leahana/blog-images@dev/tech/backend/2025-04-24-batch-insert-with-sublist/diagram_20260417_084950_00.webp)
+
+</details>
+
 ![数据搬运大作战：Java List 分片与批量入库指南](https://cdn.jsdmirror.com/gh/leahana/blog-images@dev/tech/backend/2025-04-24-batch-insert-with-sublist/batch-insert-core-concept.jpg)
 
 ### 💎 为什么需要分批处理？
@@ -64,6 +71,13 @@ graph TD
     style D fill:#fff3e0
     style F fill:#e3f2fd
 ```
+
+<details>
+<summary>**🖼️ 插图版（2026-04-17 增量补充）**</summary>
+
+![什么时候使用？图解：数据量 > 1000、使用分批处理、考虑流式处理](https://cdn.jsdelivr.net/gh/leahana/blog-images@dev/tech/backend/2025-04-24-batch-insert-with-sublist/diagram_20260417_085649_01.webp)
+
+</details>
 
 ![怎么处理才好呢：数据量级与处理方式的选型](https://cdn.jsdmirror.com/gh/leahana/blog-images@dev/tech/backend/2025-04-24-batch-insert-with-sublist/batch-processing-decision.jpg)
 
@@ -121,6 +135,13 @@ flowchart TD
         D -.->|异常/失败| E(重试队列)
     end
 ```
+
+<details>
+<summary>**🖼️ 插图版（2026-04-17 增量补充）**</summary>
+
+![功能模块分解图解：数据输入、批量分片算法、批量入库接口](https://cdn.jsdelivr.net/gh/leahana/blog-images@dev/tech/backend/2025-04-24-batch-insert-with-sublist/diagram_20260417_085807_02.webp)
+
+</details>
 
 > 技术隐喻：整个流程如同快递分拣中心，数据输入是包裹入库，分片算法像分拣传送带，批量入库接口是装车发货，监控与补偿机制则是异常包裹的人工复核区。
 
@@ -283,6 +304,13 @@ graph TD
     style E fill:#c8e6c9
     style F fill:#fff3e0
 ```
+
+<details>
+<summary>**🖼️ 插图版（2026-04-17 增量补充）**</summary>
+
+![技术方案对比：分批处理需求、使用 itertools.batched](https://cdn.jsdelivr.net/gh/leahana/blog-images@dev/tech/backend/2025-04-24-batch-insert-with-sublist/diagram_20260417_092851_00.webp)
+
+</details>
 
 > 💡 **提示**：Python 3.12 的 `itertools.batched()` 是官方推荐方案，
 > 性能优异且无需额外依赖。对于新项目，强烈建议使用 Python 3.12+。
@@ -548,3 +576,4 @@ from itertools import batched
 | v2.2 | 2026-01-12 | 添加 6 个常见问题解答 |
 | v2.3 | 2026-01-12 | 添加 Python 版本实现（itertools.batched 和 more-itertools）|
 | v2.4 | 2026-03-11 | 为速览版两个 mermaid 图表添加生动配图 |
+| v2.5 | 2026-04-17 | 为 4 个 Mermaid 图表追加 Chiikawa 风格插图（m2c-pipeline 生成） |

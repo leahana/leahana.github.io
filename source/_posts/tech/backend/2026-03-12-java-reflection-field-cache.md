@@ -33,6 +33,13 @@ graph LR
     style D fill:#ffccbc
 ```
 
+<details>
+<summary>**🖼️ 插图版（2026-04-17 增量补充）**</summary>
+
+![核心机制关系图：业务代码、直接返回 Field 数组、反射获取 + 存入缓存](https://cdn.jsdelivr.net/gh/leahana/blog-images@dev/tech/backend/2026-03-12-java-reflection-field-cache/diagram_20260417_075422_00.webp)
+
+</details>
+
 **一句话**：首次反射获取后缓存到 Map，后续直接查 Map，跳过 JVM 反射开销。
 
 ### 💎 为什么需要缓存？
@@ -469,6 +476,13 @@ graph TD
     style E fill:#ffccbc
 ```
 
+<details>
+<summary>**🖼️ 插图版（2026-04-17 增量补充）**</summary>
+
+![方案选择建议对比图：需要反射访问字段、缓存 Field 数组](https://cdn.jsdelivr.net/gh/leahana/blog-images@dev/tech/backend/2026-03-12-java-reflection-field-cache/diagram_20260417_075346_01.webp)
+
+</details>
+
 > **务实建议**：90% 的场景用 `ClassValue` 缓存 `Field[]` 就够了。只有在 JMH 测试明确证明反射是瓶颈时，才需要考虑 LambdaMetafactory 或 ReflectASM。
 
 ## 7. 实战案例
@@ -754,3 +768,4 @@ private static final ClassValue<Method[]> METHOD_CACHE = new ClassValue<>() {
 |------|------|------|
 | v1.0 | 2026-03-12 | 初始版本 |
 | v1.1 | 2026-03-12 | 补充优缺点分析、进阶方案（LambdaMetafactory / ReflectASM）、HashMap 线程安全风险、AccessibleObject 批量 API |
+| v1.2 | 2026-04-17 | 为 2 个 Mermaid 图表追加 Chiikawa 风格插图（m2c-pipeline 生成） |

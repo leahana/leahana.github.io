@@ -53,6 +53,13 @@ graph TD
     style H fill:#d1c4e9,stroke:#333,color:#000
 ```
 
+<details>
+<summary>**🖼️ 插图版（2026-04-17 增量补充）**</summary>
+
+![分钟速览版图解："准备换终端"、你最看重什么?、"Ghostty"](https://cdn.jsdelivr.net/gh/leahana/blog-images@dev/tech/tools/2026-04-01-iterm2-to-ghostty-migration-guide/diagram_20260417_080200_00.webp)
+
+</details>
+
 ---
 
 ## 为什么我会认真考虑从 iTerm2 迁移到 Ghostty
@@ -866,3 +873,4 @@ gwatch() {
 | v1.6 | 2026-04-02 | 补充 Ghostty 中 Claude Code 的 Option/Meta、Cmd+P 与 effort 规则 |
 | v1.7 | 2026-04-03 | 补充 OSC 7 路径编码修复及多屏 Git 审查辅助函数 |
 | v1.8 | 2026-04-15 | 新增"Cmd+D 分屏目录继承"完整机制说明（Ghostty 原生层 + OSC 7 Shell 层），补全 behavior.ghostty 中 split-inherit-working-directory 配置组，统一 OSC 7 实现为 add-zsh-hook 写法 |
+| v1.9 | 2026-04-17 | 为 1 个 Mermaid 图表追加 Chiikawa 风格插图（m2c-pipeline 生成） |

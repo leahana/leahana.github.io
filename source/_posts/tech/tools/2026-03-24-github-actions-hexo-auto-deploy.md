@@ -288,6 +288,13 @@ graph TD
     style G fill:#c8e6c9
 ```
 
+<details>
+<summary>**🖼️ 插图版（2026-04-17 增量补充）**</summary>
+
+![维度三：构建逻辑——两阶段构建的场景需求图解：pnpm install - 根项目、安装 Hexo 及插件](https://cdn.jsdelivr.net/gh/leahana/blog-images@dev/tech/tools/2026-03-24-github-actions-hexo-auto-deploy/diagram_20260417_093347_00.webp)
+
+</details>
+
 ### 为什么主题需要独立的 install + build
 
 ```yaml
@@ -394,6 +401,13 @@ graph TD
     style E fill:#ffcdd2
     style G fill:#c8e6c9
 ```
+
+<details>
+<summary>**🖼️ 插图版（2026-04-17 增量补充）**</summary>
+
+![三层防护体系图解："第一层：本地防护"、pre-commit Hook](https://cdn.jsdelivr.net/gh/leahana/blog-images@dev/tech/tools/2026-03-24-github-actions-hexo-auto-deploy/diagram_20260417_093453_01.webp)
+
+</details>
 
 - **第一层（本地）**：Git Hooks 在 commit/push 时执行密钥扫描，快速反馈（详见：[博客安全检查方案优化](/tech/tools/blog-security-check-optimization/)）
 - **第二层（CI）**：即使绕过本地 Hook，GitHub Actions 也会在构建前强制扫描，形成托底
@@ -596,3 +610,4 @@ permissions:
 | 版本 | 日期 | 说明 |
 |------|------|------|
 | v1.0 | 2026-03-24 | 初始版本，合并五维度深度解析与从零入门教程 |
+| v1.1 | 2026-04-17 | 为 2 个 Mermaid 图表追加 Chiikawa 风格插图（m2c-pipeline 生成） |

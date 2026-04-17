@@ -38,6 +38,13 @@ graph LR
     style G fill:#bbdefb,stroke:#333,color:#000
 ```
 
+<details>
+<summary>**🖼️ 插图版（2026-04-17 增量补充）**</summary>
+
+![迁移路径总览图解：Oracle、MySQL、TiDB](https://cdn.jsdelivr.net/gh/leahana/blog-images@dev/tech/backend/2026-03-23-database-migration-oracle-mysql-domestic/diagram_20260417_092236_00.webp)
+
+</details>
+
 ### 💎 核心要点
 
 | 阶段 | 关键动作 | 最大风险 |
@@ -292,6 +299,13 @@ graph LR
     style D fill:#bbdefb,stroke:#333,color:#000
 ```
 
+<details>
+<summary>**🖼️ 插图版（2026-04-17 增量补充）**</summary>
+
+![增量同步（Canal + MQ）图解：MySQL 源库、Canal Server](https://cdn.jsdelivr.net/gh/leahana/blog-images@dev/tech/backend/2026-03-23-database-migration-oracle-mysql-domestic/diagram_20260417_092329_01.webp)
+
+</details>
+
 **Canal 核心配置**：
 
 ```properties
@@ -410,6 +424,13 @@ graph TD
     style C fill:#c8e6c9,stroke:#333,color:#000
     style D fill:#bbdefb,stroke:#333,color:#000
 ```
+
+<details>
+<summary>**🖼️ 插图版（2026-04-17 增量补充）**</summary>
+
+![迁移策略：灰度切流图解：阶段1：双写、阶段2：读写分离、阶段3：完全切换](https://cdn.jsdelivr.net/gh/leahana/blog-images@dev/tech/backend/2026-03-23-database-migration-oracle-mysql-domestic/diagram_20260417_092444_02.webp)
+
+</details>
 
 **双写模式核心代码**：
 
@@ -644,3 +665,4 @@ ALTER TABLE t_user CONVERT TO CHARACTER SET utf8mb4;
 | 版本 | 日期 | 说明 |
 |------|------|------|
 | v1.0 | 2026-03-23 | 初始版本 |
+| v1.1 | 2026-04-17 | 为 3 个 Mermaid 图表追加 Chiikawa 风格插图（m2c-pipeline 生成） |

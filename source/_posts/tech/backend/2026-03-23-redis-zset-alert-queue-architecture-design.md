@@ -47,6 +47,13 @@ graph TD
     style G fill:#fff9c4,stroke:#333,color:#000
 ```
 
+<details>
+<summary>**🖼️ 插图版（2026-04-17 增量补充）**</summary>
+
+![决策结论图解：告警重推需求、RabbitMQ 死信队列](https://cdn.jsdelivr.net/gh/leahana/blog-images@dev/tech/backend/2026-03-23-redis-zset-alert-queue-architecture-design/diagram_20260417_092702_00.webp)
+
+</details>
+
 **本文结论**：系统已有 Redis、并发量中等、不希望引入新中间件 → **Redis ZSet 是最优解**。
 
 </details>
@@ -612,3 +619,4 @@ private void processAlert(String alertId) {
 | 版本 | 日期 | 说明 |
 |------|------|------|
 | v1.0 | 2026-03-23 | 初始版本 |
+| v1.1 | 2026-04-17 | 为 1 个 Mermaid 图表追加 Chiikawa 风格插图（m2c-pipeline 生成） |

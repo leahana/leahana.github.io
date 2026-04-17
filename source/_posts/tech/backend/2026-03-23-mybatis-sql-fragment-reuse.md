@@ -34,6 +34,13 @@ graph LR
     style E fill:#bbdefb,stroke:#333,color:#000
 ```
 
+<details>
+<summary>**🖼️ 插图版（2026-04-17 增量补充）**</summary>
+
+![工作原理关系图："sql id=BaseColumn"](https://cdn.jsdelivr.net/gh/leahana/blog-images@dev/tech/backend/2026-03-23-mybatis-sql-fragment-reuse/diagram_20260417_082844_00.webp)
+
+</details>
+
 ### 💎 最常用的 3 个场景
 
 1. **字段列表复用**：定义一次列名，所有 SELECT 语句共享
@@ -637,3 +644,4 @@ List<User> selectByCondition(UserQuery query);
 | 版本 | 日期 | 说明 |
 |------|------|------|
 | v1.0 | 2026-03-23 | 初始版本 |
+| v1.1 | 2026-04-17 | 为 1 个 Mermaid 图表追加 Chiikawa 风格插图（m2c-pipeline 生成） |

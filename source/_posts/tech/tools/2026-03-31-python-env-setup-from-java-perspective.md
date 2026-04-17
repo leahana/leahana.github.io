@@ -35,6 +35,13 @@ graph LR
     style E fill:#bbdefb,stroke:#333,color:#000
 ```
 
+<details>
+<summary>**🖼️ 插图版（2026-04-17 增量补充）**</summary>
+
+![Python 工具链全景图解："pyenv、版本仓库"、"Python 3.x、解释器二进制"](https://cdn.jsdelivr.net/gh/leahana/blog-images@dev/tech/tools/2026-03-31-python-env-setup-from-java-perspective/diagram_20260417_083800_00.webp)
+
+</details>
+
 ### Python vs Java 工具对标
 
 | 职责 | Python 工具 | Java 工具 | 核心差异 |
@@ -110,6 +117,13 @@ graph TB
     style D fill:#ffccbc,stroke:#333,color:#000
 ```
 
+<details>
+<summary>**🖼️ 插图版（2026-04-17 增量补充）**</summary>
+
+![venv 的依赖关系链："pyenv 提供的 Python 3.11 二进制"](https://cdn.jsdelivr.net/gh/leahana/blog-images@dev/tech/tools/2026-03-31-python-env-setup-from-java-perspective/diagram_20260417_093313_00.webp)
+
+</details>
+
 核心结论：venv 是影子，不是克隆。如果删除或升级了 pyenv 中的母体解释器，`.venv` 中的 python 命令就会指向不存在的路径，环境立刻失效。
 
 ### 2.3 工具生态位重新定义
@@ -169,6 +183,13 @@ graph TD
     style K fill:#c8e6c9,stroke:#333,color:#000
     style G fill:#fff9c4,stroke:#333,color:#000
 ```
+
+<details>
+<summary>**🖼️ 插图版（2026-04-17 增量补充）**</summary>
+
+![工具选型决策树图解：开始选型、选 Conda、"pyenv global、+ uv/Poetry"](https://cdn.jsdelivr.net/gh/leahana/blog-images@dev/tech/tools/2026-03-31-python-env-setup-from-java-perspective/diagram_20260417_083956_02.webp)
+
+</details>
 
 ### 4.4 方案对比
 
@@ -553,3 +574,4 @@ uv sync
 |------|------|------|
 | v1.0 | 2026-03-31 | 初始版本 |
 | v1.1 | 2026-04-08 | 补充 uv 为现代方案，介绍 uv 与 pyenv 的分工配合，添加 Q7-Q9 FAQ 问题 |
+| v1.2 | 2026-04-17 | 为 3 个 Mermaid 图表追加 Chiikawa 风格插图（m2c-pipeline 生成） |

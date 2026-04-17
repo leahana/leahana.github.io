@@ -38,6 +38,13 @@ graph LR
     style F fill:#ffccbc,stroke:#333,color:#000
 ```
 
+<details>
+<summary>**🖼️ 插图版（2026-04-17 增量补充）**</summary>
+
+![核心概念图解："代码仓库驱动"、"GitHub Actions"](https://cdn.jsdelivr.net/gh/leahana/blog-images@dev/tech/tools/2026-03-31-github-actions-vs-harness-selection-note/diagram_20260417_083300_00.webp)
+
+</details>
+
 **简要说明**：`GitHub Actions` 强在和 GitHub 仓库、PR、事件流深度绑定，
 适合把 CI 和基础部署快速跑起来；`Harness` 强在把部署、审批、策略、
 GitOps 和审计收敛成统一交付平台。
@@ -68,6 +75,13 @@ graph TD
     style C fill:#ffccbc,stroke:#333,color:#000
     style D fill:#bbdefb,stroke:#333,color:#000
 ```
+
+<details>
+<summary>**🖼️ 插图版（2026-04-17 增量补充）**</summary>
+
+![什么时候选谁图解："当前最核心的问题是什么?"、"优先 GitHub Actions"](https://cdn.jsdelivr.net/gh/leahana/blog-images@dev/tech/tools/2026-03-31-github-actions-vs-harness-selection-note/diagram_20260417_083454_01.webp)
+
+</details>
 
 **适用条件**：
 
@@ -148,6 +162,13 @@ graph LR
     style D fill:#c8e6c9,stroke:#333,color:#000
     style E fill:#ffccbc,stroke:#333,color:#000
 ```
+
+<details>
+<summary>**🖼️ 插图版（2026-04-17 增量补充）**</summary>
+
+![不想二选一时，分层组合通常更稳架构图："GitHub Repo"、"GitHub Actions"](https://cdn.jsdelivr.net/gh/leahana/blog-images@dev/tech/tools/2026-03-31-github-actions-vs-harness-selection-note/diagram_20260417_091808_00.webp)
+
+</details>
 
 这种分层模式尤其适合下面两类团队：
 
@@ -360,3 +381,4 @@ PoC 时请优先验证下面四件事：
 |------|------|------|
 | v1.0 | 2026-03-31 | 基于对话记录整理为选型笔记 |
 | v1.1 | 2026-03-31 | 重构为双版本结构，补充实战指南、FAQ 与故障排查 |
+| v1.2 | 2026-04-17 | 为 3 个 Mermaid 图表追加 Chiikawa 风格插图（m2c-pipeline 生成） |

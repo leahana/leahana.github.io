@@ -37,6 +37,13 @@ graph TD
     F --> G["Generic Release"]
 ```
 
+<details>
+<summary>**🖼️ 插图版（2026-04-17 增量补充）**</summary>
+
+![为什么“有计划”不等于“可实施”图解："方案草图"、"冻结 6 个必跑 job"](https://cdn.jsdelivr.net/gh/leahana/blog-images@dev/tech/tools/2026-04-04-github-actions-ci-minimal-implementation-guide/diagram_20260417_084309_00.webp)
+
+</details>
+
 ### 怎么验证你是不是还停留在“只有计划”的阶段
 
 如果下面任意一项回答不够确定，就说明还没到“可实施”：
@@ -633,6 +640,13 @@ sequenceDiagram
     RP->>RPR: create or update release PR
 ```
 
+<details>
+<summary>**🖼️ 插图版（2026-04-17 增量补充）**</summary>
+
+![这里最容易误解的一点：为什么是 push main 触发图解](https://cdn.jsdelivr.net/gh/leahana/blog-images@dev/tech/tools/2026-04-04-github-actions-ci-minimal-implementation-guide/diagram_20260417_084411_01.webp)
+
+</details>
+
 所以这条链路并没有绕过分支保护，反而是严格建立在“只能通过 PR 改 `main`”的前提上。
 
 ### 最小迁移做法
@@ -702,6 +716,13 @@ graph LR
     F --> G["release-please + 资产上传"]
     G --> H["skill 分支发布 + governance audit"]
 ```
+
+<details>
+<summary>**🖼️ 插图版（2026-04-17 增量补充）**</summary>
+
+![本项目完整工作流设计方案：从 Mermaid 输入到 Skill 发布闭环图解："Markdown 输入"、"CLI / 配置加载"](https://cdn.jsdelivr.net/gh/leahana/blog-images@dev/tech/tools/2026-04-04-github-actions-ci-minimal-implementation-guide/diagram_20260417_084511_02.webp)
+
+</details>
 
 ### 这节补的是哪一层闭环
 
@@ -841,3 +862,4 @@ graph LR
 | v1.0 | 2026-04-04 | 初始版本，整理 `m2c-pipeline` 的 GitHub Actions 最小落地方案与治理收紧路径。 |
 | v1.1 | 2026-04-05 | 补充从 `release-generic` 迁到 `release-please` 的实战经验，增加 `main push` 触发语义、Actions policy `local_only` 坑位和最小验收链路。 |
 | v1.2 | 2026-04-05 | 补充 `m2c-pipeline` 当前完整工作流设计方案，串起运行链路、交付链路、治理链路与 `skill` 分支发布闭环。 |
+| v1.3 | 2026-04-17 | 为 3 个 Mermaid 图表追加 Chiikawa 风格插图（m2c-pipeline 生成） |

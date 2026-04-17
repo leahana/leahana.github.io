@@ -38,6 +38,13 @@ graph TD
     style H fill:#ffcdd2
 ```
 
+<details>
+<summary>**🖼️ 插图版（2026-04-17 增量补充）**</summary>
+
+![命名冲突流程："字段: nMetaType"、"Lombok @Data"](https://cdn.jsdelivr.net/gh/leahana/blog-images@dev/tech/backend/2023-06-19-lombok-data-naming-pitfall/diagram_20260417_080056_00.webp)
+
+</details>
+
 ### 💎 命名对比表
 
 | 字段声明 | 生成方 | Getter 方法 | 推导属性名 | 是否一致 |
@@ -373,3 +380,4 @@ grep -rn "private Boolean is[A-Z]" src/main/java/
 |------|------|------|
 | v1.0 | 2023-06-19 | 初始版本 |
 | v1.1 | 2026-03-11 | 优化文档结构，添加速查版、对比分析和 FAQ |
+| v1.2 | 2026-04-17 | 为 1 个 Mermaid 图表追加 Chiikawa 风格插图（m2c-pipeline 生成） |

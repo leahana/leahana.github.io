@@ -75,6 +75,13 @@ graph TD
     style E fill:#c8e6c9,stroke:#333,color:#000
 ```
 
+<details>
+<summary>**🖼️ 插图版（2026-04-17 增量补充）**</summary>
+
+![实现思路流程图：确定要清理的 key 模式、SCAN 游标扫描、UNLINK 批量删除当前批次](https://cdn.jsdelivr.net/gh/leahana/blog-images@dev/tech/backend/2026-03-06-redis-unlink-cache-cleanup/diagram_20260417_145327_00.webp)
+
+</details>
+
 ### Shell 脚本（快速使用）
 
 ```bash
@@ -259,3 +266,4 @@ public class RedisCacheCleanupService {
 | 版本 | 日期 | 说明 |
 |------|------|------|
 | v1.0 | 2026-03-06 | 初始版本 |
+| v1.1 | 2026-04-17 | 为 1 个 Mermaid 图表追加 Chiikawa 风格插图（m2c-pipeline 生成） |

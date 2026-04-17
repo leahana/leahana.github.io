@@ -51,6 +51,13 @@ graph TD
     style C fill:#fff9c4,stroke:#333,color:#000
 ```
 
+<details>
+<summary>**🖼️ 插图版（2026-04-17 增量补充）**</summary>
+
+![整体工作流图解："阶段一：字段长度分析"、"评估差异：识别冗余字段"](https://cdn.jsdelivr.net/gh/leahana/blog-images@dev/tech/backend/2026-03-23-mysql-online-table-structure-optimization/diagram_20260417_082949_00.webp)
+
+</details>
+
 两个阶段职责清晰：**阶段一只读不写**，从库执行安全；**阶段二生成草稿**，人工 Review 后再落地。
 
 ---
@@ -302,3 +309,4 @@ ALTER TABLE `dispatch_task` MODIFY COLUMN `description` VARCHAR(200) CHARACTER S
 | 版本 | 日期 | 说明 |
 |------|------|------|
 | v1.0 | 2026-03-23 | 初始版本 |
+| v1.1 | 2026-04-17 | 为 1 个 Mermaid 图表追加 Chiikawa 风格插图（m2c-pipeline 生成） |

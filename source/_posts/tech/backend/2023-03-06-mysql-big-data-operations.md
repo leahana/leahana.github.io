@@ -40,6 +40,13 @@ graph TD
     style H fill:#f3e5f5
 ```
 
+<details>
+<summary>**🖼️ 插图版（2026-04-17 增量补充）**</summary>
+
+![核心概念图解：百万数据处理、查询策略、导出策略](https://cdn.jsdelivr.net/gh/leahana/blog-images@dev/tech/backend/2023-03-06-mysql-big-data-operations/diagram_20260417_081553_00.webp)
+
+</details>
+
 ### 💎 三种查询方式对比
 
 | 对比维度 | 常规分页 | 流式查询 | 游标查询 |
@@ -313,3 +320,4 @@ public interface BigDataSearchMapper extends BaseMapper<BigDataSearchEntity> {
 |------|------|------|
 | v1.0 | 2023-03-06 | 初始版本 |
 | v1.1 | 2026-03-11 | 优化文档结构，添加速查版、对比分析和 FAQ |
+| v1.2 | 2026-04-17 | 为 1 个 Mermaid 图表追加 Chiikawa 风格插图（m2c-pipeline 生成） |

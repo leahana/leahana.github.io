@@ -53,6 +53,13 @@ graph TD
     style J fill:#f3e5f5
 ```
 
+<details>
+<summary>**🖼️ 插图版（2026-04-17 增量补充）**</summary>
+
+![Redis 10 大业务场景全景图：缓存、降低 DB 压力、计数器](https://cdn.jsdelivr.net/gh/leahana/blog-images@dev/tech/backend/2023-02-17-redis-install-and-scenarios/diagram_20260417_074744_00.webp)
+
+</details>
+
 ### 📋 常用命令速查
 
 | 操作 | 命令 | 说明 |
@@ -876,3 +883,4 @@ public List<Object> getTimeline(String userId, int page, int size) {
 |------|------|------|
 | v1.0 | 2023-02-17 | 初始版本 |
 | v1.1 | 2026-03-11 | 优化文档结构，扩充安装方式和场景示例，添加 FAQ |
+| v1.2 | 2026-04-17 | 为 1 个 Mermaid 图表追加 Chiikawa 风格插图（m2c-pipeline 生成） |

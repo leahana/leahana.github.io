@@ -43,6 +43,13 @@ graph TD
     I -- 是 --> J[结合 Git Worktree: gemini -s -w]
 ```
 
+<details>
+<summary>**🖼️ 插图版（2026-04-17 增量补充）**</summary>
+
+![安全决策流程：准备运行 AI 工具、普通对话模式: 无需沙盒](https://cdn.jsdelivr.net/gh/leahana/blog-images@dev/tech/tools/2026-04-02-gemini-cli-sandbox-and-ghostty-isolation/diagram_20260417_083904_00.webp)
+
+</details>
+
 </details>
 
 ## 1. 为什么我们迫切需要 AI Sandbox？
@@ -201,3 +208,4 @@ Sandbox 不再是一个可选的“高级选项”，
 | v2.0 | 2026-04-02 | 大幅扩充内容，增加 AI Sandbox 必要性探讨，优化对比架构，脱敏处理 Session ID。 |
 | v2.1 | 2026-04-03 | 强化 Gemini CLI 会话管理与断点续传实践。 |
 | v2.2 | 2026-04-06 | 收敛 Markdown 排版并修复 lint 规范。 |
+| v2.3 | 2026-04-17 | 为 1 个 Mermaid 图表追加 Chiikawa 风格插图（m2c-pipeline 生成） |

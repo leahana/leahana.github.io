@@ -44,6 +44,13 @@ graph TD
     style F fill:#c8e6c9,stroke:#333,color:#000
 ```
 
+<details>
+<summary>**🖼️ 插图版（2026-04-17 增量补充）**</summary>
+
+![选哪个方案图解："矩阵需要序列化"、元素数量?、< 10,000 个](https://cdn.jsdelivr.net/gh/leahana/blog-images@dev/tech/backend/2026-03-16-float-matrix-base64-encoding-avoid-oom/diagram_20260417_090304_00.webp)
+
+</details>
+
 ### 核心代码（一分钟上手）
 
 编码：`ByteBuffer.allocate(8 + rows*cols*4)` → 写维度 → 写数据 → `Base64.encode()`
@@ -107,6 +114,13 @@ graph TD
     style A fill:#bbdefb,stroke:#333,color:#000
     style F fill:#c8e6c9,stroke:#333,color:#000
 ```
+
+<details>
+<summary>**🖼️ 插图版（2026-04-17 增量补充）**</summary>
+
+![编解码流程：float[][] 矩阵、encode](https://cdn.jsdelivr.net/gh/leahana/blog-images@dev/tech/backend/2026-03-16-float-matrix-base64-encoding-avoid-oom/diagram_20260417_091714_00.webp)
+
+</details>
 
 ### 完整实现代码
 
@@ -230,6 +244,13 @@ graph TD
     style A fill:#ffccbc,stroke:#333,color:#000
     style G fill:#c8e6c9,stroke:#333,color:#000
 ```
+
+<details>
+<summary>**🖼️ 插图版（2026-04-17 增量补充）**</summary>
+
+![为什么 ObjectMapper 会 OOM图解："JSON 字符串输入"、Jackson 解析](https://cdn.jsdelivr.net/gh/leahana/blog-images@dev/tech/backend/2026-03-16-float-matrix-base64-encoding-avoid-oom/diagram_20260417_091452_02.webp)
+
+</details>
 
 Jackson 反序列化 `float[][]` 的过程中，**每一个浮点数**都经历了：字符串分配 → 数字解析 → 装箱/拆箱 → 临时集合存储 → 最终数组拷贝。512K 个浮点数意味着至少 512K 次字符串分配，GC 压力巨大。
 
@@ -489,3 +510,4 @@ public static List<String> encodeInChunks(float[][] matrix, int chunkRows) {
 | v1.0 | 2026-03-16 | 初始版本 |
 | v2.0 | 2026-03-16 | 深度优化：新增 3 分钟速览、FAQ（6 问）、GZIP 进阶方案、生产检查清单、行动建议 |
 | v2.1 | 2026-03-16 | Review 修复：encode 增加溢出校验、decode 增加输入校验、修正精度描述、补充 JUnit 测试 |
+| v2.2 | 2026-04-17 | 为 3 个 Mermaid 图表追加 Chiikawa 风格插图（m2c-pipeline 生成） |

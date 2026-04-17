@@ -71,6 +71,13 @@ graph TD
     style G fill:#c8e6c9,stroke:#333,color:#000
 ```
 
+<details>
+<summary>**🖼️ 插图版（2026-04-17 增量补充）**</summary>
+
+![实现思路图解：获取待更新数据列表、分批切割，每批 500 条](https://cdn.jsdelivr.net/gh/leahana/blog-images@dev/tech/backend/2025-05-22-redis-pipeline-batch-update/diagram_20260417_080450_00.webp)
+
+</details>
+
 ### 完整代码
 
 **Spring Data Redis（推荐）**：
@@ -241,3 +248,4 @@ try (Jedis jedis = jedisPool.getResource();
 | 版本 | 日期 | 说明 |
 |------|------|------|
 | v1.0 | 2025-05-22 | 初始版本 |
+| v1.1 | 2026-04-17 | 为 1 个 Mermaid 图表追加 Chiikawa 风格插图（m2c-pipeline 生成） |

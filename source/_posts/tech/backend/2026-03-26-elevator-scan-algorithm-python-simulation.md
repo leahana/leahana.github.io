@@ -44,6 +44,13 @@ graph TD
     style H fill:#fff9c4,stroke:#333,color:#000
 ```
 
+<details>
+<summary>**🖼️ 插图版（2026-04-17 增量补充）**</summary>
+
+![代码视角里的决策循环图解："读取当前状态"、"当前层要不要停"、停靠条件成立吗](https://cdn.jsdelivr.net/gh/leahana/blog-images@dev/tech/backend/2026-03-26-elevator-scan-algorithm-python-simulation/diagram_20260417_083050_00.webp)
+
+</details>
+
 核心不是“先决定最终去哪”，
 而是“每到一个决策点，重新判断当前层停不停、接下来往哪走”。
 
@@ -77,6 +84,13 @@ graph TD
     style F fill:#fff9c4,stroke:#333,color:#000
     style G fill:#bbdefb,stroke:#333,color:#000
 ```
+
+<details>
+<summary>**🖼️ 插图版（2026-04-17 增量补充）**</summary>
+
+![最小判断规则图解："到达某层"、车内有人选了这层吗、"停"](https://cdn.jsdelivr.net/gh/leahana/blog-images@dev/tech/backend/2026-03-26-elevator-scan-algorithm-python-simulation/diagram_20260417_093139_00.webp)
+
+</details>
 
 最重要的三句话：
 
@@ -383,3 +397,4 @@ VIP 服务、群控通信和时间优化。
 |------|------|------|
 | v1.0 | 2026-03-26 | 初始版本 |
 | v1.1 | 2026-03-26 | 改写为停靠判断逻辑导向 |
+| v1.2 | 2026-04-17 | 为 2 个 Mermaid 图表追加 Chiikawa 风格插图（m2c-pipeline 生成） |

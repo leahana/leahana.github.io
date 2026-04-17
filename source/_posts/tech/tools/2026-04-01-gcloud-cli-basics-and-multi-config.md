@@ -47,6 +47,13 @@ graph LR
     style H fill:#ffccbc,stroke:#333,color:#000
 ```
 
+<details>
+<summary>**🖼️ 插图版（2026-04-17 增量补充）**</summary>
+
+![gcloud config 架构概览："gcloud CLI、命令行工具"、"configurations、配置集合"](https://cdn.jsdelivr.net/gh/leahana/blog-images@dev/tech/tools/2026-04-01-gcloud-cli-basics-and-multi-config/diagram_20260417_083658_00.webp)
+
+</details>
+
 ### 常用命令速查
 
 | 类别 | 命令 | 说明 |
@@ -334,6 +341,13 @@ graph TD
     style H fill:#c8e6c9,stroke:#333,color:#000
 ```
 
+<details>
+<summary>**🖼️ 插图版（2026-04-17 增量补充）**</summary>
+
+![切换与查看图解："gcloud config configurations create dev"](https://cdn.jsdelivr.net/gh/leahana/blog-images@dev/tech/tools/2026-04-01-gcloud-cli-basics-and-multi-config/diagram_20260417_092523_00.webp)
+
+</details>
+
 ```bash
 # 列出所有配置（IS_ACTIVE 列显示当前激活的）
 gcloud config configurations list
@@ -614,3 +628,4 @@ gcloud CLI 的多配置管理是一个相对小众但极其实用的功能。掌
 | 版本 | 日期 | 说明 |
 |------|------|------|
 | v1.0 | 2026-04-01 | 初始版本 |
+| v1.1 | 2026-04-17 | 为 2 个 Mermaid 图表追加 Chiikawa 风格插图（m2c-pipeline 生成） |

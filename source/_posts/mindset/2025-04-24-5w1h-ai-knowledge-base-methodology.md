@@ -40,6 +40,8 @@ graph TD
     style G fill:#e0f2f1
 ```
 
+![5W1H 框架总览闭环图](https://cdn.jsdelivr.net/gh/leahana/blog-images@dev/mindset/2025-04-24-5w1h-ai-knowledge-base-methodology/overview.png)
+
 **核心价值**：
 
 - 🎯 **战略层**：What + Why = 方向正确
@@ -100,6 +102,8 @@ graph TB
     style 执行层 fill:#fff3e0
 ```
 
+![5W1H 三层架构图](https://cdn.jsdelivr.net/gh/leahana/blog-images@dev/mindset/2025-04-24-5w1h-ai-knowledge-base-methodology/architecture.png)
+
 **设计逻辑**：
 
 1. **先定方向**（战略层）：方向错了，做得再快也没用
@@ -122,6 +126,8 @@ graph LR
     style D fill:#ffebee
     style E fill:#e8f5e9
 ```
+
+![5W1H 思维闭环图](https://cdn.jsdelivr.net/gh/leahana/blog-images@dev/mindset/2025-04-24-5w1h-ai-knowledge-base-methodology/thinking-loop.png)
 
 ---
 
@@ -185,6 +191,8 @@ graph LR
     style F fill:#a5d6a7
     style G fill:#ef9a9a
 ```
+
+![Why 价值评估决策框架](https://cdn.jsdelivr.net/gh/leahana/blog-images@dev/mindset/2025-04-24-5w1h-ai-knowledge-base-methodology/value-framework.png)
 
 #### 💭 价值评估维度
 
@@ -721,3 +729,4 @@ What → Why → Who → Where → When → How
 |------|------|------|
 | v1.0 | 2025-04-24 | 初始版本 |
 | v2.0 | 2026-01-12 | 重构文档结构，将 AI 知识库特定内容通用化，强调 5W1H 作为通用思维框架的定位，增加多个实战案例演示 |
+| v2.1 | 2026-04-16 | 为 4 个 Mermaid 图表追加 Chiikawa 风格插图（m2c-pipeline 生成） |

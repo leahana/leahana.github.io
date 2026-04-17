@@ -36,6 +36,13 @@ graph TD
     style C fill:#bbdefb,stroke:#333,color:#000
 ```
 
+<details>
+<summary>**🖼️ 插图版（2026-04-17 增量补充）**</summary>
+
+![序列化器选择决策图：业务层是否已用 ObjectMapper 序列化、使用 StringRedisSerializer、使用 Jackson2JsonRedisSerializer](https://cdn.jsdelivr.net/gh/leahana/blog-images@dev/tech/backend/2026-03-16-custom-redis-template-string-serializer/diagram_20260417_090109_00.webp)
+
+</details>
+
 ### 方案对比速查
 
 | 序列化器 | Key 可读 | Value 可读 | 自动序列化对象 | 二次序列化风险 |
@@ -118,6 +125,13 @@ graph TD
     style D fill:#ffccbc,stroke:#333,color:#000
     style E fill:#c8e6c9,stroke:#333,color:#000
 ```
+
+<details>
+<summary>**🖼️ 插图版（2026-04-17 增量补充）**</summary>
+
+![再次序列化原理图解：业务代码、JSON 字符串、Value 序列化器选择分支](https://cdn.jsdelivr.net/gh/leahana/blog-images@dev/tech/backend/2026-03-16-custom-redis-template-string-serializer/diagram_20260417_145427_00.webp)
+
+</details>
 
 ### 反序列化时的连锁反应
 
@@ -402,3 +416,4 @@ public RedisTemplate<String, Object> jsonRedisTemplate(RedisConnectionFactory fa
 |------|------|------|
 | v1.0 | 2026-03-16 | 初始版本 |
 | v1.1 | 2026-03-17 | 增加 3 分钟速览版、FAQ、Hash 操作示例、迁移指南 |
+| v1.2 | 2026-04-17 | 为 2 个 Mermaid 图表追加 Chiikawa 风格插图（m2c-pipeline 生成） |
