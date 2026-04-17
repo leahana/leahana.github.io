@@ -48,6 +48,13 @@ graph TB
     style PROFILE fill:#c8e6c9
 ```
 
+<details>
+<summary>**🖼️ 插图版（2026-04-17 增量补充）**</summary>
+
+![AI 密钥管理核心架构](https://cdn.jsdelivr.net/gh/leahana/blog-images@dev/tech/ai/2026-03-04-ai-api-key-management/diagram_20260417_060946_00.webp)
+
+</details>
+
 ### 方案对比速查
 
 | 方案 | 适用场景 | 复杂度 | 团队协作 | 审计能力 |
@@ -74,6 +81,13 @@ graph TD
     style A4 fill:#fff9c4
     style A5 fill:#fff9c4
 ```
+
+<details>
+<summary>**🖼️ 插图版（2026-04-17 增量补充）**</summary>
+
+![密钥管理方案选型决策树](https://cdn.jsdelivr.net/gh/leahana/blog-images@dev/tech/ai/2026-03-04-ai-api-key-management/diagram_20260417_060937_01.webp)
+
+</details>
 
 </details>
 
@@ -107,6 +121,13 @@ graph LR
     style E fill:#ffcdd2
     style F fill:#ffcdd2
 ```
+
+<details>
+<summary>**🖼️ 插图版（2026-04-17 增量补充）**</summary>
+
+![密钥泄露风险流程图](https://cdn.jsdelivr.net/gh/leahana/blog-images@dev/tech/ai/2026-03-04-ai-api-key-management/diagram_20260417_061036_02.webp)
+
+</details>
 
 根据 [OpenAI 官方安全指南](https://help.openai.com/en/articles/5112595-best-practices-for-api-key-safety)，被泄露的 API Key 可导致：
 
@@ -156,6 +177,13 @@ graph TD
     style A fill:#e1f5ff
     style H fill:#c8e6c9
 ```
+
+<details>
+<summary>**🖼️ 插图版（2026-04-17 增量补充）**</summary>
+
+![环境变量加载机制流程图](https://cdn.jsdelivr.net/gh/leahana/blog-images@dev/tech/ai/2026-03-04-ai-api-key-management/diagram_20260417_061113_03.webp)
+
+</details>
 
 </div>
 
@@ -410,6 +438,13 @@ graph TB
     style B2 fill:#fff9c4
     style C1 fill:#ffcdd2
 ```
+
+<details>
+<summary>**🖼️ 插图版（2026-04-17 增量补充）**</summary>
+
+![密钥管理方案分层对比全景图](https://cdn.jsdelivr.net/gh/leahana/blog-images@dev/tech/ai/2026-03-04-ai-api-key-management/diagram_20260417_061303_00.webp)
+
+</details>
 
 ### 5.2 详细对比
 
@@ -738,3 +773,4 @@ docker compose exec mysql mysql -u root -p$DISPATCH_MYSQL_PASSWORD -e "SELECT 1"
 | 版本 | 日期 | 说明 |
 |------|------|------|
 | v1.0 | 2026-03-04 | 初始版本：基于实际 AI 开发环境的密钥管理实践 |
+| v1.1 | 2026-04-17 | 为 5 个 Mermaid 图表追加 Chiikawa 风格插图（m2c-pipeline 生成） |

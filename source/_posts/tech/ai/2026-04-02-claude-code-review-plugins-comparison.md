@@ -46,6 +46,13 @@ graph TD
     style F fill:#c8e6c9,stroke:#333,color:#000
 ```
 
+<details>
+<summary>**🖼️ 插图版（2026-04-17 增量补充）**</summary>
+
+![Code Review 插件选型决策树](https://cdn.jsdelivr.net/gh/leahana/blog-images@dev/tech/ai/2026-04-02-claude-code-review-plugins-comparison/diagram_20260417_044750_00.webp)
+
+</details>
+
 推荐方案：两者叠加使用，开发期间用 `codex-review` 把好每步决策，提 PR 时用官方插件做最终把关。
 
 </details>
@@ -103,6 +110,13 @@ graph TD
     style A fill:#e3f2fd,stroke:#333,color:#000
     style E fill:#c8e6c9,stroke:#333,color:#000
 ```
+
+<details>
+<summary>**🖼️ 插图版（2026-04-17 增量补充）**</summary>
+
+![codex-review 双模型协作审查循环](https://cdn.jsdelivr.net/gh/leahana/blog-images@dev/tech/ai/2026-04-02-claude-code-review-plugins-comparison/diagram_20260417_044724_01.webp)
+
+</details>
 
 每一轮 Review 结果都落盘，并维护一份标准化的决策记录台账，全程可溯源。
 
@@ -216,3 +230,4 @@ graph TD
 |------|------|------|
 | v1.0 | 2026-04-02 | 初始版本 |
 | v1.1 | 2026-04-02 | 补充速览版、FAQ、快速上手和行动建议 |
+| v1.2 | 2026-04-17 | 为 2 个 Mermaid 图表追加 Chiikawa 风格插图（m2c-pipeline 生成） |

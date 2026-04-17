@@ -35,6 +35,13 @@ graph TB
     style C fill:#ffccbc,stroke:#333,color:#000
 ```
 
+<details>
+<summary>**🖼️ 插图版（2026-04-17 增量补充）**</summary>
+
+![Skill 三层加载模型：元数据层、指令层、资源层的触发与加载关系](https://cdn.jsdelivr.net/gh/leahana/blog-images@dev/tech/ai/2026-03-05-skill-optimization-practice/diagram_20260417_022905_00.webp)
+
+</details>
+
 ### optimize-doc 优化前后对比
 
 | 维度 | v2.0（优化前） | v2.1（优化后） |
@@ -618,6 +625,13 @@ graph TD
     第一层 本地防护 --> 第二层 CI 防护
 ```
 
+<details>
+<summary>**🖼️ 插图版（2026-04-17 增量补充）**</summary>
+
+![含语法错误的 Mermaid subgraph 示例：中文名含空格直接用于连接节点](https://cdn.jsdelivr.net/gh/leahana/blog-images@dev/tech/ai/2026-03-05-skill-optimization-practice/diagram_20260417_022905_01.webp)
+
+</details>
+
 两处错误：
 
 1. `subgraph 第一层 本地防护`：subgraph 名称含空格，未使用 ID + 显示名称分离的写法
@@ -665,6 +679,13 @@ graph TD
     end
     SG1 --> SG2
 ```
+
+<details>
+<summary>**🖼️ 插图版（2026-04-17 增量补充）**</summary>
+
+![正确的 Mermaid subgraph 写法：ID 与显示名称分离的规范格式](https://cdn.jsdelivr.net/gh/leahana/blog-images@dev/tech/ai/2026-03-05-skill-optimization-practice/diagram_20260417_023248_02.webp)
+
+</details>
 
 ❌ 错误写法（中文名含空格直接作为连接节点）：
 
@@ -1063,3 +1084,4 @@ diff <(ls -lah ~/.claude/skills/your-skill/) \
 | v1.7 | 2026-03-31 | 新增 4.10 节：v2.6 SKILL.md 内联提醒缺失导致 MD036 复发，提炼 Rule Proximity 原则；更新 5.3 |
 | v1.8 | 2026-04-01 | 新增 4.11 节：v2.7 续行误判 MD032 假阳性修复、`<details>` 块豁免、Plan 模式约束旁路分析，提炼 Execution Context Bypass 原则；更新 5.3 |
 | v1.9 | 2026-04-07 | 同步 `source/docs` 去日期前缀后的新文件路径引用 |
+| v2.0 | 2026-04-17 | 为 3 个 Mermaid 图表追加 Chiikawa 风格插图（m2c-pipeline 生成）|

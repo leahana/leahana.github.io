@@ -67,6 +67,13 @@ graph TD
     style F fill:#c8e6c9,stroke:#333,color:#000
 ```
 
+<details>
+<summary>**🖼️ 插图版（2026-04-17 增量补充）**</summary>
+
+![Claude Code CLI 核心功能矩阵](https://cdn.jsdelivr.net/gh/leahana/blog-images@dev/tech/ai/2026-03-13-claude-code-cli-vibecoding-guide/diagram_20260417_044331_00.webp)
+
+</details>
+
 ---
 
 ## 💡 四大支柱：构建你的 Vibecoding 基础设施
@@ -230,6 +237,13 @@ graph LR
     style AI fill:#c8e6c9,stroke:#333,color:#000
 ```
 
+<details>
+<summary>**🖼️ 插图版（2026-04-17 增量补充）**</summary>
+
+![Vibecoding 人机分工模式](https://cdn.jsdelivr.net/gh/leahana/blog-images@dev/tech/ai/2026-03-13-claude-code-cli-vibecoding-guide/diagram_20260417_044332_01.webp)
+
+</details>
+
 - **人类擅长**：定义需求、判断优先级、审查架构决策、验证业务逻辑
 - **AI 擅长**：搜索代码、生成样板、执行重复性任务、遵守格式规范
 
@@ -320,3 +334,4 @@ Vibecoding 不意味着放弃编程能力。你仍然需要能读懂代码、判
 | v1.0 | 2026-03-13 | 初始版本 |
 | v1.1 | 2026-04-09 | 追加 Claude Code 近期增量更新，补充 2.1.89 到 2.1.97 的变化 |
 | v1.2 | 2026-04-13 | 将增量更新段迁移至独立 tracking 文章，原文加引用链接 |
+| v1.3 | 2026-04-17 | 为 2 个 Mermaid 图表追加 Chiikawa 风格插图（m2c-pipeline 生成） |

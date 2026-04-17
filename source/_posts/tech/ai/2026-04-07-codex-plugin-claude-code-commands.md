@@ -76,6 +76,13 @@ graph TD
     style F fill:#c8e6c9,stroke:#333,color:#000
 ```
 
+<details>
+<summary>**🖼️ 插图版（2026-04-17 增量补充）**</summary>
+
+![Codex Plugin 工作原理图](https://cdn.jsdelivr.net/gh/leahana/blog-images@dev/tech/ai/2026-04-07-codex-plugin-claude-code-commands/diagram_20260417_053731_00.webp)
+
+</details>
+
 更准确的理解是：
 
 - 它复用的是**本机 Codex CLI、认证状态和 `.codex/config.toml`**
@@ -296,3 +303,4 @@ Codex，所以重点是“接进来以后，怎么把它用成一条稳定工作
 |------|------|------|
 | v1.0 | 2026-04-07 | 初始版本 |
 | v1.1 | 2026-04-07 | 基于校验后的插件能力重写标题与工作流口径，去除高风险命令穷举表述 |
+| v1.2 | 2026-04-17 | 为 1 个 Mermaid 图表追加 Chiikawa 风格插图（m2c-pipeline 生成） |

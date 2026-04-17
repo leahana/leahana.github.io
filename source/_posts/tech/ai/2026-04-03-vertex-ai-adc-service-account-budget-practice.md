@@ -112,6 +112,13 @@ graph TD
     style M fill:#ffccbc,stroke:#333,color:#000
 ```
 
+<details>
+<summary>**🖼️ 插图版（2026-04-17 增量补充）**</summary>
+
+![Vertex AI 项目运行接线图](https://cdn.jsdelivr.net/gh/leahana/blog-images@dev/tech/ai/2026-04-03-vertex-ai-adc-service-account-budget-practice/diagram_20260417_045051_00.webp)
+
+</details>
+
 ### 最小伪代码
 
 ```python
@@ -275,6 +282,13 @@ graph TD
     style C fill:#c8e6c9,stroke:#333,color:#000
     style E fill:#ffccbc,stroke:#333,color:#000
 ```
+
+<details>
+<summary>**🖼️ 插图版（2026-04-17 增量补充）**</summary>
+
+![Vertex AI ADC 查找优先级](https://cdn.jsdelivr.net/gh/leahana/blog-images@dev/tech/ai/2026-04-03-vertex-ai-adc-service-account-budget-practice/diagram_20260417_045042_01.webp)
+
+</details>
 
 这比“完全依赖系统环境”更可控，也比“项目强耦合某一种认证方式”更灵活。
 
@@ -543,3 +557,4 @@ Budget 不能直接保证的是：
 |------|------|------|
 | v1.0 | 2026-04-03 | 初始版本 |
 | v1.1 | 2026-04-07 | 补齐最小接线链路，校准 dry-run 语义并收束为本地 CLI 场景实践 |
+| v1.2 | 2026-04-17 | 为 2 个 Mermaid 图表追加 Chiikawa 风格插图（m2c-pipeline 生成） |

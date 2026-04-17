@@ -34,6 +34,13 @@ graph LR
 ```
 
 <details>
+<summary>**🖼️ 插图版（2026-04-17 增量补充）**</summary>
+
+![MCP 是什么插图版](https://cdn.jsdelivr.net/gh/leahana/blog-images@dev/tech/ai/2025-04-24-mcp-model-context-protocol/diagram_20260417_054610_00.webp)
+
+</details>
+
+<details>
 <summary>**📊 点击展开更多内容**</summary>
 
 **通俗类比**：
@@ -99,6 +106,13 @@ graph TD
     style I fill:#a5d6a7
 ```
 
+<details>
+<summary>**🖼️ 插图版（2026-04-17 增量补充）**</summary>
+
+![MCP 设计哲学插图版](https://cdn.jsdelivr.net/gh/leahana/blog-images@dev/tech/ai/2025-04-24-mcp-model-context-protocol/diagram_20260417_054734_01.webp)
+
+</details>
+
 #### 类比理解
 
 | 层次 | 传统方式 | MCP 方式 | 好处 |
@@ -148,6 +162,13 @@ graph TD
     style Server fill:#e8f5e9
 ```
 
+<details>
+<summary>**🖼️ 插图版（2026-04-17 增量补充）**</summary>
+
+![MCP 三层架构插图版](https://cdn.jsdelivr.net/gh/leahana/blog-images@dev/tech/ai/2025-04-24-mcp-model-context-protocol/diagram_20260417_054739_02.webp)
+
+</details>
+
 #### 核心组件
 
 | 组件 | 职责 | 类比 |
@@ -182,6 +203,13 @@ sequenceDiagram
     T-->>C: 11. 响应数据
     C-->>H: 12. 工具输出
 ```
+
+<details>
+<summary>**🖼️ 插图版（2026-04-17 增量补充）**</summary>
+
+![MCP 工作流程插图版](https://cdn.jsdelivr.net/gh/leahana/blog-images@dev/tech/ai/2025-04-24-mcp-model-context-protocol/diagram_20260417_054835_03.webp)
+
+</details>
 
 #### 关键步骤说明
 
@@ -799,6 +827,13 @@ graph TD
     style G fill:#ffebee
 ```
 
+<details>
+<summary>**🖼️ 插图版（2026-04-17 增量补充）**</summary>
+
+![企业级知识库 MCP Server 部署架构插图版](https://cdn.jsdelivr.net/gh/leahana/blog-images@dev/tech/ai/2025-04-24-mcp-model-context-protocol/diagram_20260417_055543_00.webp)
+
+</details>
+
 #### 效果对比
 
 | 指标 | 改进前 | 改进后 | 提升 |
@@ -997,7 +1032,7 @@ MCP (SSE)：        ~20-50ms
 
 ### 📝 文档信息
 
-📅 最后更新：2025-04-24 | 👤 作者：MamimiJa Nai | 🏷️ 技术栈：Spring AI 1.0.0-M6
+📅 最后更新：2026-04-17 | 👤 作者：MamimiJa Nai | 🏷️ 技术栈：Spring AI 1.0.0-M6
 
 ---
 
@@ -1006,3 +1041,4 @@ MCP (SSE)：        ~20-50ms
 | 版本 | 日期 | 说明 |
 |------|------|------|
 | v1.0 | 2025-04-24 | 初始版本 |
+| v1.1 | 2026-04-17 | 为 5 个 Mermaid 图表追加 Chiikawa 风格插图（m2c-pipeline 生成） |

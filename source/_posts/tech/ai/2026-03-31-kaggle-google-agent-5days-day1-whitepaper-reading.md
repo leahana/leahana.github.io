@@ -117,6 +117,13 @@ graph TD
     style E fill:#c8e6c9,stroke:#333,color:#000
 ```
 
+<details>
+<summary>**🖼️ 插图版（2026-04-17 增量补充）**</summary>
+
+![Agent 四层架构图](https://cdn.jsdelivr.net/gh/leahana/blog-images@dev/tech/ai/2026-03-31-kaggle-google-agent-5days-day1-whitepaper-reading/diagram_20260417_043630_00.webp)
+
+</details>
+
 前三层是白皮书正文明确展开的"核心组件"，而 `Runtime` 是结合课程语境和生产化章节做的工程化归纳——帮助我们把"原理"和"落地容器"分开看清。
 
 ### Model：上下文窗口管理才是真正的工程挑战
@@ -156,6 +163,13 @@ graph LR
     style B fill:#ffccbc,stroke:#333,color:#000
     style C fill:#e3f2fd,stroke:#333,color:#000
 ```
+
+<details>
+<summary>**🖼️ 插图版（2026-04-17 增量补充）**</summary>
+
+![Agent 工具分类与控制权分配](https://cdn.jsdelivr.net/gh/leahana/blog-images@dev/tech/ai/2026-03-31-kaggle-google-agent-5days-day1-whitepaper-reading/diagram_20260417_043626_01.webp)
+
+</details>
 
 设计 Agent 时，选工具类型首先问的不是"这个 API 能不能调"，而是"这个操作的控制权应该在谁手里"。
 
@@ -211,6 +225,13 @@ graph LR
     style D fill:#e3f2fd,stroke:#333,color:#000
     style F fill:#c8e6c9,stroke:#333,color:#000
 ```
+
+<details>
+<summary>**🖼️ 插图版（2026-04-17 增量补充）**</summary>
+
+![Agent 运行循环：Think-Act-Observe](https://cdn.jsdelivr.net/gh/leahana/blog-images@dev/tech/ai/2026-03-31-kaggle-google-agent-5days-day1-whitepaper-reading/diagram_20260417_043733_02.webp)
+
+</details>
 
 这张图概念简单，但"概念简单"不等于"工程简单"。每一步都藏着真实的工程挑战：
 
@@ -369,3 +390,4 @@ Day 1 的任务是建立底层认知，不是把多 Agent 工作流讲完。
 | v2.1 | 2026-04-03 | 补充 ADK 框架介绍、四种多 Agent 工作流模式、AgentTool vs Sub-Agent 区分 |
 | v2.2 | 2026-04-06 | 收敛 Markdown 排版并修复 lint 规范。 |
 | v2.3 | 2026-04-07 | 收束 Day 1 主线，精简延伸章节并强化与 Day 2 的系列衔接 |
+| v2.4 | 2026-04-17 | 为 3 个 Mermaid 图表追加 Chiikawa 风格插图（m2c-pipeline 生成） |

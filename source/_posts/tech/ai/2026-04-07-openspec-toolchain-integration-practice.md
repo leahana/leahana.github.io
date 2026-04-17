@@ -280,6 +280,13 @@ graph TD
     style E fill:#f3e5f5,stroke:#333,color:#000
 ```
 
+<details>
+<summary>**🖼️ 插图版（2026-04-17 增量补充）**</summary>
+
+![OpenSpec 工具链分工架构图](https://cdn.jsdelivr.net/gh/leahana/blog-images@dev/tech/ai/2026-04-07-openspec-toolchain-integration-practice/diagram_20260417_045519_00.webp)
+
+</details>
+
 | 工具 | 集成角色 | 实战调用方式 |
 |------|---------|------------|
 | **OpenSpec (opsx)** | 规格制定者 | `opsx propose "<需求描述>"` 产出 `specs/` 下的 MD 文件和任务清单 |
@@ -310,6 +317,13 @@ graph LR
     style D fill:#c8e6c9,stroke:#333,stroke-dasharray:4 4,color:#000
     style F fill:#c8e6c9,stroke:#333,color:#000
 ```
+
+<details>
+<summary>**🖼️ 插图版（2026-04-17 增量补充）**</summary>
+
+![OpenSpec 功能需求全链路流程](https://cdn.jsdelivr.net/gh/leahana/blog-images@dev/tech/ai/2026-04-07-openspec-toolchain-integration-practice/diagram_20260417_045543_01.webp)
+
+</details>
 
 **Step 1：需求物化（Proposal Phase）**
 
@@ -491,3 +505,4 @@ OpenSpec 写入它，oh-my-openagent 的各 Agent 读取它。两边都不需要
 | v1.5 | 2026-04-07 | 补充真实安装踩坑、`/opsx:` 命令边界与 OpenSpec 和 Plan Mode 的分工认知 |
 | v1.6 | 2026-04-07 | 补充概念澄清：对比 OpenSpec 与 Alibaba/AgentScope 的定位差异 |
 | v1.7 | 2026-04-13 | 补充 OpenSpec 目录与文件清单小节，明确 `changes/`, `specs/`, `archive/` 职责 |
+| v1.8 | 2026-04-17 | 为 2 个 Mermaid 图表追加 Chiikawa 风格插图（m2c-pipeline 生成） |

@@ -64,6 +64,13 @@ graph LR
     style C fill:#ffccbc,stroke:#333,color:#000
 ```
 
+<details>
+<summary>**🖼️ 插图版（2026-04-17 增量补充）**</summary>
+
+![Agent 工具工作循环：定义、调用、观察三阶段](https://cdn.jsdelivr.net/gh/leahana/blog-images@dev/tech/ai/2026-04-03-kaggle-google-agent-5days-day2-whitepaper-reading/diagram_20260417_020747_00.webp)
+
+</details>
+
 白皮书进一步把工具的用途分为两大类：
 
 - **检索信息（Grounding in Reality）**：RAG、向量数据库、Knowledge Graph、NL2SQL——让 Agent 基于事实而非猜测做决策
@@ -219,6 +226,13 @@ graph TD
     style E fill:#c8e6c9,stroke:#333,color:#000
 ```
 
+<details>
+<summary>**🖼️ 插图版（2026-04-17 增量补充）**</summary>
+
+![MCP 架构：Agent 通过标准协议连接多个外部 MCP Server](https://cdn.jsdelivr.net/gh/leahana/blog-images@dev/tech/ai/2026-04-03-kaggle-google-agent-5days-day2-whitepaper-reading/diagram_20260417_020746_01.webp)
+
+</details>
+
 在协议层看，不同 MCP Server 会更像一组统一接口。
 这不代表它们的能力、稳定性和权限模型真的完全一致，
 但至少 Agent 不需要为每一个外部服务都重新学习一套接线方式。
@@ -289,6 +303,13 @@ graph TD
     style E fill:#ffccbc,stroke:#333,color:#000
     style F fill:#e3f2fd,stroke:#333,color:#000
 ```
+
+<details>
+<summary>**🖼️ 插图版（2026-04-17 增量补充）**</summary>
+
+![人机协作确认流程：大单暂停等待人类批准](https://cdn.jsdelivr.net/gh/leahana/blog-images@dev/tech/ai/2026-04-03-kaggle-google-agent-5days-day2-whitepaper-reading/diagram_20260417_020834_02.webp)
+
+</details>
 
 ### 关键机制：ToolContext
 
@@ -383,6 +404,13 @@ graph TD
     style B fill:#c8e6c9,stroke:#333,color:#000
     style C fill:#ffccbc,stroke:#333,color:#000
 ```
+
+<details>
+<summary>**🖼️ 插图版（2026-04-17 增量补充）**</summary>
+
+![ADK 工具体系分类：Custom Tools 与 Built-in Tools](https://cdn.jsdelivr.net/gh/leahana/blog-images@dev/tech/ai/2026-04-03-kaggle-google-agent-5days-day2-whitepaper-reading/diagram_20260417_021708_00.webp)
+
+</details>
 
 ### 八类工具速查
 
@@ -515,3 +543,4 @@ Notebook 的 LRO 示例假设人类会在合理时间内响应。
 | v1.0 | 2026-04-03 | 初始版本 |
 | v1.1 | 2026-04-06 | 收敛 Markdown 排版并修复 lint 规范。 |
 | v1.2 | 2026-04-07 | 收束 Day 2 工具主线，弱化与 Day 1 重复内容并校准分类表述 |
+| v1.3 | 2026-04-17 | 为 4 个 Mermaid 图表追加 Chiikawa 风格插图（m2c-pipeline 生成）|
