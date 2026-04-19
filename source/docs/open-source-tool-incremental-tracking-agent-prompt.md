@@ -1,4 +1,4 @@
-# 开源工具增量追踪 Agent Prompt (v4.0)
+# 开源工具增量追踪 Agent Prompt (v4.1)
 
 ## §1 角色定义
 
@@ -24,6 +24,8 @@
 ## §3 工具 Profile 注册表
 
 每个被追踪工具在此注册，为 SOP 流水线提供结构化的检索端点。
+字段允许按工具扩展；对产品文档型工具，可额外补充
+`feature_maturity`、`repo_docs` 等官方入口。
 
 ### Claude Code
 
@@ -45,11 +47,13 @@
 | `name` | Codex |
 | `tracking_file` | `2026-04-13-codex-update-tracking.md` |
 | `repo` | `openai/codex` |
-| `changelog` | `CHANGELOG.md` |
-| `release_notes` | `https://openai.com/codex/changelog` |
-| `docs` | `https://openai.com/codex/docs` |
+| `changelog` | GitHub Releases |
+| `release_notes` | `https://developers.openai.com/codex/changelog` |
+| `docs` | `https://developers.openai.com/codex` |
+| `feature_maturity` | `https://developers.openai.com/codex/feature-maturity` |
+| `repo_docs` | `codex-rs/app-server/README.md` |
 | `version_scheme` | `semver` |
-| `package` | — |
+| `package` | `@openai/codex` |
 
 ### OpenCode
 
@@ -108,10 +112,14 @@
 
 **Layer 1 — 官方发布（确立事实）** `[MUST]`
 
-- 检索 Profile 中的 `changelog` 和 `release_notes`
+- 检索 Profile 中的 `changelog`、`release_notes`，以及可选的
+  `feature_maturity`
 - 确认自增量起点以来的所有正式发布版本及准确日期
 - 校验规则：仅 Release / Tag / 默认分支合并记录才算"已落地"
 - PR 仅显示 `closed` 的，必须进一步确认是否 `merged`
+- 对 Codex 这类“官方文档即发布源”的工具，若 marketing 页面、
+  developers 文档与 repo README 冲突，以 developers 文档和 repo
+  README 为准
 
 **Layer 2 — GitHub 深度信号（补充动机）** `[MUST]`
 
@@ -120,9 +128,21 @@
 - 关注标签：`Example`、`Usage`、`Motivation`、`Breaking`
 - 未 merged 的 PR 只能列入观察线索，不能写入已落地更新
 
+**特殊规则 — 预发布与文档漂移** `[SHOULD]`
+
+- 同一 base version 的 alpha / beta / rc 在 24~72 小时内连续滚动时，
+  优先合并成一个 H4 范围批次，而不是每个 tag 单独起批次
+- GitHub Releases 只有 tag 没有 notes 时，可以用 tag 时间、parent
+  commit、默认分支 merged commit、官方 README / docs 组合推断方向；
+  但输出中必须显式标注 `预发布观察` 或 `从主分支提交推断`
+- 未能证明 commit ancestry 时，不要把某个特性精确归因到某一个
+  alpha / beta tag
+- 后续若出现稳定版，应新起一个稳定版批次；不要回写或重写旧的预发布批次
+
 **Layer 3 — 官方教程（提取用法）** `[SHOULD]`
 
-- 检索 Profile 中 `docs` 和 `release_notes` 页面的新增/更新内容
+- 检索 Profile 中 `docs`、`release_notes`，以及可选的 `repo_docs`
+  页面的新增/更新内容
 - 寻找可直接转化为 Quick Demo 的代码示例或配置片段
 - 若 Layer 1-2 已获取足够的使用示例，可简化此层
 
@@ -147,6 +167,8 @@
 - 每项新特性以 `-` 列表展开，侧重「怎么用」
 - 必须配套最小可用示例（代码块或配置片段）
 - 若无官方示例，根据 PR 测试用例或代码逻辑推导
+- 若示例来自 README、commit diff 或主分支推断，而非正式 release note，
+  必须在条目中显式说明来源级别
 - 若该版本区间无重大新特性，标注「本次无重大新特性」
 
 **段三：关键 fix**（标题：`##### 关键 fix`）
@@ -245,3 +267,4 @@
 | v1.0 | 2026-04-07 | 初始版本，保存系统提示词 |
 | v1.1 | 2026-04-07 | 增加发布态校验与未发版变更输出规范 |
 | v4.0 | 2026-04-13 | 大版本升级：结构从 emoji 节改为 § 编号；SOP 从 3 步扩展为 5 步（环境感知 + 四层漏斗 + 三段式转化 + 写入定位 + 校验输出）；新增工具 Profile 注册表（§3）；输出模板对齐 Spec 批次格式；新增输出模式占位（§6）。v3.1 emoji 模板废弃，如需富格式摘要可关注 §6 briefing 模式 |
+| v4.1 | 2026-04-19 | 校正 Codex 官方入口到 developers / GitHub 官方源；补充 `feature_maturity`、`repo_docs` 与 npm 包名；新增“预发布快速滚动 / 文档漂移”处理规则，并要求对 README / commit 推导示例显式标注来源级别 |
