@@ -99,6 +99,60 @@ toc: true
 - **频率限制区分**：现在能准确告知用户是触及了服务器频率限制 (529) 还是个人计划额度限制。
 - **Vertex AI 向导**：修正了配置流中 GCP 项目 ID 识别不准确的问题 (v2.1.98)。
 
+#### 2026-04 | v2.1.109 ~ v2.1.114
+
+**信息截止**：2026-04-19 | **最新 Release**：v2.1.114
+
+| 版本 | 日期 | 一句话 |
+|------|------|--------|
+| `v2.1.114` | 2026-04-18 | 修复 agent team 队友请求工具权限时权限对话框崩溃的问题 |
+| `v2.1.113` | 2026-04-17 | 改用原生二进制分发（per-platform optional dep）；新增 `sandbox.network.deniedDomains`；Bash 安全规则覆盖 `env`/`sudo`/`watch` 包装；subagent 卡住 10 分钟自动失败 |
+| `v2.1.112` | 2026-04-16 | 修复 auto 模式下 `claude-opus-4-7 temporarily unavailable` |
+| `v2.1.111` | 2026-04-16 | 新增 `xhigh` effort 档位；`/effort` 无参打开滑块；`/ultrareview` 云端并行评审；Auto 模式对 Max 订阅开放；Windows 灰度推出 PowerShell 工具 |
+| `v2.1.110` | 2026-04-15 | 新增 `/tui` 无闪烁全屏命令；`Ctrl+O` 改为切换 verbose transcript，`/focus` 切换 focus 视图；Remote Control 推送通知 |
+| `v2.1.109` | 2026-04-15 | 扩展思考指示器加入轮转进度提示 |
+
+##### 新特性用法
+
+- **原生二进制分发**（v2.1.113）：CLI 通过平台 optional dependency 拉取原生 Claude Code 二进制，启动更快。无需额外配置；`pnpm i -g @anthropic-ai/claude-code` 时自动选择匹配平台的包。
+- **网络拒绝域名**（v2.1.113）：在更宽的 allowlist 之上单独阻断域名。
+
+  ```json
+  {
+    "sandbox": {
+      "network": {
+        "deniedDomains": ["pastebin.com", "*.untrusted.example"]
+      }
+    }
+  }
+  ```
+
+- **`/tui` 无闪烁全屏**（v2.1.110）：取代 `CLAUDE_CODE_NO_FLICKER=1` 的临时方案。在会话内输入 `/tui` 即可切换；持久化到 settings：
+
+  ```json
+  { "tui": true, "autoScrollEnabled": true }
+  ```
+
+  `Ctrl+O` 现在用于切换 verbose 模式，原 Focus View 改为 `/focus` 命令。
+- **`/ultrareview` 并行代码评审**（v2.1.111）：云端 fan-out 多个评审 agent 并行检查当前 diff，对话框内显示 diffstat 与动画状态。直接输入 `/ultrareview` 触发；适合 PR 自审。
+- **`xhigh` effort 与 Auto 模式**（v2.1.111）：Opus 4.7 新增介于 `high` 与 `max` 之间的 `xhigh` 档位；Max 订阅默认可用 Auto 模式（不再需要 `--enable-auto-mode`）。`/effort` 无参打开交互滑块。
+- **PowerShell 工具（Windows）**（v2.1.111）：灰度推出。强制开启 / 关闭：`set CLAUDE_CODE_USE_POWERSHELL_TOOL=1`（或 `=0` 禁用）。
+- **`/loop` 流控增强**（v2.1.113）：`Esc` 取消待触发的 wakeup；transcript 中显示 `Claude resuming /loop wakeup`。
+- **多行输入 readline 兼容**（v2.1.113）：`Ctrl+A`/`Ctrl+E` 跳转到逻辑行首/尾；Windows 下 `Ctrl+Backspace` 删除前一个词。
+
+##### 关键 fix
+
+- **Opus 4.7 auto 模式不可用**（v2.1.112）：修复 `claude-opus-4-7 temporarily unavailable` 错误，影响所有 auto 模式用户。
+- **Bedrock Opus 4.7 thinking 报错**（v2.1.113）：修复通过 Bedrock ARN 调用 Opus 4.7 时返回 `thinking.type.enabled not supported`。
+- **MCP 并发调用看门狗**（v2.1.113）：修复一个工具的 watchdog 可能被另一个并发调用解除，导致超时不生效。
+- **`dangerouslyDisableSandbox` 越权**（v2.1.113）：修复设置该开关后部分场景未触发权限提示就直接执行。以前需要手动 review 每次调用。
+- **Bash 安全规则增强**（v2.1.113）：deny 规则现在能匹配 `env`/`sudo`/`watch`/`ionice`/`setsid` 包装的命令；`Bash(find:*)` 不再自动批准 `find -exec`/`-delete`；macOS 下 `/private/{etc,var,tmp,home}` 视为危险删除目标。以前可能被 wrapper 命令绕过。
+- **Subagent 卡死无提示**（v2.1.113）：subagent 在流中停滞 10 分钟会以明确错误失败，不再无限挂起。
+- **PermissionRequest hook updatedInput 未复检**（v2.1.110）：修复 hook 修改后的输入未重新走 deny 规则的安全漏洞。
+- **agent team 权限对话框崩溃**（v2.1.114）：队友请求工具权限时主端崩溃，已修复。
+- **Markdown 表格 inline code 含 `|`**（v2.1.113）：修复 transcript 渲染破裂。
+- **`/effort auto` 确认文案错误**（v2.1.113）：以前误导用户以为切到了固定档位。
+
 ---
 
 ### Q1（2026-01 ~ 03）
@@ -167,3 +221,4 @@ toc: true
 | v1.1 | 2026-04-13 | 补录 Q1 2026 批次（v2.1.1~v2.1.88）；新增 2025 年占位结构 |
 | v1.2 | 2026-04-14 | 核对 GitHub Releases API 实际日期；修正不存在的版本号（v2.1.0/v2.1.10/v2.1.40/v2.1.88）及错误日期 |
 | v1.3 | 2026-04-15 | 增量追踪至 v2.1.108（更正此前误报的 v2.2）；新增 1H 缓存控制、会话总结、OS CA 支持 |
+| v1.4 | 2026-04-19 | 增量追踪至 v2.1.114；新增原生二进制分发、`/tui`、`/ultrareview`、`xhigh` effort、PowerShell 工具，以及 Bash/sandbox 安全加固批次 |
