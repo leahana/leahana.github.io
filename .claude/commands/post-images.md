@@ -55,8 +55,9 @@ tags: [blog, mermaid, m2c, images, workflow]
    - 为每个 Mermaid 图在其代码块后面追加对应图片引用
    - 默认使用 `m2c-pipeline` 实际产出的 PNG 文件名，不强行重命名
    - 图片链接必须使用：
-     - `CDN_BASE + {相对图片路径}`，其中 `CDN_BASE` 表示
-       `https://cdn.jsdelivr.net/gh/leahana/blog-images@dev/`
+     - `CDN_BASE + {相对图片路径}`
+     - `CDN_BASE` 表示 jsDelivr 的 `blog-images@dev` 根路径，写回文章时
+       再展开成完整 CDN URL
    - 追加格式优先使用下面这个模板：
 
    ```markdown
