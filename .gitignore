@@ -27,6 +27,7 @@ coverage/
 .pnpm-store/
 openspec/
 *.code-workspace
+/_runs/
 
 # OpenSpec auto-generated files (use .claude/ instead)
 .github/prompts/

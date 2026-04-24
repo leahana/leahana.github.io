@@ -198,6 +198,7 @@ other agents:
 | Skill / Command | Description |
 |-----------------|-------------|
 | `optimize-doc` | 博客型 Markdown 优化工作流，结合模板、优化指南和格式规范使用 |
+| `/post-images` | 对已定稿文章执行 Mermaid 插图生成、原文回填、`blog-images` 提交准备流程 |
 | `save` | 保存当前对话为 Markdown 文件存档 |
 | `/security-review` | AI 驱动安全审查，扫描密钥泄露、配置风险、脚本注入等 |
 

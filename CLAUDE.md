@@ -295,6 +295,10 @@ source/docs/
 └── markdown-format-check.md       # Rule companion doc
 ```
 
+### Custom Commands
+
+- `/post-images` - 对已完成文章执行 Mermaid 插图生成、原文回填，以及 `../blog-images` 提交准备流程
+
 **When to use each**:
 
 - **Starting from a blank page** → Start with `markdown-templates.md`
