@@ -1,4 +1,4 @@
-# 开源工具增量追踪 Agent Prompt (v4.1)
+# 开源工具增量追踪 Agent Prompt (v4.2)
 
 ## §1 角色定义
 
@@ -26,6 +26,8 @@
 每个被追踪工具在此注册，为 SOP 流水线提供结构化的检索端点。
 字段允许按工具扩展；对产品文档型工具，可额外补充
 `feature_maturity`、`repo_docs` 等官方入口。
+对同时存在 CLI / OSS 与 App / Product 两条官方发布流的工具，
+可额外补充 `product_changelog`、`release_streams` 等字段。
 
 ### Claude Code
 
@@ -47,8 +49,10 @@
 | `name` | Codex |
 | `tracking_file` | `2026-04-13-codex-update-tracking.md` |
 | `repo` | `openai/codex` |
-| `changelog` | GitHub Releases |
-| `release_notes` | `https://developers.openai.com/codex/changelog` |
+| `changelog` | `https://github.com/openai/codex/releases` |
+| `release_notes` | `https://github.com/openai/codex/releases` |
+| `product_changelog` | `https://developers.openai.com/codex/changelog` |
+| `release_streams` | `cli-oss` + `app-product` |
 | `docs` | `https://developers.openai.com/codex` |
 | `feature_maturity` | `https://developers.openai.com/codex/feature-maturity` |
 | `repo_docs` | `codex-rs/app-server/README.md` |
@@ -113,13 +117,19 @@
 **Layer 1 — 官方发布（确立事实）** `[MUST]`
 
 - 检索 Profile 中的 `changelog`、`release_notes`，以及可选的
-  `feature_maturity`
+  `product_changelog`、`feature_maturity`
 - 确认自增量起点以来的所有正式发布版本及准确日期
 - 校验规则：仅 Release / Tag / 默认分支合并记录才算"已落地"
 - PR 仅显示 `closed` 的，必须进一步确认是否 `merged`
+- 若工具存在多条官方发布流（例如 CLI / OSS 与 App / Product），
+  必须分别确认各自的最新条目和日期，不能用一个流覆盖另一个流
 - 对 Codex 这类“官方文档即发布源”的工具，若 marketing 页面、
   developers 文档与 repo README 冲突，以 developers 文档和 repo
   README 为准
+- 对 Codex 这类既有 GitHub Releases 又有 developers changelog 的工具，
+  GitHub Releases 优先负责 CLI / OSS 版本事实，developers changelog
+  负责 App / Product 变化与补充背景；若两者日期不一致，输出时必须写出
+  具体日期，不得笼统写“最新”
 
 **Layer 2 — GitHub 深度信号（补充动机）** `[MUST]`
 
@@ -137,6 +147,12 @@
   但输出中必须显式标注 `预发布观察` 或 `从主分支提交推断`
 - 未能证明 commit ancestry 时，不要把某个特性精确归因到某一个
   alpha / beta tag
+- 同一时间窗若同时出现 stable release 与下一条 prerelease 版本线，
+  必须按 `{base version} + {channel}` 拆成独立批次；先按发布时间排序，
+  再决定追加顺序
+- 稳定版 release notes 一旦出现，应优先用它回收之前 alpha / beta
+  阶段的推断；新稳定版批次可以写“确认了上一轮预发布观察”，
+  但不要回写旧的 alpha / beta 批次
 - 后续若出现稳定版，应新起一个稳定版批次；不要回写或重写旧的预发布批次
 
 **Layer 3 — 官方教程（提取用法）** `[SHOULD]`
@@ -158,6 +174,9 @@
 
 **段一：版本速览表**
 - 首行：`**信息截止**：YYYY-MM-DD | **最新 Release**：{版本/更新标识}`
+- 若工具存在多条官方发布流或多版本线，可在表格前先用 1 句话注明
+  当前批次所属流与 channel，例如 `CLI Stable`、`App Update`、
+  `Pre-release Observation`
 - 表头第一列：`version_scheme` 为 `semver` 或 `build-number` 时用 `版本`，
   `date-based` 或 `feature-name` 时用 `更新`
 - 每个版本/更新一行，列为 `{版本|更新} | 日期 | 一句话`
@@ -207,6 +226,8 @@
 
 **格式合规：**
 - H4 标题以 `#### YYYY-MM` 开头，包含 `|` 分隔符
+- 当存在多发布流或多版本线时，标题或版本描述需明确 channel /
+  流标识，避免把 stable、prerelease、app update 混写
 - 版本描述与 `version_scheme` 匹配，未伪造格式
 - 三段内容完整（版本速览表 + 新特性用法 + 关键 fix）
 - 版本速览表首行包含信息截止日期
@@ -268,3 +289,4 @@
 | v1.1 | 2026-04-07 | 增加发布态校验与未发版变更输出规范 |
 | v4.0 | 2026-04-13 | 大版本升级：结构从 emoji 节改为 § 编号；SOP 从 3 步扩展为 5 步（环境感知 + 四层漏斗 + 三段式转化 + 写入定位 + 校验输出）；新增工具 Profile 注册表（§3）；输出模板对齐 Spec 批次格式；新增输出模式占位（§6）。v3.1 emoji 模板废弃，如需富格式摘要可关注 §6 briefing 模式 |
 | v4.1 | 2026-04-19 | 校正 Codex 官方入口到 developers / GitHub 官方源；补充 `feature_maturity`、`repo_docs` 与 npm 包名；新增“预发布快速滚动 / 文档漂移”处理规则，并要求对 README / commit 推导示例显式标注来源级别 |
+| v4.2 | 2026-04-24 | 补充“多官方发布流 + 多版本线并行”的处理规则：为 Codex 增加 `product_changelog` 与 `release_streams` 字段；明确 GitHub Releases 与 developers changelog 的职责分工；新增 stable 与下一条 prerelease 同窗并行时的拆批规则，以及稳定版 release notes 对预发布推断的回收规则 |
