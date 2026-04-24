@@ -258,6 +258,192 @@ codex plugin marketplace remove debug
 
 ---
 
+#### 2026-04 | 0.122.0-alpha.11 ~ 0.122.0-alpha.13（预发布）
+
+**信息截止**：2026-04-21 | **最新 Release**：0.122.0-alpha.13（预发布）
+
+| 版本 | 日期 | 一句话 |
+|------|------|--------|
+| `0.122.0-alpha.11` | 2026-04-19 16:41 | `0.122.0` 预发布继续滚到 `alpha.11`，公开 release notes 依旧缺席 |
+| `0.122.0-alpha.12` | 2026-04-19 18:48 | 同日晚间继续推进到 `alpha.12`，说明这一轮烘焙仍在高频持续 |
+| `0.122.0-alpha.13` | 2026-04-20 12:30 | 当前最新公开 prerelease；稳定版 `0.122.0` 仍未发布，官方 changelog 也还没补 CLI 新条目 |
+
+##### 新特性用法
+
+- **本批仍无公开 release notes**：GitHub 公开 release 页只确认
+  `alpha.11 ~ alpha.13` 的 tag 和时间，OpenAI Developers 的 changelog
+  截至 `2026-04-21` 仍停留在 `2026-04-16 / App 26.415`；现阶段更稳妥的
+  用法仍是把这些更新视为预发布烘焙，而不是稳定命令面变更。
+```text
+生产环境继续使用 0.121.0
+实验环境关注 alpha.13 与后续 stable release
+```
+- **计划实现过程更可见**：从 `#18573` 的 merged commit 可见，
+  TUI 会把 plan implementation prompt 实际用了哪些 context 显示得更
+  清楚；对需要核对“为什么 agent 会这样改”的人更有帮助。
+```text
+先让 Codex 产出 plan
+进入 implementation 阶段
+查看 prompt 中实际带入的 context used
+```
+- **多线程 / 目录切换链路继续收敛**：从对应时间窗的主分支提交可见，
+  thread picker、parent thread status、cwd 不可用时的 plugin cache
+  边角都在继续修；如果你经常切线程、切目录、做 side conversation，
+  这批预发布更值得观察。
+```text
+/resume
+# 查看 thread picker 的命名与提示
+# 观察 side conversation 里的 parent thread status
+```
+
+##### 关键 fix
+
+- **切目录导致的 plugin cache panic**：`#18499` 修了 cwd 不可用时的
+  plugin cache panic，频繁切目录、清理工作区或从临时目录恢复的人受益
+  最直接。
+- **MCP stdio 改造继续前推**：`#18212` 的 executor-backed MCP stdio
+  已推进到第 5/6 步，说明 MCP stdio 的执行链路还在继续收敛。
+- **预发布仍偏稳定化**：到 `alpha.13` 为止，公开信息更多体现为
+  TUI / thread / plugin / MCP 的可见性和边角稳定性收敛，而不是新的
+  稳定大功能落地。
+
+**主分支未发版** (截至 2026-04-21)：
+- PR #18625: 新增 `codex debug models`，方便直接检查当前模型目录 /
+  provider
+- PR #18610: `/mcp` 增加 verbose diagnostics，定位 MCP 配置问题更
+  直观
+- PR #18289: app_server 开始透传 `PatchUpdated` 事件，集成侧能更早感知
+  补丁更新
+- PR #18646: 新增 `--ignore-user-config` 与 `--ignore-rules`，便于隔离
+  “是不是本地配置导致的行为差异”
+- PR #18654 / #18492 / #18274: 继续修 sub-agent exec policy、
+  FS watcher 与文件系统权限 canonicalization 这类边角问题
+
+这些内容来自 `2026-04-20` 的主分支提交，但公开 release notes 尚未说明
+它们是否已经进入更晚的 prerelease；保守起见，先按“主分支未发版观察”
+记录，等待下个 tag、稳定版或 compare 页面补全。
+
+---
+
+#### 2026-04 | 0.123.0 ~ 0.124.0（CLI Stable）
+
+**信息截止**：2026-04-24 | **最新 Release**：0.124.0（稳定版）
+
+本批次属于 `cli-oss / stable`；`0.123.0-alpha.6 ~ alpha.10` 与
+`0.124.0-alpha.1 ~ alpha.3` 已由稳定版 release notes 回收确认。
+
+| 版本 | 日期 | 一句话 |
+|------|------|--------|
+| `0.123.0` | 2026-04-23 01:26 | Bedrock provider、`/mcp verbose`、plugin MCP file shapes、realtime handoff 和远程 sandbox 配置一起落到稳定版 |
+| `0.124.0` | 2026-04-23 18:29 | 快速 reasoning 调整、多环境 app-server turn、stable hooks、远程 marketplace list/read 与 Fast service tier 一起发布 |
+
+##### 新特性用法
+
+- **升级到稳定版 0.124.0**：官方 changelog 已给出 npm 安装方式，之前
+  追 `alpha` 的环境可以先回到稳定版基线，再观察下一条 prerelease 线。
+```bash
+npm install -g @openai/codex@0.124.0
+```
+- **快速调整 reasoning**：TUI 新增 `Alt+,` 与 `Alt+.`，可以在当前会话
+  里临时降低或提高 reasoning；接受模型升级后，reasoning 会重置到新
+  模型默认值，避免沿用旧模型的 stale setting。
+```text
+Alt+,  # 降低 reasoning
+Alt+.  # 提高 reasoning
+```
+- **MCP 诊断分层**：`0.123.0` 增加 `/mcp verbose`，日常只看 `/mcp`
+  保持快速；排查 server diagnostics、resources、resource templates
+  时再打开 verbose。
+```text
+/mcp
+/mcp verbose
+```
+- **Hooks 进入稳定态**：`0.124.0` 把 hooks 标为 stable，并支持在
+  `config.toml` 与 managed `requirements.toml` 中配置；可观察 MCP
+  tools、`apply_patch` 以及长时间 Bash session。
+```toml
+# config.toml
+# 具体 hook 结构以当前 Codex hooks 文档 / release note 为准
+# 重点变化：hooks 已从实验观察点进入 stable capability
+```
+- **App-server 多环境 turn**：app-server session 可以管理多个环境，
+  并在每个 turn 选择 environment 与 working directory，适合远程开发、
+  多仓库或 monorepo 子目录定位。
+```text
+在 app-server client 中为 turn 指定 environment + cwd
+让 Codex 在目标 workspace 内执行本轮任务
+```
+
+##### 关键 fix
+
+- **权限与审批状态同步**：`0.124.0` 修了 side conversation 后
+  `/permissions` 变更漂移，以及 Full Access 状态在 MCP approval 中的
+  反映问题；多线程工作时少一类“明明改了权限但状态不一致”的摩擦。
+- **远程 app-server 稳定性**：修了 websocket events 在负载下持续 draining
+  和 remote worker 退出时 shutdown cleanup 失败的问题，远程工作流更稳。
+- **`wait_agent` 卡顿**：修了 mailbox 已有 queued work 时仍等待新通知或
+  timeout 的问题，后台 agent / sub-agent 流程更不容易假性阻塞。
+- **CLI 与终端边角**：`0.123.0` 修了 rollback 后 `/copy` 复制旧响应、
+  手动 shell 命令期间 follow-up 卡在 `Working`、VS Code WSL Unicode /
+  dead-key 输入、proxy env 旧值恢复、`codex exec` 不继承 root flags 等
+  问题。
+
+---
+
+#### 2026-04 | GPT-5.5 / Browser Use / Approval Review（App Product）
+
+**信息截止**：2026-04-24 | **最新 Release**：2026-04-23 Product Update
+
+本批次属于 `app-product`；来源为 OpenAI Developers changelog，
+与 GitHub CLI release 独立记录。
+
+| 更新 | 日期 | 一句话 |
+|------|------|--------|
+| GPT-5.5 in Codex | 2026-04-23 | GPT-5.5 成为 Codex 推荐模型，适合实现、重构、调试、测试、验证和知识工作产物 |
+| Browser use | 2026-04-23 | Codex app 可操作 in-app browser，用于本地开发服务器和 file-backed page 的 UI 验证 |
+| Automatic approval reviews | 2026-04-23 | 审批请求可先交给自动 reviewer agent，App 中展示 review 状态和风险等级 |
+
+##### 新特性用法
+
+- **切到 GPT-5.5**：如果模型选择器已经出现 GPT-5.5，CLI 可以直接开新
+  thread 指定模型；会话中也可以用 `/model` 切换。IDE extension 和
+  Codex app 则在 composer 的模型选择器中切换。
+```bash
+codex --model gpt-5.5
+```
+```text
+/model
+# 选择 GPT-5.5
+```
+- **让 Codex 操作内置浏览器**：适合本地页面验证、视觉 bug 复现、UI
+  修复后的点击流检查；官方说明该能力通过 bundled Browser plugin
+  运行，允许 / 阻止的网站可在 settings 中管理。
+```text
+启动本地开发服务器
+让 Codex 在 app 内 browser 打开页面
+要求它点击、复现、验证修复
+```
+- **自动审批 review**：配置后，符合条件的 approval prompt 会先进入
+  automatic reviewer agent；执行前可在 Codex app 里查看 approved、
+  denied、stopped、timed out 等状态与风险等级。
+```text
+触发需要审批的操作
+查看 automatic review item 的 status / risk
+再决定是否继续执行
+```
+
+##### 关键 fix
+
+- **模型可见性兜底**：如果 GPT-5.5 还没出现，官方建议先升级 CLI、IDE
+  extension 或 Codex app；rollout 期间继续使用 GPT-5.4。
+- **浏览器权限边界更清晰**：Browser use 通过 bundled Browser plugin
+  管理，并可在 settings 中审查 allow / block 网站，减少“能浏览但边界
+  不透明”的不确定性。
+- **审批流程更可审计**：automatic approval reviews 把 approval 前的
+  reviewer 结果、状态和风险等级显式化，适合需要更严格审批留痕的团队。
+
+---
+
 ### Q1（2026-01 ~ 03）
 
 #### 2026-03 | CLI 0.118.0 / App Workflow Update
@@ -359,3 +545,5 @@ requires_openai_auth = true
 | v1.3 | 2026-04-17 | 追加 0.119.0 ~ 0.121.0 稳定版增量，并补记 0.122.0-alpha.3 预发布观察 |
 | v1.4 | 2026-04-17 | 追加 App 26.415 批次，并补记同日滚到 0.122.0-alpha.5 的最新预发布观察 |
 | v1.5 | 2026-04-19 | 追加 0.122.0-alpha.6 ~ alpha.10 预发布批次，并补记 alpha.10 之后的主分支未发版观察 |
+| v1.6 | 2026-04-21 | 追加 0.122.0-alpha.11 ~ alpha.13 预发布批次，并补记 2026-04-20 主分支的主分支未发版观察 |
+| v1.7 | 2026-04-24 | 按多发布流规则追加 0.123.0 ~ 0.124.0 CLI Stable 批次，并补记 GPT-5.5、Browser use 与 automatic approval reviews 的 App/Product 更新 |
