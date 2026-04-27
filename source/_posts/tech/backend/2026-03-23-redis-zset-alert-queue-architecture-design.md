@@ -334,6 +334,306 @@ public class AlertApplication {
 | Redis 宕机 | ⚠️ 取决于持久化 | AOF everysec 最多丢 1 秒数据 |
 | 大量任务堆积 | ✅ 可控 | ZSet 内存占用小，百万级无压力 |
 
+### 3.4 告警归并并发坑：先处理后删除为什么会误删新任务
+
+上面的示例采用的是“原子取出并删除，再处理”的消费模型，适合告警重推。
+但很多告警系统还有另一个需求：同一设备、同一规则、同一时间窗口内的
+告警要先归并，满足条件后再生成一条聚合告警。
+
+这时不少实现会变成：
+
+1. REST 接口收到告警后，满足归并条件就直接归并处理
+2. 不满足条件就按 `mergeKey` 写入 ZSet，等待定时任务扫描
+3. 定时任务扫到到期 `mergeKey` 后，先执行归并处理
+4. 归并成功后再从 ZSet 删除这个 `mergeKey`
+
+问题就在第 4 步：如果处理期间又有新告警进来，`ZREM` 删除的可能不是
+旧任务，而是新告警刚写入的延迟任务。
+
+```mermaid
+sequenceDiagram
+    participant Job as 定时任务
+    participant Redis as Redis ZSet
+    participant Api as REST 接口
+    participant DB as 告警明细库
+
+    Job->>Redis: 读取到期 mergeKey=M, score=100
+    Job->>DB: 开始归并 M 的旧告警
+    Api->>DB: 写入 M 的新告警明细
+    Api->>Redis: ZADD M score=200
+    Job->>DB: 旧告警归并完成
+    Job->>Redis: ZREM M
+    Redis-->>Api: 新延迟任务被误删
+```
+
+这个竞态的根因是：ZSet 的 `member` 只有一个，同一个 `mergeKey` 再次
+`ZADD` 会覆盖 score；而普通 `ZREM mergeKey` 无法区分它删除的是“旧版本
+任务”还是“新版本任务”。
+
+### 3.5 四种修复方式对比
+
+| 方案 | 核心思路 | 优点 | 风险 | 建议 |
+|------|----------|------|------|------|
+| 先删再处理 | 扫描到期后先 `ZREM`，再执行业务归并 | 不会误删新任务 | 进程宕机可能丢任务 | 需配合 processing 队列 |
+| 全链路加锁 | REST 入队和定时归并都锁同一 `mergeKey` | 语义最直观 | 接口耗时上升，锁过期难调 | 不作为首选 |
+| score/version 条件删除 | 删除前比较快照，只删旧版本任务 | 改动小，保留现有流程 | 归并逻辑仍需幂等 | **推荐** |
+| processing zset + lease | 到期任务先搬到处理中队列，成功再 ack | 可靠性最好 | 代码和监控都更复杂 | 后续演进 |
+
+如果目标是“最小改动”，首选 `score/version` 条件删除。它不改变现有
+REST 接口和定时任务的大结构，只是在队列任务上补一个版本栅栏。
+
+### 3.6 最小改动方案：score/version 条件删除
+
+设计里需要统一几个概念：
+
+- `mergeKey`：归并维度，例如设备 ID、告警类型、规则 ID 组合
+- `QUEUE_KEY`：Redis ZSet，存放待归并任务
+- `VERSION_KEY`：Redis Hash，存放每个 `mergeKey` 的版本号
+- `safeAckLua`：成功后条件删除脚本
+- `safeRetryLua`：失败后条件改 score 脚本
+
+整体流程如下：
+
+```mermaid
+graph TD
+    A[新告警先落库] --> B[version +1 并 ZADD]
+    C[读取到期快照] --> D[归并处理 mergeKey]
+    D --> E{成功还是失败?}
+    E --> F[执行条件 ack/retry]
+    B -.并发更新.-> F
+    F --> G{快照仍有效?}
+    G -->|是| H[删除旧任务或改到重试时间]
+    G -->|否| I[保留新任务]
+
+    style B fill:#c8e6c9,stroke:#333,color:#000
+    style G fill:#fff3e0,stroke:#333,color:#000
+    style I fill:#bbdefb,stroke:#333,color:#000
+```
+
+#### 入队：先落库，再原子更新版本和 score
+
+REST 接口不要只把数据放进 Redis。先把告警明细写入数据库或其他可靠
+存储，再更新 Redis 队列。这样即使定时任务稍后处理，也能按 `mergeKey`
+查到完整明细。
+
+```java
+@Service
+public class AlertMergeService {
+
+    private static final String QUEUE_KEY = "alert:merge:delay:queue";
+    private static final String VERSION_KEY = "alert:merge:version";
+
+    private static final String ENQUEUE_LUA = """
+        local version = redis.call('HINCRBY', KEYS[2], ARGV[1], 1)
+        redis.call('ZADD', KEYS[1], ARGV[2], ARGV[1])
+        return version
+        """;
+
+    private final StringRedisTemplate redisTemplate;
+    private final AlertDetailMapper alertDetailMapper;
+    private final AlertMergeMapper alertMergeMapper;
+
+    public AlertMergeService(
+        StringRedisTemplate redisTemplate,
+        AlertDetailMapper alertDetailMapper,
+        AlertMergeMapper alertMergeMapper
+    ) {
+        this.redisTemplate = redisTemplate;
+        this.alertDetailMapper = alertDetailMapper;
+        this.alertMergeMapper = alertMergeMapper;
+    }
+
+    public long enqueue(AlertEvent event) {
+        String mergeKey = buildMergeKey(event);
+        long triggerTime = System.currentTimeMillis() + event.delayMs();
+
+        // 先落库，保证后续归并可以按 mergeKey 找回完整明细。
+        alertDetailMapper.insert(event.toEntity(mergeKey));
+
+        Long version = redisTemplate.execute(
+            RedisScript.of(ENQUEUE_LUA, Long.class),
+            List.of(QUEUE_KEY, VERSION_KEY),
+            mergeKey,
+            String.valueOf(triggerTime)
+        );
+        return version == null ? 0L : version;
+    }
+}
+```
+
+这里把 `HINCRBY` 和 `ZADD` 放进同一个 Lua 脚本，是为了避免 Redis 内部
+出现“版本已增加但 score 还没更新”的中间态。
+
+下面几段方法继续放在 `AlertMergeService` 中，为了便于讲解按职责拆开。
+
+#### 扫描：取到期任务时带上 score/version 快照
+
+定时任务扫描时不要只拿 `mergeKey`，还要拿当时的 `score` 和 `version`。
+这三个值组成快照，后面 ack 或 retry 都必须基于这份快照判断。
+
+```java
+public record MergeTaskSnapshot(
+    String mergeKey,
+    double score,
+    long version
+) {
+}
+
+public List<MergeTaskSnapshot> fetchExpired(long now, int limit) {
+    Set<ZSetOperations.TypedTuple<String>> tuples = redisTemplate
+        .opsForZSet()
+        .rangeByScoreWithScores(QUEUE_KEY, 0, now, 0, limit);
+
+    if (tuples == null || tuples.isEmpty()) {
+        return List.of();
+    }
+
+    List<MergeTaskSnapshot> snapshots = new ArrayList<>();
+    for (ZSetOperations.TypedTuple<String> tuple : tuples) {
+        String mergeKey = tuple.getValue();
+        Double score = tuple.getScore();
+        Object version = redisTemplate.opsForHash()
+            .get(VERSION_KEY, mergeKey);
+
+        if (mergeKey != null && score != null && version != null) {
+            snapshots.add(new MergeTaskSnapshot(
+                mergeKey,
+                score,
+                Long.parseLong(version.toString())
+            ));
+        }
+    }
+    return snapshots;
+}
+```
+
+#### 处理：归并必须按 mergeKey 幂等
+
+版本栅栏只能保证“不误删新任务”，不能替代业务幂等。归并处理本身仍然
+要按 `mergeKey` 做幂等保护，例如：
+
+- 归并结果表对 `mergeKey + windowStart` 建唯一键
+- 状态流转使用 CAS，例如 `PENDING -> MERGED`
+- 批量写入使用 upsert，避免重复定时扫描造成重复结果
+
+```java
+public void mergeBySnapshot(MergeTaskSnapshot snapshot) {
+    List<AlertDetail> details = alertDetailMapper
+        .selectPendingByMergeKey(snapshot.mergeKey());
+    if (details.isEmpty()) {
+        return;
+    }
+
+    AlertMergeResult result = AlertMergeResult.from(
+        snapshot.mergeKey(),
+        details
+    );
+
+    int updated = alertMergeMapper.upsertByMergeKey(result);
+    if (updated == 0) {
+        return;
+    }
+
+    alertDetailMapper.markMerged(snapshot.mergeKey());
+}
+```
+
+#### 成功：只删除仍然等于快照的任务
+
+归并成功后不要直接 `ZREM`，而是执行 `safeAckLua`。只有当前 score 和
+version 都还等于快照值，才说明没有新告警覆盖这个 `mergeKey`。
+
+```java
+private static final String SAFE_ACK_LUA = """
+    local currentScore = redis.call('ZSCORE', KEYS[1], ARGV[1])
+    if not currentScore then
+        return 0
+    end
+
+    local currentVersion = redis.call('HGET', KEYS[2], ARGV[1])
+    if tonumber(currentScore) == tonumber(ARGV[2])
+        and currentVersion == ARGV[3] then
+        return redis.call('ZREM', KEYS[1], ARGV[1])
+    end
+
+    return 0
+    """;
+
+public boolean safeAck(MergeTaskSnapshot snapshot) {
+    Long removed = redisTemplate.execute(
+        RedisScript.of(SAFE_ACK_LUA, Long.class),
+        List.of(QUEUE_KEY, VERSION_KEY),
+        snapshot.mergeKey(),
+        String.valueOf(snapshot.score()),
+        String.valueOf(snapshot.version())
+    );
+    return Long.valueOf(1L).equals(removed);
+}
+```
+
+如果 `safeAck` 返回 `false`，通常不是错误，而是处理期间有新告警进来。
+此时新任务仍留在 ZSet 中，下一轮扫描会继续处理。
+
+#### 失败：只重试仍然等于快照的任务
+
+处理失败也不要无脑 `ZADD`。如果失败期间已经有新告警进入，新的 score
+应该保留；如果还是旧版本，才把它改到重试时间。
+
+```java
+private static final String SAFE_RETRY_LUA = """
+    local currentScore = redis.call('ZSCORE', KEYS[1], ARGV[1])
+    if not currentScore then
+        return 0
+    end
+
+    local currentVersion = redis.call('HGET', KEYS[2], ARGV[1])
+    if tonumber(currentScore) == tonumber(ARGV[2])
+        and currentVersion == ARGV[3] then
+        redis.call('ZADD', KEYS[1], ARGV[4], ARGV[1])
+        return 1
+    end
+
+    return 0
+    """;
+
+public boolean safeRetry(MergeTaskSnapshot snapshot, long nextRetryTime) {
+    Long updated = redisTemplate.execute(
+        RedisScript.of(SAFE_RETRY_LUA, Long.class),
+        List.of(QUEUE_KEY, VERSION_KEY),
+        snapshot.mergeKey(),
+        String.valueOf(snapshot.score()),
+        String.valueOf(snapshot.version()),
+        String.valueOf(nextRetryTime)
+    );
+    return Long.valueOf(1L).equals(updated);
+}
+```
+
+最终定时任务只需要把处理结果映射到 `safeAck` 或 `safeRetry`：
+
+```java
+@Scheduled(fixedDelay = 10_000)
+public void pollExpiredMergeTasks() {
+    long now = System.currentTimeMillis();
+    for (MergeTaskSnapshot snapshot : fetchExpired(now, 50)) {
+        try {
+            mergeBySnapshot(snapshot);
+            safeAck(snapshot);
+        } catch (Exception ex) {
+            long nextRetryTime = System.currentTimeMillis() + 60_000;
+            safeRetry(snapshot, nextRetryTime);
+        }
+    }
+}
+
+private String buildMergeKey(AlertEvent event) {
+    return event.deviceId() + ":" + event.ruleId() + ":" + event.level();
+}
+```
+
+这套方案的关键不是“让处理过程完全串行”，而是让删除动作具备条件：
+旧任务只能确认旧任务，不能碰新任务。
+
 ---
 
 ## 4. 方案三：RabbitMQ 死信队列
@@ -559,7 +859,12 @@ private void processAlert(String alertId) {
 
 ### Q3: 多节点部署时如何避免重复推送？
 
-文章中的 Lua 脚本已经解决了这个问题：`ZRANGEBYSCORE` + `ZREM` 在同一个 Lua 脚本中原子执行，只有一个节点能成功取出任务。分布式锁是额外的保险层。
+文章中的 Lua 脚本已经解决了重推场景的问题：`ZRANGEBYSCORE` +
+`ZREM` 在同一个 Lua 脚本中原子执行，只有一个节点能成功取出任务。
+分布式锁是额外的保险层。
+
+如果是告警归并场景，不能只看“重复推送”，还要看“新任务是否被旧任务
+误删”。这时推荐使用 `score/version` 条件删除。
 
 ### Q4: 如果 Redis 宕机，告警任务会丢失吗？
 
@@ -585,6 +890,40 @@ private void processAlert(String alertId) {
 
 升级路径：ZSet 方案可以平滑过渡到 MQ——只需将入队逻辑从 `ZADD` 改为 `send()`，消费逻辑从轮询改为监听。
 
+### Q6: 为什么不直接先删再处理？
+
+先删再处理可以避免旧任务误删新任务，但它会引入另一个问题：定时任务
+删除成功后，如果 JVM 崩溃或业务归并超时，这个任务就没有地方恢复。
+
+如果选择先删再处理，建议增加 `processing zset`：
+
+1. 到期任务从 `QUEUE_KEY` 搬到 `PROCESSING_KEY`
+2. 处理成功后从 `PROCESSING_KEY` ack
+3. 后台补偿任务扫描超时 lease，把任务搬回 `QUEUE_KEY`
+
+这套方案可靠性更强，但已经不是“最小改动”。在已有 ZSet 方案上修补
+并发删除问题，`score/version` 条件删除通常成本更低。
+
+### Q7: 只比较 score 够不够？
+
+不够。score 是触发时间，理论上可能因为相同延迟、时间取整或重试策略而
+重复。只比较 score 时，旧任务仍有机会误判为当前任务。
+
+`version` 是单调递增的业务栅栏。每次 REST 接口为同一个 `mergeKey`
+写入新告警时，都执行一次 `HINCRBY`。旧任务拿着旧 version 去 ack，
+即使 score 巧合一致，也不会删除新任务。
+
+### Q8: 新告警和定时归并同时发生怎么办？
+
+按推荐流程处理：
+
+1. 新告警先落库，再用 Lua 原子执行 `version +1` 和 `ZADD`
+2. 定时任务只拿 `mergeKey + score + version` 快照
+3. 归并逻辑按 `mergeKey` 做幂等
+4. 成功或失败后都用 Lua 比较快照，再决定 ack 或 retry
+
+只要删除和重试动作都带条件，旧任务最多多处理一次，不会把新任务删掉。
+
 ---
 
 ## ✨ 总结
@@ -594,6 +933,7 @@ private void processAlert(String alertId) {
 1. **延时任务不等于需要 MQ**：Redis ZSet 在中小型场景下完全够用，可靠性有保障
 2. **引入新中间件的隐性成本远大于显性成本**：运维、学习、故障域扩大才是真正的代价
 3. **架构决策应基于约束条件而非技术偏好**：当前规模 + 现有技术栈 + 团队能力 = 最适合的方案
+4. **归并任务需要版本栅栏**：先处理后删除时，必须用 score/version 条件 ack 避免误删新任务
 
 ### 行动建议
 
@@ -601,16 +941,19 @@ private void processAlert(String alertId) {
 
 - 评估当前系统是否有类似的延时任务需求（超时未支付取消、定时提醒等）
 - 检查 Redis 是否已开启 AOF 持久化
+- 排查归并类定时任务是否存在“先处理后 `ZREM`”的无条件删除
 
 **本周可以完成的**：
 
 - 基于本文代码搭建一个 ZSet 延时队列的 demo
 - 压测验证在目标并发量下的性能和可靠性
+- 为告警归并任务补充 `score/version` 条件 ack 和条件 retry
 
 **长期持续改进的**：
 
 - 监控 ZSet Key 的大小和消费延迟
 - 制定从 ZSet 到 MQ 的升级触发条件和迁移方案
+- 当可靠性要求继续提高时，演进到 processing zset + lease 模型
 
 ---
 
@@ -620,3 +963,4 @@ private void processAlert(String alertId) {
 |------|------|------|
 | v1.0 | 2026-03-23 | 初始版本 |
 | v1.1 | 2026-04-17 | 为 1 个 Mermaid 图表追加 Chiikawa 风格插图（m2c-pipeline 生成） |
+| v1.2 | 2026-04-27 | 补充告警归并并发删除问题与最小改动方案 |
