@@ -153,6 +153,97 @@ toc: true
 - **Markdown 表格 inline code 含 `|`**（v2.1.113）：修复 transcript 渲染破裂。
 - **`/effort auto` 确认文案错误**（v2.1.113）：以前误导用户以为切到了固定档位。
 
+#### 2026-04 | v2.1.116 ~ v2.1.119
+
+**信息截止**：2026-04-24 | **最新 Release**：v2.1.119
+
+| 版本 | 日期 | 一句话 |
+|------|------|--------|
+| `v2.1.119` | 2026-04-23 | `/config` 设置写入 settings.json；新增 `prUrlTemplate`/`CLAUDE_CODE_HIDE_CWD`；`--from-pr` 多平台；Hooks 新增 `duration_ms`；集中修复 40+ Bug |
+| `v2.1.118` | 2026-04-23 | Vim 可视模式上线；`/cost`+`/stats` 合并为 `/usage`；自定义主题系统；Hooks 直调 MCP 工具；新增 `DISABLE_UPDATES` 与 WSL 托管设置继承 |
+| `v2.1.117` | 2026-04-22 | Opus 4.7 上下文修正为 1M；Pro/Max 默认 effort 升为 `high`；原生构建 Glob/Grep 换用 bfs/ugrep；MCP 并发启动 |
+| `v2.1.116` | 2026-04-20 | 大会话 `/resume` 提速 67%；MCP 多服务器并发启动；思考进度内联显示；sandbox `rm` 危险路径安全加固 |
+
+##### 新特性用法
+
+- **Vim 可视模式**（v2.1.118）：在 Vim 模式下，`v` 进入字符可视模式，`V` 进入行可视模式，支持选区操作（`y` 复制、`d` 删除等），与标准 Vim 行为一致。
+
+- **`/usage` 合并 `/cost` + `/stats`**（v2.1.118）：`/cost` 和 `/stats` 已合并为统一入口 `/usage`，分 Tab 展示费用明细与会话统计。两个旧命令仍可作为快捷方式跳转到对应 Tab。
+
+- **自定义主题**（v2.1.118）：在会话内输入 `/theme` 创建或切换主题；也可手动编辑 `~/.claude/themes/<name>.json`；插件可在自身的 `themes/` 目录下打包并分发主题文件。
+
+- **Hooks 直调 MCP 工具**（v2.1.118）：hooks 配置新增 `type: "mcp_tool"`，可直接触发 MCP 工具，无需启动子进程。
+
+  ```json
+  {
+    "hooks": {
+      "PostToolUse": [{
+        "type": "mcp_tool",
+        "server": "my-server",
+        "tool": "notify",
+        "input": { "message": "Tool finished in {{duration_ms}}ms" }
+      }]
+    }
+  }
+  ```
+
+- **`DISABLE_UPDATES` 完全锁版本**（v2.1.118）：比 `DISABLE_AUTOUPDATER` 更严格，连 `claude update` 手动命令也一并阻断，适合 CI/CD 或企业受控环境。
+
+  ```bash
+  export DISABLE_UPDATES=1
+  ```
+
+- **`prUrlTemplate` 自定义 PR 链接**（v2.1.119）：将 footer PR 徽章指向内网 CR 系统，支持 `{owner}`、`{repo}`、`{pr}` 占位符。
+
+  ```json
+  // ~/.claude/settings.json
+  {
+    "prUrlTemplate": "https://cr.internal.example.com/{owner}/{repo}/pull/{pr}"
+  }
+  ```
+
+- **`CLAUDE_CODE_HIDE_CWD`**（v2.1.119）：隐藏启动 logo 中的工作目录路径，适合截图或录屏。
+
+  ```bash
+  export CLAUDE_CODE_HIDE_CWD=1
+  ```
+
+- **`--from-pr` 多平台支持**（v2.1.119）：现在接受 GitLab MR、Bitbucket PR 和 GitHub Enterprise PR URL，不再局限于 github.com。
+
+  ```bash
+  claude --from-pr https://gitlab.com/mygroup/myrepo/-/merge_requests/42
+  claude --from-pr https://bitbucket.org/team/repo/pull-requests/7
+  ```
+
+- **Hooks `duration_ms`**（v2.1.119）：`PostToolUse` / `PostToolUseFailure` hook 输入新增 `duration_ms` 字段，记录工具执行耗时（不含权限提示与 PreToolUse 耗时），可用于性能监控与日志。
+
+- **Opus 4.7 上下文窗口修正**（v2.1.117）：修正前 Claude Code 误以为 Opus 4.7 上下文为 200K，导致 `/context` 百分比虚高并过早触发 autocompact；现已正确使用 1M 窗口。
+
+- **Pro/Max 默认 effort 升为 `high`**（v2.1.117）：Opus 4.6 与 Sonnet 4.6 在 Pro/Max 订阅下默认从 `medium` 提升为 `high`，无需手动设置即可获得更强推理。
+
+- **大会话 `/resume` 性能优化**（v2.1.116）：40MB+ 大会话文件恢复速度提升最高 67%；多个死 fork 条目也不再拖慢加载。
+
+- **思考进度内联展示**（v2.1.116）：扩展思考期间 spinner 内联显示「still thinking → thinking more → almost done thinking」进度，替换了旧的独立提示行。
+
+##### 关键 fix
+
+- **Opus 4.7 上下文百分比虚高**（v2.1.117）：误将 200K 作为窗口计算，`/context` 显示异常且过早 autocompact；已修正为 1M。
+- **OAuth Token 中途失效**（v2.1.117）：Plain-CLI 会话中 access token 过期时不再报「Please run /login」，改为自动刷新。
+- **`WebFetch` 超大 HTML 挂起**（v2.1.117）：代理返回超大 HTML 时不再无限等待，转换前已截断。
+- **Bedrock 应用推理 Profile 400**（v2.1.117）：通过应用推理 Profile 调 Opus 4.7（关闭 thinking 时）返回 400 的问题已修复。
+- **sandbox `rm` 危险路径绕过**（v2.1.116）：sandbox 自动授权不再豁免对 `/`、`$HOME` 等关键目录的 `rm`/`rmdir`，防止沙箱规则被绕过。
+- **Ctrl+Z 挂起终端**（v2.1.116）：通过 `npx`/`bun run` 等包装启动时，`Ctrl+Z` 不再导致终端卡死。
+- **Kitty 协议快捷键失效**（v2.1.116）：`Ctrl+-` 撤销、`Cmd+Left/Right` 行首/尾跳转在 iTerm2、Ghostty、WezTerm 等终端已修复。
+- **MCP OAuth 多处竞态**（v2.1.118）：跨进程刷新锁失效、keychain 并发写入覆盖、服务端吊销前本地仍继续使用等多个 OAuth 竞态问题集中修复。
+- **credential 写入崩溃**（v2.1.118）：Linux/Windows 下写 `~/.claude/.credentials.json` 崩溃已修复。
+- **Glob/Grep 原生构建消失**（v2.1.119）：Bash 工具被 permissions 拒绝时，Glob 与 Grep 工具不再同时消失。
+- **自动模式干扰 plan 模式**（v2.1.119）：auto 模式不再注入「Execute immediately」指令覆盖 plan 模式行为。
+- **Agent worktree 重用旧工作区**（v2.1.119）：`isolation: "worktree"` 的 Agent tool 不再跨 session 复用过期 worktree。
+- **`TaskList` 顺序不稳定**（v2.1.119）：改为按 Task ID 排序，不再受文件系统顺序影响。
+- **`/export` 显示错误模型**（v2.1.119）：现在正确显示会话实际使用模型，而非当前默认模型。
+- **`/plan` 进入模式失效**（v2.1.119）：`/plan` 与 `/plan open` 现在能正确作用于已存在的 plan。
+- **skills 在 autocompact 后重复执行**（v2.1.119）：autocompact 前已调用的 skill 不再在下一条用户消息时被重新触发。
+
 ---
 
 ### Q1（2026-01 ~ 03）
@@ -222,3 +313,4 @@ toc: true
 | v1.2 | 2026-04-14 | 核对 GitHub Releases API 实际日期；修正不存在的版本号（v2.1.0/v2.1.10/v2.1.40/v2.1.88）及错误日期 |
 | v1.3 | 2026-04-15 | 增量追踪至 v2.1.108（更正此前误报的 v2.2）；新增 1H 缓存控制、会话总结、OS CA 支持 |
 | v1.4 | 2026-04-19 | 增量追踪至 v2.1.114；新增原生二进制分发、`/tui`、`/ultrareview`、`xhigh` effort、PowerShell 工具，以及 Bash/sandbox 安全加固批次 |
+| v1.5 | 2026-04-24 | 增量追踪至 v2.1.119；新增 Vim 可视模式、自定义主题、Hooks 直调 MCP 工具、`/usage` 合并、Opus 4.7 1M 上下文修正、多平台 `--from-pr`、`prUrlTemplate`/`CLAUDE_CODE_HIDE_CWD` |
