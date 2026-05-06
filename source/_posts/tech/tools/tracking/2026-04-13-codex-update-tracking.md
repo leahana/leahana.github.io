@@ -444,6 +444,151 @@ codex --model gpt-5.5
 
 ---
 
+#### 2026-04 | 0.125.0（CLI Stable）
+
+**信息截止**：2026-04-29 | **最新 Release**：0.125.0（稳定版）
+
+本批次属于 `cli-oss / stable`；来源为 OpenAI Developers changelog 与
+GitHub Release。
+
+| 版本 | 日期 | 一句话 |
+|------|------|--------|
+| `0.125.0` | 2026-04-24 | app-server Unix socket、远程插件安装/升级、权限 profile 透传、provider 模型发现、exec JSON token usage 与 rollout trace 一起落到稳定版 |
+
+##### 新特性用法
+
+- **升级到 0.125.0**：官方 changelog 已给出 npm 安装方式，适合需要
+  app-server、远程插件或权限 profile 新接口的环境先升级到稳定版基线。
+```bash
+npm install -g @openai/codex@0.125.0
+```
+- **app-server 走 Unix socket**：app-server 集成现在支持 Unix socket
+  transport，适合把本机 IDE / 桌面客户端和 Codex 后端连在同一台机器
+  上，减少 TCP 端口暴露。
+```text
+# app-server client 侧选择 unix socket transport
+# 具体 socket path / 启动参数以当前 app-server schema 为准
+```
+- **分页友好的 resume / fork**：`thread/resume` 和 `thread/fork`
+  新增面向分页历史的参数，客户端可以先恢复线程，再按需用
+  `thread/turns/list` 拉历史，避免一次性塞回完整 turns。
+```json
+{
+  "method": "thread/fork",
+  "id": 24,
+  "params": {
+    "threadId": "thr_123",
+    "excludeTurns": true
+  }
+}
+```
+- **远程插件安装与 marketplace 升级**：app-server plugin management
+  已能安装远程插件、升级已配置 marketplaces；适合团队把插件分发、
+  更新和缓存收拢到 app-server 客户端流程里。
+```text
+在 app-server 客户端里安装 remote plugin
+升级 configured marketplace
+刷新插件列表并重新加载可用 MCP tools
+```
+- **`codex exec --json` 暴露 reasoning tokens**：程序化调用方现在能
+  从 JSON usage 中拿到 reasoning-token 用量，适合 CI、批处理和成本
+  观测。
+```bash
+codex exec --json "summarize the current diff"
+```
+
+##### 关键 fix
+
+- **`/review` 与 TUI 退出卡死**：修了中断 `/review` 或退出 TUI 时，
+  界面可能卡在 delegate startup / unsubscribe 的问题；经常跑 review
+  或后台 agent 的用户体感最明显。
+- **exec-server 输出丢失**：修了进程退出后 buffered output 被丢掉、
+  stream closure 等待不正确的问题；依赖长命令输出和日志回放的工作流
+  更稳。
+- **显式 untrusted 配置**：app-server 不再把明确不可信的 project
+  config 自动持久化成 trusted，降低远程/多项目场景里的信任边界漂移。
+- **Windows 与配置 schema 边角**：修了多 CLI 版本、installed app
+  directory、后台 PowerShell 窗口，以及 MultiAgentV2 thread limits、
+  relative agent-role config path、MCP bearer token 字段和 `js_repl`
+  image MIME 校验等问题。
+
+---
+
+#### 2026-04 | 0.126.0-alpha.1 ~ 0.126.0-alpha.11（预发布）
+
+**信息截止**：2026-04-29 | **最新 Release**：0.126.0-alpha.11（预发布）
+
+本批次属于 `cli-oss / prerelease`；GitHub release/tag 页面仅确认 tag
+与时间，公开 release notes 尚未补全。
+
+| 版本 | 日期 | 一句话 |
+|------|------|--------|
+| `0.126.0-alpha.1` | 2026-04-24 | `0.125.0` 后首个 `0.126.0` 预发布标签，公开 notes 缺席 |
+| `0.126.0-alpha.2` | 2026-04-25 | 预发布继续滚动，仍只能确认 tag 与构建资产 |
+| `0.126.0-alpha.3` | 2026-04-26 | alpha 线进入连续烘焙，release notes 仍未公开 |
+| `0.126.0-alpha.4` | 2026-04-27 | 同一轮预发布继续推进，后续主分支出现权限、memory 与 keymap 信号 |
+| `0.126.0-alpha.5` | 2026-04-27 | 该标签以 tag 页面形式出现，资产较少，仍不宜当稳定发布使用 |
+| `0.126.0-alpha.6` | 2026-04-27 | alpha 继续滚动，公开页面无功能明细 |
+| `0.126.0-alpha.7` | 2026-04-27 | 高频预发布继续，建议等待 stable notes 回收确认 |
+| `0.126.0-alpha.8` | 2026-04-27 | 当日第四个 alpha，说明该轮仍在快速验证 |
+| `0.126.0-alpha.9` | 2026-04-28 | 预发布推进到 4 月 28 日，公开 notes 仍缺席 |
+| `0.126.0-alpha.10` | 2026-04-28 | alpha.10 之后主分支仅剩少量 commits，接近一轮收敛尾声 |
+| `0.126.0-alpha.11` | 2026-04-28 | 当前最新公开 prerelease；尚无稳定版 `0.126.0` |
+
+##### 新特性用法
+
+- **暂无可确认稳定用法**：`0.126.0-alpha.*` 页面只确认预发布标签、
+  时间与资产，没有正式 notes；生产环境仍建议停在 `0.125.0` 或等待
+  `0.126.0` 稳定版。
+```text
+生产环境：使用 0.125.0
+实验环境：只在可回滚机器上试 0.126.0-alpha.11
+```
+- **可配置 keymap 信号**：主分支 merged commit `#18593` 显示 TUI
+  configurable keymap support 已进入代码线；由于 release notes 和配置
+  schema 还未公开，不建议把具体 keymap TOML 写进团队默认配置。
+```text
+预发布观察：关注 0.126.0 stable notes / config reference
+目标用途：把 TUI 快捷键改成团队或个人习惯
+```
+- **内置 permission profiles 信号**：主分支 commit `#19900` 显示权限
+  profile 继续收敛为 built-in defaults；这和 `0.125.0` 的 permission
+  profile round-trip 是同一条能力线，适合继续观察 `/permissions`
+  交互和 app-server permission API 是否简化。
+```text
+/permissions
+# 观察是否出现内置 profile / 默认 profile 选择
+```
+- **Memory housekeeping 信号**：`#19998`、`#20000`、`#20005` 与
+  `#19990` 显示 memory 启动、清理和限流场景继续打磨；如果你经常切
+  项目或使用 memories，alpha 线值得关注但不建议直接写生产流程。
+```text
+切换项目后检查 memory 行为
+额度紧张时观察是否跳过 memory startup
+```
+
+##### 关键 fix
+
+- **网络代理收紧**：主分支 commit `#20001` 与 `#20002` 显示 Linux
+  proxy bridge helper 和 network proxy bypass 默认值在加固，受影响
+  的是依赖代理、私有网络或严格网络审批的环境。
+- **MCP stdio 进程泄漏**：`#19753` 修了 shutdown 时 stdio MCP server
+  终止问题，避免 MCP server 残留后台进程。
+- **workspace metadata 保护**：`#19846` 与 `#19847` 继续加固受保护的
+  workspace metadata 路径，降低 sandbox / Seatbelt 场景中的误写风险。
+- **TUI 交互边角**：`#19986` 修了空 shell mode 下 `Esc` 退出问题，
+  `#19625` 修了退出时 keyboard reporting reset，终端状态更不容易被
+  留坏。
+
+**主分支未发版** (截至 2026-04-29)：
+- PR #19959: 修复 log db batch flush flake；GitHub release 页面显示
+  `0.126.0-alpha.11` 之后仍有 1 个 commit 进入 main。
+
+这些内容已进入主分支但尚未发版，需等待下个 Release 或自行评估源码安
+装。
+
+---
+
 ### Q1（2026-01 ~ 03）
 
 #### 2026-03 | CLI 0.118.0 / App Workflow Update
@@ -547,3 +692,4 @@ requires_openai_auth = true
 | v1.5 | 2026-04-19 | 追加 0.122.0-alpha.6 ~ alpha.10 预发布批次，并补记 alpha.10 之后的主分支未发版观察 |
 | v1.6 | 2026-04-21 | 追加 0.122.0-alpha.11 ~ alpha.13 预发布批次，并补记 2026-04-20 主分支的主分支未发版观察 |
 | v1.7 | 2026-04-24 | 按多发布流规则追加 0.123.0 ~ 0.124.0 CLI Stable 批次，并补记 GPT-5.5、Browser use 与 automatic approval reviews 的 App/Product 更新 |
+| v1.8 | 2026-04-29 | 追加 0.125.0 稳定版与 0.126.0-alpha.1 ~ alpha.11 预发布观察 |

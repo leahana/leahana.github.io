@@ -44,6 +44,68 @@ toc: true
 - oh-my-openagent 继续补强 legacy config path 迁移、原子写配置和 auto-update 兼容性。
 - oh-my-openagent tar 预检改为 fail-closed，MCP 环境变量清理时屏蔽云凭证，提升安全性。
 
+#### 2026-04 | v1.4.0 ~ v1.14.29 (OpenCode) & v3.16.0 ~ v3.17.6 (oh-my-openagent)
+
+**信息截止**：2026-04-29 | **最新 Release**：OpenCode v1.14.29 / oh-my-openagent v3.17.6
+
+本批次按合并追踪处理：OpenCode core 以 `anomalyco/opencode` 与
+`opencode.ai/changelog` 为主源，oh-my-openagent 以 companion release
+补充插件平台、Agent 编排与兼容层变化。
+
+| 工具 | 版本 | 日期 | 一句话 |
+|------|------|------|--------|
+| OpenCode | v1.14.29 | 2026-04-28 | C# comment 路径诊断、tmux console 与 import ordering 修复 |
+| OpenCode | v1.14.27~v1.14.28 | 2026-04-28 | 自定义 LSP、默认 shell、Claude Code bridge 与 SDK `x-api-key` 修复 |
+| OpenCode | v1.14.25~v1.14.26 | 2026-04-24~25 | HTTP server file/status 端点、MCP prompt、C#/Razor LSP 与 GPT 工具调用默认策略 |
+| OpenCode | v1.14.17~v1.14.23 | 2026-04-19~23 | desktop beta、worktrees、NVIDIA provider、GPT-5.5 context length 与 registry 支持 |
+| OpenCode | v1.4.0~v1.4.11 | 2026-04-07~15 | SDK breaking change、upgrade/export 能力、OTLP/proxy/PDF/Alibaba provider 与 Question API 修复 |
+| oh-my-openagent | v3.17.6 | 2026-04-28 | Oracle / Hephaestus 迁移到 GPT-5.5，Ralph thinking 无限循环修复 |
+| oh-my-openagent | v3.17.5 | 2026-04-24 | GPT-5.5 Omni 集成、Sisyphus native prompt、Claude Opus 4.7 偏好模型 |
+| oh-my-openagent | v3.17.3~v3.17.4 | 2026-04-15~17 | OpenCode 1.4.4 兼容、动态 custom agents、session lineage 与 release polish |
+| oh-my-openagent | v3.16.0 | 2026-04-08 | OpenCode 1.4.0 全兼容、安装器安全预检、自动更新大版本校验与 MCP/OAuth 稳定性 |
+
+##### 新特性用法
+
+- **OpenCode SDK 破坏性变更（v1.4.0）**：`diff` payload 从
+  `{to, from}` 改为 `{patch}`；`UserMessage.variant` 改为顶层
+  `model` 对象。插件、脚本或二次封装要先做字段兼容。
+- **升级与脱敏导出（OpenCode v1.4.5+）**：日常升级优先使用
+  `opencode upgrade`；分享 session 前可用
+  `opencode export --sanitize > session-redacted.json` 生成脱敏产物。
+- **观测与网络环境（OpenCode v1.4.5+）**：OTLP、全 provider proxy、
+  PDF 拖拽、Alibaba provider 与 npmrc registry 支持陆续补齐，企业内网和
+  多云环境接入成本下降。
+- **IDE / runtime 体验（OpenCode v1.14.x）**：C#/Razor/Roslyn 诊断、
+  自定义 LSP、默认 shell、worktrees、desktop beta 和 file/status HTTP
+  端点让 OpenCode 更适合长期驻留在项目里。
+- **oh-my-openagent 安装安全线（v3.16.0）**：安装器会先校验 OpenCode
+  `>= 1.4.0`、备份既有配置，并在冲突时提供 restore / force / abort
+  选择，适合团队机器逐台滚动升级。
+- **动态 custom agents（oh-my-openagent v3.17.3+）**：可通过
+  `opencode.json` 的 `agent_definitions` 接入自定义 Agent，lineage
+  解析会区分精确路径和根路径，避免 continuation 接错会话。
+- **GPT-5.5 Agent 升级（oh-my-openagent v3.17.5+）**：Sisyphus 的 deep
+  路径、Hephaestus 和 Oracle 迁移到 GPT-5.5；Sisyphus 使用 OpenCode
+  native agent prompt，减少手写 prompt glue。
+
+##### 关键 fix
+
+- OpenCode 修复了 Windows npm install / `node-gyp`、SDK `x-api-key`、
+  Claude Code bridge route、tmux console disconnect 和 Apple Silicon
+  build 等升级链路问题。
+- OpenCode 对 GPT 模型默认改用更保守的非 streaming tool calling，缓解
+  assistant message parts、多 text parts 和 usage compaction 的兼容问题。
+- OpenCode 修复 MCP OAuth、Question API 空响应、snapshot/revert、非 git
+  snapshot 遵守 `.gitignore`、模型 URL 与 OpenRouter reasoning config。
+- OpenCode v1.14.x 补上 C#/Razor/LSP 诊断性能问题、npmrc registry、
+  `bun install --frozen-lockfile`、desktop app 名称和 release 版本错误。
+- oh-my-openagent v3.16.0 修复 MCP client OAuth mutex、LINE-suffixed
+  session timestamp、零宽空格 session filename、`opencode run` 截断和
+  `plan` 命令精确匹配。
+- oh-my-openagent v3.17.x 修复 Windows `grep` path parsing、release
+  metadata/test suite、Claude alias mapping、Bash `allowed_directories`
+  参数兼容和 Ralph interleaved thinking 无限循环。
+
 ---
 
 ### Q1（2026-01 ~ 03）
@@ -118,3 +180,4 @@ toc: true
 |------|------|------|
 | v1.0 | 2026-04-13 | 初始版本，建立追踪框架；迁移 Q1 精选内容（v1.1.65~v1.3.17） |
 | v1.1 | 2026-04-13 | 修正格式规范，使用 H5 标题组织批次段落；合并深度分析内容 |
+| v1.2 | 2026-04-29 | 追加 OpenCode v1.4.0 ~ v1.14.29 与 oh-my-openagent v3.16.0 ~ v3.17.6 合并批次 |

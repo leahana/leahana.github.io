@@ -244,6 +244,86 @@ toc: true
 - **`/plan` 进入模式失效**（v2.1.119）：`/plan` 与 `/plan open` 现在能正确作用于已存在的 plan。
 - **skills 在 autocompact 后重复执行**（v2.1.119）：autocompact 前已调用的 skill 不再在下一条用户消息时被重新触发。
 
+#### 2026-04 | v2.1.120 ~ v2.1.122
+
+**信息截止**：2026-04-29 | **最新 Release**：v2.1.122
+
+| 版本 | 日期 | 一句话 |
+|------|------|--------|
+| `v2.1.122` | 2026-04-28 | Bedrock service tier、MCP `httpHeaders` 动态命令、企业托管策略、非信任工作区自动拒绝、hook/model 元数据与 session 搜索 |
+| `v2.1.121` | 2026-04-25 | `.mcp.json` 支持 HTTP/SSE transport；新增危险 HTTP/OAuth MCP 开关；PowerShell 解析与大消息渲染优化 |
+| `v2.1.120` | 2026-04-24 | AWS Bearer Token、Bedrock ARN 推断、MCP progress/header substitution、Agent tool allow/deny、Windows sandbox；同日出现 resume 启动崩溃并回滚 |
+
+##### 新特性用法
+
+- **Bedrock service tier（v2.1.122）**：企业或 Bedrock 用户可用环境变量选择
+  service tier，适合在成本、吞吐与延迟之间做受控切换。
+
+  ```bash
+  export ANTHROPIC_BEDROCK_SERVICE_TIER="<bedrock-service-tier>"
+  claude
+  ```
+
+- **HTTP/SSE MCP 配置（v2.1.121+）**：`.mcp.json` 可直接声明 HTTP/SSE
+  server；v2.1.122 的 `httpHeaders` 还支持通过 shell 命令动态取值，避免把
+  token 明文写死在配置里。
+
+  ```json
+  {
+    "mcpServers": {
+      "internal-api": {
+        "type": "sse",
+        "url": "https://mcp.internal.example.com/sse",
+        "httpHeaders": {
+          "Authorization": "Bearer $(security find-generic-password -s mcp-token -w)"
+        }
+      }
+    }
+  }
+  ```
+
+- **Agent tool 权限收口（v2.1.120）**：Agent tool 支持 `allowedTools` 与
+  `disallowedTools`，可以把子任务限制在只读、审查或指定工具集合中。
+
+  ```json
+  {
+    "allowedTools": ["Read", "Grep", "Glob"],
+    "disallowedTools": ["Bash(rm:*)", "Bash(curl:*)"]
+  }
+  ```
+
+- **企业策略与不可信工作区（v2.1.122）**：新增 enterprise managed
+  policies，并可按用户设置自动拒绝 untrusted workspace 的权限请求，适合
+  团队把敏感仓库和外部仓库分层管理。
+- **Hook / SDK 元数据补强（v2.1.120~122）**：`UserPromptSubmit` 新增
+  `session_id`，`TurnStart` / `Stop` 新增 model 信息，`precompact` 新增
+  `model_context_window` 与 `transcript_path`；`tokenUsage` 进入 SDK progress
+  events，方便做会话审计与成本统计。
+- **搜索与提及体验（v2.1.122）**：内置 slash commands 支持 session
+  search；`@` mention 支持行范围，例如 `@src/service.ts:80-140`。
+- **Windows / PowerShell 线（v2.1.120~122）**：PowerShell 命令解析增强、
+  Windows sandbox 进入实验阶段，并开始灰度将 PowerShell 作为默认 shell。
+
+##### 关键 fix
+
+- **v2.1.120 resume 崩溃**：官方状态页记录 `--resume`、`--continue` 与
+  `/resume` 在 v2.1.120 启动崩溃，并通过自动更新把受影响客户端迁回
+  v2.1.119；若仍卡在该版本，优先升级到 v2.1.121+，临时止血可 pin
+  `@anthropic-ai/claude-code@2.1.119`。
+- **MCP HTTP / OAuth 稳定性**：v2.1.121 修复 HTTP server 权限、Docker /
+  DevContainer MCP auth、OAuth 过期崩溃；v2.1.122 继续修复 OAuth token
+  refresh、plugin-scoped MCP tools、带 `.` 或 `/` 的 MCP tool name。
+- **session / transcript 可靠性**：v2.1.122 为 JSONL 写入增加跨实例锁，
+  防止 session 文件损坏；并修复 compaction 后 transcript 重复消息。
+- **Bash / shell snapshot**：修复
+  `CLAUDE_BASH_MAINTAIN_PROJECT_WORKING_DIR=1` 下 `cd` 被送进持久 shell、
+  shell snapshot 性能、detached process 命令执行和慢 MCP server 启动。
+- **plan / diff / symlink / PowerShell**：修复取消 plan mode 误取消当前请求、
+  `/diff` 遇到非法 HEAD 崩溃、symlink loop、PowerShell background task 与
+  worktree git branch 显示问题。
+- **原生安装与自动更新**：修复 native install 的 npm autodetect、
+  auto-updater、`claude --version` 支持与 `--uninstall` 原生安装脚本路径。
+
 ---
 
 ### Q1（2026-01 ~ 03）
@@ -314,3 +394,4 @@ toc: true
 | v1.3 | 2026-04-15 | 增量追踪至 v2.1.108（更正此前误报的 v2.2）；新增 1H 缓存控制、会话总结、OS CA 支持 |
 | v1.4 | 2026-04-19 | 增量追踪至 v2.1.114；新增原生二进制分发、`/tui`、`/ultrareview`、`xhigh` effort、PowerShell 工具，以及 Bash/sandbox 安全加固批次 |
 | v1.5 | 2026-04-24 | 增量追踪至 v2.1.119；新增 Vim 可视模式、自定义主题、Hooks 直调 MCP 工具、`/usage` 合并、Opus 4.7 1M 上下文修正、多平台 `--from-pr`、`prUrlTemplate`/`CLAUDE_CODE_HIDE_CWD` |
+| v1.6 | 2026-04-29 | 增量追踪至 v2.1.122；补记 v2.1.120 resume 崩溃回滚、HTTP/SSE MCP、Bedrock service tier、企业托管策略与 hook/model 元数据 |
